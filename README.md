@@ -1,1 +1,5 @@
-Details of this Project
+# Details of this Project
+
+## Project Description
+## Technologies
+## Functionalities
