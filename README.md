@@ -36,3 +36,25 @@
 
 ### Visualization
   - **Task History**: Maintain history of completed tasks for analysis.
+
+## Database Design (MongoDB)
+```
+{
+  "_id": ObjectId,
+  "name": String,
+  "password": String,
+  "tasks": [
+    {
+      "task_id": ObjectId
+      "task_name": String,
+      "description": String,
+      "due_date": Date,
+      "priority": String,
+      "is_complete": Boolean,
+      "created_at": Date,
+      "category": String,
+      "reminders": [Date]
+    }
+  ]
+}
+```
