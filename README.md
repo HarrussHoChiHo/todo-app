@@ -26,10 +26,7 @@
 
 ### Reminders and Notifications
   - **Reminders**: Set reminders for upcoming task due dates to avoid missing deadlines.
-  - **Notifications**: Notify users about reminders, overdue tasks etc. via push notifications, emails etc.
-
-### Data Synchronization
-  - **Cross-Device Sync**: Synchronize task data across multiple devices to access from anywhere.
+  - **Notifications**: Notify users about reminders, overdue tasks etc. via emails.
 
 ### User Accounts
   - **User Authentication**: Allow users to sign-up and login to access their tasks.
