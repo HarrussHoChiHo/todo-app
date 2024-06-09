@@ -37,6 +37,9 @@ Restaurant Food Planning System
 
 ### Authentication Subsystem
   - **Authenticate users**: Allow users to login into the system.
+    
+### Database Design
+![Database Design](https://github.com/HarusHoChiHo/Restaurant_Food_Planning_System/blob/main/RestaurantFoodPlanningDatabase.png)
 
 ###Labaries
   - **JWT**: https://github.com/jwt-dotnet/jwt?tab=readme-ov-file#jwtnet-aspnet-core
