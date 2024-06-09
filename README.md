@@ -37,3 +37,6 @@ Restaurant Food Planning System
 
 ### Authentication Subsystem
   - **Authenticate users**: Allow users to login into the system.
+
+###Labaries
+  - **JWT**: https://github.com/jwt-dotnet/jwt?tab=readme-ov-file#jwtnet-aspnet-core
