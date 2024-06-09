@@ -37,6 +37,3 @@ Restaurant Food Planning System
 
 ### Authentication Subsystem
   - **Authenticate users**: Allow users to login into the system.
-
-## Database Design (MongoDB)
-
