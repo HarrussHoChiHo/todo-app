@@ -1,57 +1,42 @@
 # Details of this Project
 
 ## Project Description
-
+Restaurant Food Planning System
 
 ## Technologies
 ### Front-end
   - React, Next.js
 ### Back-end
-  - Node.js, Express
+  - C#, .Net Core
 ### Database
-  - MongoDB
+  - Oracle Database
 
 ## Functionalities
-### Task Management
-  - **Task Creation**: Allow users to quickly add new tasks with details like title, description, due date, priority, tags etc.
-  - **Task Modification**: Enable users to edit task details like text, due date, priority after creation.
-  - **Task Deletion**: Provide ability to remove completed or irrelevant tasks.
-  - **Task Completion**: Allow marking tasks as completed to track progress.
+### Order Subsystem
+  - **Place Order**: Allow customers to place order.
+  - **Cancel Order**: Allow customers to cancel order.
 
-### Task Organization
-  - **Task Filtering**: Filter tasks based on criteria like priority, due dates, tags etc. to focus on specific tasks.
-  - **Task Searching**: Search for tasks based on keywords in title/description.
-  - **Task Sorting**: Sort tasks based on due date, priority, creation date etc.
-  - **Task Categorization**: Organize tasks using categories/projects for better overview.
+### Menu Management Subsystem
+  - **Create Menu**: Managers can create a menu with different cuisine for different dates.
+  - **Update Menu**: Allow managers to update the information of a menu, for example removing cuisine from menu.
+  - **Delete Menu**: Allow managers to delete existing menus.
+  - **Read Menu**: Allow customers to retrieve current menu based on the date.
 
-### Reminders and Notifications
-  - **Reminders**: Set reminders for upcoming task due dates to avoid missing deadlines.
-  - **Notifications**: Notify users about reminders, overdue tasks etc. via emails.
+### Food Stock Management Subsystem
+  - **Insert Food**: Allows restaurant manager to insert the records of food
+  - **Update Food**: Allows restaurant manager to update the records of food
+  - **Delete Food**: Allows restaurant manager to delete the records of food
+  - **Read Food**: Allows restaurant manager to review the records of food
+    
 
-### User Accounts
-  - **User Authentication**: Allow users to sign-up and login to access their tasks.
+### User Management Subsystem
+  - **Create Account**: Allow users to sign-up.
+  - **Update Account**: Allow users to update password.
+  - **Delete Account**: Allow users to delete user account.
+  - **Read Account**: Allow users to view existing account.
 
-### Visualization
-  - **Task History**: Maintain history of completed tasks for analysis.
+### Authentication Subsystem
+  - **Authenticate users**: Allow users to login into the system.
 
 ## Database Design (MongoDB)
-```
-{
-  "_id": ObjectId,
-  "name": String,
-  "password": String,
-  "tasks": [
-    {
-      "task_id": ObjectId
-      "task_name": String,
-      "description": String,
-      "due_date": Date,
-      "priority": String,
-      "is_complete": Boolean,
-      "created_at": Date,
-      "category": String,
-      "reminders": [Date]
-    }
-  ]
-}
-```
+
