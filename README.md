@@ -45,5 +45,5 @@ Restaurant Food Planning System
 ### Database Design
 ![Database Design](https://github.com/HarusHoChiHo/Restaurant_Food_Planning_System/blob/main/RestaurantFoodPlanningDatabase.png)
 
-###Labaries
+### Labaries
   - **JWT**: https://github.com/jwt-dotnet/jwt?tab=readme-ov-file#jwtnet-aspnet-core
