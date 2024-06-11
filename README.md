@@ -2,7 +2,7 @@
 
 ## Group Member
  - Chi Ho Ho (301324743)
- - Kang Yee Tang
+ - Kang Yee Tang (301328548)
 
 ## Project Description
 Restaurant Food Planning System
