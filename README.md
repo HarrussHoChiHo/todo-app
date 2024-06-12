@@ -13,7 +13,7 @@ Restaurant Food Planning System
 ### Back-end
   - C#, .Net Core
 ### Database
-  - Oracle Database
+  - Microsoft SQL Server
 
 ## Functionalities
 ### Order Subsystem
