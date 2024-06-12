@@ -1,6 +1,25 @@
 ﻿services:
   restaurantfoodplanningsystem:
     image: restaurantfoodplanningsystem
+    container_name: rfps-api
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: RestaurantFoodPlanningSystem/Dockerfile
+    ports:
+      - "8081:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=mssql-db;Database=RFPS;User Id=sa;Password=RestaurantFoodPlanningSystem;
+    depends_on:
+      - mssql-db 
+  mssql-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "RestaurantFoodPlanningSystem"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - mssql-data:/var/opt/mssql
+
+volumes:
+  mssql-data:
