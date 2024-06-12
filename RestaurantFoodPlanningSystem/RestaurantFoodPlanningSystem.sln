@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantFoodPlanningSystem", "RestaurantFoodPlanningSystem.csproj", "{6E8F7241-9E92-4EC7-A6AB-264A7659F5CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantFoodPlanningSystem", "RestaurantFoodPlanningSystem.csproj", "{18B56BBA-0154-4853-8F41-78E7E655474D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7DF77508-2426-4A7D-B571-7AD6AF69CBAB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F69F1D35-B492-4EC5-88D4-233E9E65620C}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
@@ -13,9 +13,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6E8F7241-9E92-4EC7-A6AB-264A7659F5CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E8F7241-9E92-4EC7-A6AB-264A7659F5CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E8F7241-9E92-4EC7-A6AB-264A7659F5CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E8F7241-9E92-4EC7-A6AB-264A7659F5CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18B56BBA-0154-4853-8F41-78E7E655474D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18B56BBA-0154-4853-8F41-78E7E655474D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18B56BBA-0154-4853-8F41-78E7E655474D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18B56BBA-0154-4853-8F41-78E7E655474D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
