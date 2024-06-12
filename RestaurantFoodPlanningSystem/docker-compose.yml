@@ -1,0 +1,6 @@
+﻿services:
+  restaurantfoodplanningsystem:
+    image: restaurantfoodplanningsystem
+    build:
+      context: .
+      dockerfile: Dockerfile
