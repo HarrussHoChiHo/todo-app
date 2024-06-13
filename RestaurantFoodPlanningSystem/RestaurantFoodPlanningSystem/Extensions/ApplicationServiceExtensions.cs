@@ -1,4 +1,5 @@
-﻿using EntityFrameworkCore;
+﻿using System.Diagnostics;
+using EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Application.Core;
 
@@ -14,7 +15,8 @@ public static class ApplicationServiceExtensions
 
         services.AddDbContext<RFPSDbContext>(
                                              opt =>
-                                             {
+                                             { 
+                                                 //Console.WriteLine(config.GetConnectionString("DefaultConnection"));
                                                  opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
                                              });
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);

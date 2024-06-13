@@ -8,15 +8,17 @@
     ports:
       - "8081:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=mssql-db;Database=RFPS;User Id=sa;Password=RestaurantFoodPlanningSystem;
+      - ConnectionStrings__DefaultConnection=Server=mssql-db;Database=RFPS;User Id=SA;Password=RestaurantFoodPlanningSystem;TrustServerCertificate=True;
     depends_on:
       - mssql-db 
+    
   mssql-db:
     image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: rfps-db
     ports:
-      - "1433:1433"
+      - 1433:1433
     environment:
-      SA_PASSWORD: "RestaurantFoodPlanningSystem"
+      MSSQL_SA_PASSWORD: "RestaurantFoodPlanningSystem"
       ACCEPT_EULA: "Y"
     volumes:
       - mssql-data:/var/opt/mssql
