@@ -1,4 +1,4 @@
-﻿namespace Application.DTO;
+﻿namespace Application.Dtos;
 
 public class UserQueryDto
 {

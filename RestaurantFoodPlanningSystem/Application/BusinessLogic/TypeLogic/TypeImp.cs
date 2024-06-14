@@ -1,0 +1,47 @@
+﻿using Application.Dtos;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using EntityFrameworkCore;
+using Type = Domain.Type;
+
+namespace Application.BusinessLogic.TypeLogic;
+
+public class TypeImp(
+    RFPSDbContext context,
+    IMapper       mapper) : BasicLogic(
+                                       context,
+                                       mapper), IType
+{
+    public int Insert(TypeQueryDto typeQuery)
+    {
+        _context.Type.Add(_mapper.Map<Type>(typeQuery));
+
+        return _context.SaveChanges();
+    }
+
+    public int Update(TypeQueryDto typeQuery)
+    {
+        _context.Type.Update(_mapper.Map<Type>(typeQuery));
+
+        return _context.SaveChanges();
+    }
+
+    public List<TypeResultDto> Read(TypeQueryDto typeQuery)
+    {
+        return _context
+               .Type.Where(
+                           item => (item.Id   == typeQuery.Id   || typeQuery.Id   == null)
+                                && (item.Name == typeQuery.Name || typeQuery.Name == null))
+               .ProjectTo<TypeResultDto>(_mapper.ConfigurationProvider)
+               .ToList();
+    }
+
+    public int Delete(int id)
+    {
+        Type type = _context.Type.First(item => item.Id == id);
+
+        _context.Type.Remove(type);
+
+        return _context.SaveChanges();
+    }
+}

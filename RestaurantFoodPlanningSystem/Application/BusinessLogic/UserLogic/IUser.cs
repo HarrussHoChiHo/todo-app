@@ -1,4 +1,4 @@
-﻿using Application.DTO;
+﻿using Application.Dtos;
 
 namespace Application.BusinessLogic.UserLogic;
 
