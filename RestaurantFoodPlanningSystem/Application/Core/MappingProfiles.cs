@@ -1,4 +1,12 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.FoodItem;
+using Application.Dtos.Menu;
+using Application.Dtos.MenuItem;
+using Application.Dtos.MenuItemFoodItem;
+using Application.Dtos.Order;
+using Application.Dtos.OrderItem;
+using Application.Dtos.Type;
+using Application.Dtos.Unit;
+using Application.Dtos.User;
 using AutoMapper;
 using Domain;
 using Type = Domain.Type;
@@ -7,21 +15,78 @@ namespace Application.Core;
 
 public class MappingProfiles : Profile
 {
-    protected MappingProfiles()
+    public MappingProfiles()
+    {
+        UserMapper();
+        UnitMapper();
+        TypeMapper();
+        MenuMapper();
+        MenuItemMapper();
+        MenuItemFoodItemMapper();
+        FoodItemMapper();
+        OrderMapper();
+        OrderItemMapper();
+    }
+
+    private void UserMapper()
     {
         CreateMap<UserQueryDto, User>()
             .ForMember(
                        user => user.UserName,
                        userDto => userDto.MapFrom(o => o.Name))
             .ForMember(
-                       user => user.Password,
+                       user => user.PasswordHash,
                        userDto => userDto.MapFrom(o => o.Password));
 
-        CreateMap<UserResultDto, User>()
+        CreateMap<User, UserResultDto>()
             .ForMember(
                        user => user.UserName,
-                       result => result.MapFrom(o => o.UserName));
+                       result => result.MapFrom(o => o.UserName))
+            .ForMember(
+                       user => user.Id,
+                       result => result.MapFrom(o => o.Id));
+    }
 
+    private void UnitMapper()
+    {
+        CreateMap<UnitQueryDto, Unit>()
+            .ForMember(
+                       unit => unit.Id,
+                       unitDto => unitDto.MapFrom(o => o.Id))
+            .ForMember(
+                       unit => unit.Name,
+                       unitDto => unitDto.MapFrom(o => o.Name));
+
+        CreateMap<Unit, UnitResultDto>()
+            .ForMember(
+                       unit => unit.Id,
+                       unitDto => unitDto.MapFrom(o => o.Id))
+            .ForMember(
+                       unit => unit.Name,
+                       unitDto => unitDto.MapFrom(o => o.Name));
+    }
+
+    private void TypeMapper()
+    {
+        CreateMap<TypeQueryDto, Type>()
+            .ForMember(
+                       type => type.Id,
+                       typeDto => typeDto.MapFrom(o => o.Id))
+            .ForMember(
+                       type => type.Name,
+                       typeDto => typeDto.MapFrom(o => o.Name));
+
+        CreateMap<Type, TypeResultDto>()
+            .ForMember(
+                       type => type.Id,
+                       typeDto => typeDto.MapFrom(o => o.Id))
+            .ForMember(
+                       type => type.Name,
+                       typeDto => typeDto.MapFrom(o => o.Name));
+    }
+
+    private void MenuMapper()
+    {
         CreateMap<MenuQueryDto, Menu>()
             .ForMember(
                        menu => menu.MenuItem_Id,
@@ -30,7 +95,7 @@ public class MappingProfiles : Profile
                        menu => menu.Date,
                        menuDto => menuDto.MapFrom(o => o.Date));
 
-        CreateMap<MenuResultDto, Menu>()
+        CreateMap<Menu, MenuResultDto>()
             .ForMember(
                        menu => menu.Id,
                        menuDto => menuDto.MapFrom(o => o.Id))
@@ -40,20 +105,26 @@ public class MappingProfiles : Profile
             .ForMember(
                        menu => menu.MenuItem_Id,
                        menuDto => menuDto.MapFrom(o => o.MenuItem_Id));
+    }
 
+    private void MenuItemMapper()
+    {
         CreateMap<MenuItemQueryDto, MenuItem>()
             .ForMember(
                        menuItem => menuItem.Name,
                        menuItemDto => menuItemDto.MapFrom(o => o.Name));
 
-        CreateMap<MenuItemResultDto, MenuItem>()
+        CreateMap<MenuItem, MenuItemResultDto>()
             .ForMember(
                        menuItem => menuItem.Name,
                        menuItemDto => menuItemDto.MapFrom(o => o.Name))
             .ForMember(
                        menuItem => menuItem.Id,
-                       menuItemDto => menuItemDto.MapFrom(o => o.id));
+                       menuItemDto => menuItemDto.MapFrom(o => o.Id));
+    }
 
+    private void MenuItemFoodItemMapper()
+    {
         CreateMap<MenuItemFoodItemQueryDto, MenuItemFoodItem>()
             .ForMember(
                        mifi => mifi.MenuItem_Id,
@@ -65,8 +136,8 @@ public class MappingProfiles : Profile
                        mifi => mifi.Consumption,
                        mifiDto => mifiDto.MapFrom(o => o.Consumption));
 
-        
-        CreateMap<MenuItemFoodItemResultDto, MenuItemFoodItem>()
+
+        CreateMap<MenuItemFoodItem, MenuItemFoodItemResultDto>()
             .ForMember(
                        mifi => mifi.MenuItem_Id,
                        mifiDto => mifiDto.MapFrom(o => o.MenuItem_Id))
@@ -76,7 +147,10 @@ public class MappingProfiles : Profile
             .ForMember(
                        mifi => mifi.Consumption,
                        mifiDto => mifiDto.MapFrom(o => o.Consumption));
+    }
 
+    private void FoodItemMapper()
+    {
         CreateMap<FoodItemQueryDto, FoodItem>()
             .ForMember(
                        foodItem => foodItem.Id,
@@ -94,8 +168,8 @@ public class MappingProfiles : Profile
                        foodItem => foodItem.Unit_Id,
                        foodItemDto => foodItemDto.MapFrom(o => o.Unit_Id));
 
-        
-        CreateMap<FoodItemResultDto, FoodItem>()
+
+        CreateMap<FoodItem, FoodItemResultDto>()
             .ForMember(
                        foodItem => foodItem.Id,
                        foodItemDto => foodItemDto.MapFrom(o => o.Id))
@@ -111,37 +185,49 @@ public class MappingProfiles : Profile
             .ForMember(
                        foodItem => foodItem.Unit_Id,
                        foodItemDto => foodItemDto.MapFrom(o => o.Unit_Id));
+    }
 
-        CreateMap<UnitQueryDto, Unit>()
+    private void OrderMapper()
+    {
+        CreateMap<OrderQueryDto, Order>()
             .ForMember(
-                       unit => unit.Id,
-                       unitDto => unitDto.MapFrom(o => o.Id))
+                       order => order.Id,
+                       queryDto => queryDto.MapFrom(o => o.Id))
             .ForMember(
-                       unit => unit.Name,
-                       unitDto => unitDto.MapFrom(o => o.Name));
-        
-        CreateMap<UnitResultDto, Unit>()
-            .ForMember(
-                       unit => unit.Id,
-                       unitDto => unitDto.MapFrom(o => o.Id))
-            .ForMember(
-                       unit => unit.Name,
-                       unitDto => unitDto.MapFrom(o => o.Name));
+                       order => order.IsCanceled,
+                       queryDto => queryDto.MapFrom(o => o.IsCanceled));
 
-        CreateMap<TypeQueryDto, Type>()
+        CreateMap<Order, OrderResultDto>()
             .ForMember(
-                       type => type.Id,
-                       typeDto => typeDto.MapFrom(o => o.Id))
+                       resultDto => resultDto.Id,
+                       order => order.MapFrom(o => o.Id))
             .ForMember(
-                       type => type.Name,
-                       typeDto => typeDto.MapFrom(o => o.Name));
-        
-        CreateMap<TypeResultDto, Type>()
+                       resultDto => resultDto.IsCanceled,
+                       order => order.MapFrom(o => o.IsCanceled));
+    }
+
+    private void OrderItemMapper()
+    {
+        CreateMap<OrderItemQueryDto, OrderItem>()
             .ForMember(
-                       type => type.Id,
-                       typeDto => typeDto.MapFrom(o => o.Id))
+                       orderItem => orderItem.Id,
+                       queryDto => queryDto.MapFrom(o => o.Id))
             .ForMember(
-                       type => type.Name,
-                       typeDto => typeDto.MapFrom(o => o.Name));
+                       orderItem => orderItem.OrderId,
+                       queryDto => queryDto.MapFrom(o => o.OrderId))
+            .ForMember(
+                       orderItem => orderItem.MenuItemId,
+                       queryDto => queryDto.MapFrom(o => o.MenuItemId));
+
+        CreateMap<OrderItem, OrderItemResultDto>()
+            .ForMember(
+                       resultDto => resultDto.Id,
+                       order => order.MapFrom(o => o.Id))
+            .ForMember(
+                       resultDto => resultDto.OrderId,
+                       order => order.MapFrom(o => o.OrderId))
+            .ForMember(
+                       resultDto => resultDto.MenuItemId,
+                       order => order.MapFrom(o => o.MenuItemId));
     }
 }

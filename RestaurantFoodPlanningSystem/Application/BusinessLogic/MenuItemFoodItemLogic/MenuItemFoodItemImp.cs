@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.MenuItemFoodItem;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
@@ -13,54 +13,50 @@ public class MenuItemFoodItemImp(
                  context,
                  mapper), IMenuItemFoodItem
 {
-    public int Insert(MenuItemFoodItemQueryDto menuIteFoodItemQuery)
+    public async Task<int> Insert(MenuItemFoodItemQueryDto menuIteFoodItemQuery)
     {
         _context.MenuItemFoodItem.Add(_mapper.Map<MenuItemFoodItem>(menuIteFoodItemQuery));
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 
-    public int Update(MenuItemFoodItemQueryDto menuIteFoodItemQuery)
+    public async Task<int> Update(MenuItemFoodItemQueryDto menuIteFoodItemQuery)
     {
         _context.MenuItemFoodItem.Update(_mapper.Map<MenuItemFoodItem>(menuIteFoodItemQuery));
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 
-    public List<MenuItemFoodItemResultDto> Read(MenuItemFoodItemQueryDto menuIteFoodItemQuery)
+    public async Task<List<MenuItemFoodItemResultDto>> Read(MenuItemFoodItemQueryDto menuIteFoodItemQuery)
     {
         return _context
-               .MenuItemFoodItem.Where(item=> (item.MenuItem_Id                 == menuIteFoodItemQuery.MenuItem_Id
-                                            || menuIteFoodItemQuery.MenuItem_Id == null)
-                                           && (item.FoodItem_Id                 == menuIteFoodItemQuery.FoodItem_Id
-                                            || menuIteFoodItemQuery.FoodItem_Id == null)
-                                           && (item.Consumption                 == menuIteFoodItemQuery.Consumption
-                                            || menuIteFoodItemQuery.Consumption == null))
+               .MenuItemFoodItem.Where(
+                                       item => (item.MenuItem_Id                 == menuIteFoodItemQuery.MenuItem_Id
+                                             || menuIteFoodItemQuery.MenuItem_Id == null)
+                                            && (item.FoodItem_Id                 == menuIteFoodItemQuery.FoodItem_Id
+                                             || menuIteFoodItemQuery.FoodItem_Id == null)
+                                            && (item.Consumption                 == menuIteFoodItemQuery.Consumption
+                                             || menuIteFoodItemQuery.Consumption == null))
                .ProjectTo<MenuItemFoodItemResultDto>(_mapper.ConfigurationProvider)
                .ToList();
     }
 
-    public List<MenuItemFoodItemResultDto> Read()
-    {
-        return _context
-               .MenuItemFoodItem.Select(item => item)
-               .ProjectTo<MenuItemFoodItemResultDto>(_mapper.ConfigurationProvider)
-               .ToList();
-    }
-
-    public int Delete(MenuItemFoodItemQueryDto menuIteFoodItemQuery)
+    public async Task<int> Delete(MenuItemFoodItemQueryDto menuIteFoodItemQuery)
     {
         List<MenuItemFoodItem> items = _context
-            .MenuItemFoodItem.Where(
-                                    item => (item.MenuItem_Id                 == menuIteFoodItemQuery.MenuItem_Id
-                                          || menuIteFoodItemQuery.MenuItem_Id == null)
-                                         && (item.FoodItem_Id                 == menuIteFoodItemQuery.FoodItem_Id
-                                          || menuIteFoodItemQuery.FoodItem_Id == null)
-                                         && (item.Consumption                 == menuIteFoodItemQuery.Consumption
-                                          || menuIteFoodItemQuery.Consumption == null))
-            .ToList();
+                                       .MenuItemFoodItem.Where(
+                                                               item => (item.MenuItem_Id
+                                                                     == menuIteFoodItemQuery.MenuItem_Id
+                                                                     || menuIteFoodItemQuery.MenuItem_Id == null)
+                                                                    && (item.FoodItem_Id
+                                                                     == menuIteFoodItemQuery.FoodItem_Id
+                                                                     || menuIteFoodItemQuery.FoodItem_Id == null)
+                                                                    && (item.Consumption
+                                                                     == menuIteFoodItemQuery.Consumption
+                                                                     || menuIteFoodItemQuery.Consumption == null))
+                                       .ToList();
         _context.MenuItemFoodItem.RemoveRange(items);
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 }

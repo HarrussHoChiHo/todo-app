@@ -1,8 +1,29 @@
-﻿namespace Domain;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class User
+namespace Domain;
+
+public class User : IdentityUser<int>
 {
-    public int    Id       { set; get; }
-    public String UserName { set; get; }
-    public String Password { set; get; }
+    public override int     Id           { get; set; }
+    public override string? UserName     { get; set; }
+    public override string? PasswordHash { get; set; }
+
+
+    public User()
+        : base()
+    {
+        
+    }
+    
+    public User(string userName)
+        : base(userName)
+    {
+        
+    }
+    
+    public User(string userName, string passwordHash)
+        : base(userName)
+    {
+        PasswordHash = passwordHash;
+    }
 }

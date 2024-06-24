@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Unit;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
@@ -9,24 +9,24 @@ namespace Application.BusinessLogic.UnitLogic;
 public class UnitImp(
     RFPSDbContext context,
     IMapper       mapper) : BasicLogic(
-                                       context,
-                                       mapper), IUnit
+                                         context,
+                                         mapper), IUnit
 {
-    public int Insert(UnitQueryDto unitQuery)
+    public async Task<int> Insert(UnitQueryDto unitQuery)
     {
         _context.Unit.Add(_mapper.Map<Unit>(unitQuery));
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 
-    public int Update(UnitQueryDto unitQuery)
+    public async Task<int> Update(UnitQueryDto unitQuery)
     {
         _context.Unit.Update(_mapper.Map<Unit>(unitQuery));
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 
-    public List<UnitResultDto> Read(UnitQueryDto unitQuery)
+    public async Task<List<UnitResultDto>> Read(UnitQueryDto unitQuery)
     {
         return _context
                .Unit.Where(
@@ -36,12 +36,12 @@ public class UnitImp(
                .ToList();
     }
 
-    public int Delete(int id)
+    public async Task<int> Delete(int id)
     {
         Unit unit = _context.Unit.First(item => item.Id == id);
 
         _context.Unit.Remove(unit);
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 }

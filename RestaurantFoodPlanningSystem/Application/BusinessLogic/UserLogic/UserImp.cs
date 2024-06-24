@@ -1,55 +1,81 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.User;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EntityFrameworkCore;
 using Domain;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.BusinessLogic.UserLogic;
 
 public class UserImp(
-    RFPSDbContext context,
-    IMapper       mapper)
+    RFPSDbContext     context,
+    IMapper           mapper,
+    UserManager<User> userManager)
     : BasicLogic(
                  context,
                  mapper), IUser
 {
-    public int Insert(UserQueryDto userQuery)
+    public async Task<int> Insert(UserQueryDto userQuery)
     {
-        _context.User.Add(_mapper.Map<User>(userQuery));
+        _context.Users.Add(_mapper.Map<User>(userQuery));
 
         return _context.SaveChanges();
     }
 
-    public int Update(int          id,
-                      UserQueryDto userQuery)
+    public async Task<int> Update(int          id,
+                                  UserQueryDto userQuery)
     {
         User userEnt = _mapper.Map<User>(userQuery);
         userEnt.Id = id;
 
-        _context.User.Update(userEnt);
+        _context.Users.Update(userEnt);
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 
-    public UserResultDto Read(int id)
+    public async Task<UserResultDto> Read(int id)
     {
-        return _mapper.Map<UserResultDto>(_context.User.Find(id));
+        User?         user = _context.Users.Find(id);
+        UserResultDto dto  = _mapper.Map<UserResultDto>(user);
+        dto.Role = await userManager.GetRolesAsync(user);
+        return dto;
     }
 
-    public List<UserResultDto> Read()
+    public async Task<UserResultDto> Validate(UserQueryDto userQuery)
     {
-        return _context
-               .User.ProjectTo<UserResultDto>(_mapper.ConfigurationProvider)
-               .ToList();
+        User? user = _context.Users.FirstOrDefault(
+                                                  x => x.UserName == userQuery.Name
+                                                    && x.PasswordHash
+                                                    == userQuery.Password);
+        UserResultDto dto = _mapper.Map<UserResultDto>(user);
+        dto.Role =  await userManager.GetRolesAsync(user);
+
+        return dto;
     }
 
-    public int Delete(int id)
+    public async Task<List<UserResultDto>> Read()
+    {
+        List<UserResultDto> userResults = new List<UserResultDto>();
+        List<User>          users       = userManager.Users.ToList();
+        UserResultDto       dto;
+        users.ForEach(
+                      user =>
+                      {
+                          dto = _mapper.Map<UserResultDto>(user);
+                          dto.Role = userManager.GetRolesAsync(user).Result;
+                          userResults.Add(dto);
+                      });
+        return userResults;
+    }
+
+    public async Task<int> Delete(int id)
     {
         User user = _context
-                    .User.First(user => user.Id == id);
-        
-        _context.User.Remove(user);
+                    .Users.First(user => user.Id == id);
 
-        return _context.SaveChanges();
+        _context.Users.Remove(user);
+
+        return await _context.SaveChangesAsync();
     }
 }

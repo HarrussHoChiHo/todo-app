@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.FoodItem;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
@@ -12,21 +12,21 @@ public class FoodItemImp(
                                        context,
                                        mapper), IFoodItem
 {
-    public int Insert(FoodItemQueryDto foodItemQuery)
+    public async Task<int> Insert(FoodItemQueryDto foodItemQuery)
     {
         _context.FoodItem.Add(_mapper.Map<FoodItem>(foodItemQuery));
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 
-    public int Update(FoodItemQueryDto foodItemQuery)
+    public async Task<int> Update(FoodItemQueryDto foodItemQuery)
     {
         _context.FoodItem.Update(_mapper.Map<FoodItem>(foodItemQuery));
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 
-    public List<FoodItemResultDto> Read(FoodItemQueryDto foodItemQuery)
+    public async Task<List<FoodItemResultDto>> Read(FoodItemQueryDto foodItemQuery)
     {
        return _context.FoodItem.Where(
                                 foodItem => (foodItem.Id   == foodItemQuery.Id   || foodItemQuery.Id   == null)
@@ -38,12 +38,12 @@ public class FoodItemImp(
                 .ToList();
     }
 
-    public int Delete(int id)
+    public async Task<int> Delete(int id)
     {
         FoodItem item = _context.FoodItem.First(item => item.Id == id);
 
         _context.FoodItem.Remove(item);
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 }

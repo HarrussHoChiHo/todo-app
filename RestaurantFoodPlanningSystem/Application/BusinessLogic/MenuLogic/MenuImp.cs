@@ -1,4 +1,5 @@
-﻿using Application.Dtos;
+﻿using System.Text.Json;
+using Application.Dtos.Menu;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
@@ -13,41 +14,39 @@ public class MenuImp(
                  context,
                  mapper), IMenu
 {
-    public int Insert(MenuQueryDto menuQuery)
+    public async Task<int> Insert(MenuQueryDto menuQuery)
     {
         _context.Menu.Add(_mapper.Map<Menu>(menuQuery));
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 
-    public int Update(int          id,
-                      MenuQueryDto menuQuery)
+    public async Task<int> Update(MenuQueryDto menuQuery)
     {
         Menu menu = _mapper.Map<Menu>(menuQuery);
-        
-        menu.Id = id;
-        
+
         _context.Menu.Update(menu);
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 
-    public MenuResultDto Read(int id)
-    {
-        return _mapper.Map<MenuResultDto>(_context.Menu.Find(id));
-    }
-
-    public List<MenuResultDto> Read()
+    public async Task<List<MenuResultDto>> Read(MenuQueryDto menuQuery)
     {
         return _context
-               .Menu.ProjectTo<MenuResultDto>(_mapper.ConfigurationProvider)
+               .Menu.Where(
+                           menu => (menu.Id                 == menuQuery.Id || menuQuery.Id == null)
+                                && (menu.Date == menuQuery.Date || menuQuery.Date == null)
+                                && (menu.MenuItem_Id        == menuQuery.MenuItem_Id || menuQuery.MenuItem_Id == null)
+                          )
+               .ProjectTo<MenuResultDto>(_mapper.ConfigurationProvider)
                .ToList();
     }
 
-    public int Delete(int id)
+
+    public async Task<int> Delete(int id)
     {
         _context.Menu.Remove(_context.Menu.Find(id));
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 }

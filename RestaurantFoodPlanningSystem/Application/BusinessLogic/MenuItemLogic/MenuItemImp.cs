@@ -1,5 +1,6 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.MenuItem;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain;
 using EntityFrameworkCore;
 
@@ -12,31 +13,45 @@ public class MenuItemImp(
                  context,
                  mapper), IMenuItem
 {
-    public int Insert(MenuItemQueryDto menuItemQuery)
+    public async Task<int> Insert(MenuItemQueryDto menuItemQuery)
     {
         _context.MenuItem.Add(_mapper.Map<MenuItem>(menuItemQuery));
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 
-    public int Update(int              id,
-                      MenuItemQueryDto menuItemQuery)
+    public async Task<int> Update(MenuItemQueryDto menuItemQuery)
     {
-        throw new NotImplementedException();
+        _context.MenuItem.Update(_mapper.Map<MenuItem>(menuItemQuery));
+
+        return await _context.SaveChangesAsync();
     }
 
-    public MenuItemResultDto Read(int id)
+    public async Task<List<MenuItemResultDto>> Read(MenuItemQueryDto menuItemQuery)
     {
-        throw new NotImplementedException();
+        return _context
+               .MenuItem.Where(
+                               x =>
+                                   (x.Id             == menuItemQuery.Id
+                                 || menuItemQuery.Id == null)
+                                || (x.Name             == menuItemQuery.Name
+                                 || menuItemQuery.Name == null)
+                              )
+               .ProjectTo<MenuItemResultDto>(_mapper.ConfigurationProvider)
+               .ToList();
     }
 
-    public List<MenuItemResultDto> Read()
+    public async Task<List<MenuItemResultDto>> Read()
     {
-        throw new NotImplementedException();
+        return _context
+               .MenuItem.ProjectTo<MenuItemResultDto>(_mapper.ConfigurationProvider)
+               .ToList();
     }
 
-    public int Delete(int id)
+    public async Task<int> Delete(int id)
     {
-        throw new NotImplementedException();
+        MenuItem menuItem = await _context.MenuItem.FindAsync(id);
+        _context.MenuItem.Remove(menuItem);
+        return await _context.SaveChangesAsync();
     }
 }

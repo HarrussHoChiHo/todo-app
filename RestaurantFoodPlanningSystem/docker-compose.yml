@@ -10,7 +10,9 @@
     environment:
       - ConnectionStrings__DefaultConnection=Server=mssql-db;Database=RFPS;User Id=SA;Password=RestaurantFoodPlanningSystem;TrustServerCertificate=True;
     depends_on:
-      - mssql-db 
+      mssql-db:
+        condition: service_healthy
+      
     
   mssql-db:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -20,6 +22,11 @@
     environment:
       MSSQL_SA_PASSWORD: "RestaurantFoodPlanningSystem"
       ACCEPT_EULA: "Y"
+    healthcheck:
+      test: "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P RestaurantFoodPlanningSystem -Q 'SELECT 1' || exit 1"
+      interval: 15s
+      timeout: 5s
+      retries: 3
     volumes:
       - mssql-data:/var/opt/mssql
 

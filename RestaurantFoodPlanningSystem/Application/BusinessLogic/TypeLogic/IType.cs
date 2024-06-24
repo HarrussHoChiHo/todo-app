@@ -1,14 +1,14 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Type;
 
 namespace Application.BusinessLogic.TypeLogic;
 
 public interface IType
 {
-    public int Insert(TypeQueryDto typeQuery);
+    public Task<int> Insert(TypeQueryDto typeQuery);
 
-    public int Update(TypeQueryDto typeQuery);
+    public Task<int> Update(TypeQueryDto typeQuery);
 
-    public List<TypeResultDto> Read(TypeQueryDto typeQuery);
+    public Task<List<TypeResultDto>> Read(TypeQueryDto typeQuery);
 
-    public int Delete(int id);
+    public Task<int> Delete(int id);
 }

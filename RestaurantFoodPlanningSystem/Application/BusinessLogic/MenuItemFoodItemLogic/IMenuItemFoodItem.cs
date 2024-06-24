@@ -1,16 +1,14 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.MenuItemFoodItem;
 
 namespace Application.BusinessLogic.MenuItemFoodItemLogic;
 
 public interface IMenuItemFoodItem
 {
-    public int Insert(MenuItemFoodItemQueryDto menuIteFoodItemQuery);
+    public Task<int> Insert(MenuItemFoodItemQueryDto menuIteFoodItemQuery);
 
-    public int Update(MenuItemFoodItemQueryDto menuIteFoodItemQuery);
+    public Task<int> Update(MenuItemFoodItemQueryDto menuIteFoodItemQuery);
 
-    public List<MenuItemFoodItemResultDto> Read(MenuItemFoodItemQueryDto menuItemFoodItemQueryDto);
+    public Task<List<MenuItemFoodItemResultDto>> Read(MenuItemFoodItemQueryDto menuItemFoodItemQueryDto);
 
-    public List<MenuItemFoodItemResultDto> Read();
-
-    public int Delete(MenuItemFoodItemQueryDto menuIteFoodItemQuery);
+    public Task<int> Delete(MenuItemFoodItemQueryDto queryDto);
 }

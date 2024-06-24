@@ -1,17 +1,14 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.MenuItem;
 
 namespace Application.BusinessLogic.MenuItemLogic;
 
 public interface IMenuItem
 {
-    public int Insert(MenuItemQueryDto menuItemQuery);
+    public Task<int> Insert(MenuItemQueryDto menuItemQuery);
 
-    public int Update(int              id,
-                      MenuItemQueryDto menuItemQuery);
+    public Task<int> Update(MenuItemQueryDto menuItemQuery);
 
-    public MenuItemResultDto Read(int id);
+    public Task<List<MenuItemResultDto>> Read(MenuItemQueryDto menuItemQuery);
 
-    public List<MenuItemResultDto> Read();
-
-    public int Delete(int id);
+    public Task<int> Delete(int id);
 }

@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Type;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EntityFrameworkCore;
@@ -12,21 +12,21 @@ public class TypeImp(
                                        context,
                                        mapper), IType
 {
-    public int Insert(TypeQueryDto typeQuery)
+    public async Task<int> Insert(TypeQueryDto typeQuery)
     {
         _context.Type.Add(_mapper.Map<Type>(typeQuery));
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 
-    public int Update(TypeQueryDto typeQuery)
+    public async Task<int> Update(TypeQueryDto typeQuery)
     {
         _context.Type.Update(_mapper.Map<Type>(typeQuery));
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 
-    public List<TypeResultDto> Read(TypeQueryDto typeQuery)
+    public async Task<List<TypeResultDto>> Read(TypeQueryDto typeQuery)
     {
         return _context
                .Type.Where(
@@ -36,12 +36,12 @@ public class TypeImp(
                .ToList();
     }
 
-    public int Delete(int id)
+    public async Task<int> Delete(int id)
     {
         Type type = _context.Type.First(item => item.Id == id);
 
         _context.Type.Remove(type);
 
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 }
