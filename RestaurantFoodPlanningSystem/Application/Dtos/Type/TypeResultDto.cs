@@ -1,7 +1,8 @@
-﻿namespace Application.Dtos.Type;
-
-public class TypeResultDto
+﻿namespace Application.Dtos.Type
 {
-    public int   Id   { get; set; }
-    public String Name { get; set; }
+    public class TypeResultDto
+    {
+        public int    Id   { get; set; }
+        public String Name { get; set; }
+    }
 }

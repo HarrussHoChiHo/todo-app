@@ -1,8 +1,9 @@
-﻿namespace Application.Dtos.MenuItemFoodItem;
-
-public class MenuItemFoodItemQueryDto
+﻿namespace Application.Dtos.MenuItemFoodItem
 {
-    public int? MenuItem_Id { get; set; }
-    public int? FoodItem_Id { get; set; }
-    public int? Consumption { get; set; }
+    public class MenuItemFoodItemQueryDto
+    {
+        public int? MenuItem_Id { get; set; }
+        public int? FoodItem_Id { get; set; }
+        public int? Consumption { get; set; }
+    }
 }

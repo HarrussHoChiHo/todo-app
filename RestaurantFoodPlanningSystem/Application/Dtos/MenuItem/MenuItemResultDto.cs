@@ -1,7 +1,8 @@
-﻿namespace Application.Dtos.MenuItem;
-
-public class MenuItemResultDto
+﻿namespace Application.Dtos.MenuItem
 {
-    public int    Id   { get; set; }
-    public String Name { get; set; }
+    public class MenuItemResultDto
+    {
+        public int    Id   { get; set; }
+        public String Name { get; set; }
+    }
 }

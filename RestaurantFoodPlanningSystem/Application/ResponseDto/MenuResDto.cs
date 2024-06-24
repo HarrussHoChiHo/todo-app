@@ -1,6 +1,7 @@
-﻿namespace Application.ResponseDto;
-
-public class MenuResDto<T> : BasicDto<T>
+﻿namespace Application.ResponseDto
 {
+    public class MenuResDto<T> : BasicDto<T>
+    {
     
+    }
 }

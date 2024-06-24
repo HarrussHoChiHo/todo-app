@@ -1,7 +1,8 @@
-﻿namespace Application.Dtos.Order;
-
-public class OrderResultDto
+﻿namespace Application.Dtos.Order
 {
-    public int  Id         { get; set; }
-    public bool IsCanceled { get; set; }
+    public class OrderResultDto
+    {
+        public int  Id         { get; set; }
+        public bool IsCanceled { get; set; }
+    }
 }

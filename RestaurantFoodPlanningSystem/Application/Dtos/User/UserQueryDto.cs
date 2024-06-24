@@ -1,7 +1,8 @@
-﻿namespace Application.Dtos.User;
-
-public class UserQueryDto
+﻿namespace Application.Dtos.User
 {
-    public string Name     { get; set; }
-    public string Password { get; set; }
+    public class UserQueryDto
+    {
+        public string Name     { get; set; }
+        public string Password { get; set; }
+    }
 }

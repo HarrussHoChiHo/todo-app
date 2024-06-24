@@ -190,6 +190,36 @@ public class RFPSDbContext : IdentityDbContext<User, Role, int>
             .IsRequired()
             .HasColumnOrder(1);
 
+        modelBuilder
+            .Entity<Order>()
+            .Property(prop => prop.Id)
+            .IsRequired()
+            .HasColumnOrder(0);
+        
+        modelBuilder
+            .Entity<Order>()
+            .Property(prop => prop.IsCanceled)
+            .HasColumnOrder(1)
+            .HasDefaultValue(false);
+        
+        modelBuilder
+            .Entity<OrderItem>()
+            .Property(prop => prop.Id)
+            .IsRequired()
+            .HasColumnOrder(0);
+        
+        modelBuilder
+            .Entity<OrderItem>()
+            .Property(prop => prop.OrderId)
+            .IsRequired()
+            .HasColumnOrder(1);
+        
+        modelBuilder
+            .Entity<OrderItem>()
+            .Property(prop => prop.MenuItemId)
+            .IsRequired()
+            .HasColumnOrder(2);
+
         /* END: Define columns for each table */
 
         /* BEG: Define Unique Columns */

@@ -3,6 +3,7 @@ using Application.BusinessLogic.UserLogic;
 using Application.Dtos.User;
 using Application.ResponseDto;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestaurantFoodPlanningSystem.Services;
@@ -20,16 +21,27 @@ public class UserController(
     {
         try
         {
-            UserResultDto             dto      = await user.Validate(queryDto);
             UserResDto<UserResultDto> response = new UserResDto<UserResultDto>();
-            response.resultDto = dto;
+            
+            response.resultDto = await user.Validate(queryDto);
 
             if (response.resultDto != null)
             {
-                response.Token = tokenService.CreateToken(dto);
+                response.Token = tokenService.CreateToken(response.resultDto);
+                IdentityResult identityResult = await user.SaveToken(
+                                                                     response.resultDto.Id,
+                                                                     "Local",
+                                                                     "AccessToken",
+                                                                     response.Token);
+
+                if (identityResult != null)
+                {
+                    logger.LogError("Failed to save token.");
+                }
+                return HandlerResult(Result<UserResDto<UserResultDto>>.Success(response));
             }
 
-            return HandlerResult(Result<UserResDto<UserResultDto>>.Success(response));
+            return HandlerResult(Result<UserResDto<UserResultDto>>.Failure("Invalid Login Info"));
         }
         catch (Exception e)
         {
@@ -50,6 +62,7 @@ public class UserController(
             {
                 return HandlerResult(Result<int>.Success(result));
             }
+
             logger.LogError($"Insertion Failed: {JsonConvert.SerializeObject(result)}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }

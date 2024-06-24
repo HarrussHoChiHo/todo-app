@@ -1,8 +1,9 @@
-﻿namespace Application.Dtos.Menu;
-
-public class MenuQueryDto
+﻿namespace Application.Dtos.Menu
 {
-    public int?      Id          { get; set; }
-    public DateTime? Date        { get; set; }
-    public int?      MenuItem_Id { get; set; }
+    public class MenuQueryDto
+    {
+        public int?      Id          { get; set; }
+        public DateTime? Date        { get; set; }
+        public int?      MenuItem_Id { get; set; }
+    }
 }

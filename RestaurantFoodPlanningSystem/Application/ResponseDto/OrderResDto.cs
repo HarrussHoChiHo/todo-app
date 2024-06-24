@@ -1,6 +1,4 @@
-﻿namespace Application.ResponseDto;
-
-public class OrderResDto<T> : BasicDto<T>
+﻿namespace Application.ResponseDto
 {
-    
+    public class OrderResDto<T> : BasicDto<T>;
 }

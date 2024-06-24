@@ -565,14 +565,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await order.Insert(queryDto);
+            DbOperationResult<OrderResultDto> response = await order.Insert(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<OrderResultDto>>.Success(response));
             }
 
-            logger.LogError($"Order insertion failed: {result}");
+            logger.LogError($"Order insertion failed: {response}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
@@ -588,14 +588,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await order.Update(queryDto);
+            DbOperationResult<OrderResultDto> response = await order.Update(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<OrderResultDto>>.Success(response));
             }
 
-            logger.LogError($"Order insertion failed: {result}");
+            logger.LogError($"Order insertion failed: {response}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
@@ -611,11 +611,9 @@ public class DataManagementController(
     {
         try
         {
-            OrderResDto<List<OrderResultDto>> response =
-                new OrderResDto<List<OrderResultDto>>();
-            response.resultDto = await order.Read(queryDto);
+            DbOperationResult<List<OrderResultDto>> response = await order.Read(queryDto);
 
-            return HandlerResult(Result<OrderResDto<List<OrderResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<List<OrderResultDto>>>.Success(response));
         }
         catch (Exception e)
         {
@@ -630,9 +628,9 @@ public class DataManagementController(
     {
         try
         {
-            int result = await order.Delete(id);
+            DbOperationResult<OrderResultDto> result = await order.Delete(id);
 
-            return HandlerResult(Result<int>.Success(result));
+            return HandlerResult(Result<DbOperationResult<OrderResultDto>>.Success(result));
         }
         catch (Exception e)
         {
@@ -651,14 +649,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await orderItem.Insert(queryDto);
+            DbOperationResult<OrderItemResultDto> response = await orderItem.Insert(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<OrderItemResultDto>>.Success(response));
             }
 
-            logger.LogError($"OrderItem insertion failed: {result}");
+            logger.LogError($"OrderItem insertion failed: {response}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
@@ -674,14 +672,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await orderItem.Update(queryDto);
+            DbOperationResult<OrderItemResultDto> response = await orderItem.Update(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<OrderItemResultDto>>.Success(response));
             }
 
-            logger.LogError($"OrderItem insertion failed: {result}");
+            logger.LogError($"OrderItem update failed: {JsonConvert.SerializeObject(response)}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
@@ -697,11 +695,9 @@ public class DataManagementController(
     {
         try
         {
-            OrderItemResDto<List<OrderItemResultDto>> response =
-                new OrderItemResDto<List<OrderItemResultDto>>();
-            response.resultDto = await orderItem.Read(queryDto);
+            DbOperationResult<List<OrderItemResultDto>> response = await orderItem.Read(queryDto);
 
-            return HandlerResult(Result<OrderItemResDto<List<OrderItemResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<List<OrderItemResultDto>>>.Success(response));
         }
         catch (Exception e)
         {
@@ -716,9 +712,9 @@ public class DataManagementController(
     {
         try
         {
-            int result = await orderItem.Delete(id);
+            DbOperationResult<OrderItemResultDto> response = await orderItem.Delete(id);
 
-            return HandlerResult(Result<int>.Success(result));
+            return HandlerResult(Result<DbOperationResult<OrderItemResultDto>>.Success(response));
         }
         catch (Exception e)
         {
@@ -726,6 +722,6 @@ public class DataManagementController(
             return HandlerResult(Result<string>.Failure(e.Message));
         }
     }
-    
+
     #endregion
 }

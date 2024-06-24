@@ -1,14 +1,15 @@
 ﻿using Application.Dtos.OrderItem;
 
-namespace Application.BusinessLogic.OrderItemLogic;
-
-public interface IOrderItem
+namespace Application.BusinessLogic.OrderItemLogic
 {
-    public Task<int> Insert(OrderItemQueryDto orderItemQuery);
+    public interface IOrderItem
+    {
+        public Task<DbOperationResult<OrderItemResultDto>> Insert(OrderItemQueryDto orderItemQuery);
 
-    public Task<int> Update(OrderItemQueryDto orderItemQuery);
+        public Task<DbOperationResult<OrderItemResultDto>> Update(OrderItemQueryDto orderItemQuery);
 
-    public Task<List<OrderItemResultDto>> Read(OrderItemQueryDto orderItemQuery);
+        public Task<DbOperationResult<List<OrderItemResultDto>>> Read(OrderItemQueryDto orderItemQuery);
 
-    public Task<int> Delete(int id);
+        public Task<DbOperationResult<OrderItemResultDto>> Delete(int id);
+    }
 }

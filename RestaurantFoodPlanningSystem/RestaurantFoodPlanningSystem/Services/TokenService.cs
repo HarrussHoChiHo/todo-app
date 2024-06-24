@@ -64,7 +64,7 @@ public class TokenService
 
         SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor()
                                              {
-                                                 Issuer = _config["Issuer"],
+                                                 Issuer             = _config["Issuer"],
                                                  Subject            = new ClaimsIdentity(claims),
                                                  Expires            = DateTime.UtcNow.AddDays(7),
                                                  SigningCredentials = sc

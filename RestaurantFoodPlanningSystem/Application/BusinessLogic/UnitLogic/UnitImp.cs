@@ -4,44 +4,45 @@ using AutoMapper.QueryableExtensions;
 using Domain;
 using EntityFrameworkCore;
 
-namespace Application.BusinessLogic.UnitLogic;
-
-public class UnitImp(
-    RFPSDbContext context,
-    IMapper       mapper) : BasicLogic(
-                                         context,
-                                         mapper), IUnit
+namespace Application.BusinessLogic.UnitLogic
 {
-    public async Task<int> Insert(UnitQueryDto unitQuery)
+    public class UnitImp(
+        RFPSDbContext context,
+        IMapper       mapper) : BasicLogic(
+                                           context,
+                                           mapper), IUnit
     {
-        _context.Unit.Add(_mapper.Map<Unit>(unitQuery));
+        public async Task<int> Insert(UnitQueryDto unitQuery)
+        {
+            _context.Unit.Add(_mapper.Map<Unit>(unitQuery));
 
-        return await _context.SaveChangesAsync();
-    }
+            return await _context.SaveChangesAsync();
+        }
 
-    public async Task<int> Update(UnitQueryDto unitQuery)
-    {
-        _context.Unit.Update(_mapper.Map<Unit>(unitQuery));
+        public async Task<int> Update(UnitQueryDto unitQuery)
+        {
+            _context.Unit.Update(_mapper.Map<Unit>(unitQuery));
 
-        return await _context.SaveChangesAsync();
-    }
+            return await _context.SaveChangesAsync();
+        }
 
-    public async Task<List<UnitResultDto>> Read(UnitQueryDto unitQuery)
-    {
-        return _context
-               .Unit.Where(
-                           item => (item.Id   == unitQuery.Id   || unitQuery.Id   == null)
-                                && (item.Name == unitQuery.Name || unitQuery.Name == null))
-               .ProjectTo<UnitResultDto>(_mapper.ConfigurationProvider)
-               .ToList();
-    }
+        public async Task<List<UnitResultDto>> Read(UnitQueryDto unitQuery)
+        {
+            return _context
+                   .Unit.Where(
+                               item => (item.Id   == unitQuery.Id   || unitQuery.Id   == null)
+                                    && (item.Name == unitQuery.Name || unitQuery.Name == null))
+                   .ProjectTo<UnitResultDto>(_mapper.ConfigurationProvider)
+                   .ToList();
+        }
 
-    public async Task<int> Delete(int id)
-    {
-        Unit unit = _context.Unit.First(item => item.Id == id);
+        public async Task<int> Delete(int id)
+        {
+            Unit unit = _context.Unit.First(item => item.Id == id);
 
-        _context.Unit.Remove(unit);
+            _context.Unit.Remove(unit);
 
-        return await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
+        }
     }
 }

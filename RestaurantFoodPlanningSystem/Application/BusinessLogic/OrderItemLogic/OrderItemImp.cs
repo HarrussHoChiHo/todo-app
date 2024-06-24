@@ -4,44 +4,75 @@ using AutoMapper.QueryableExtensions;
 using Domain;
 using EntityFrameworkCore;
 
-namespace Application.BusinessLogic.OrderItemLogic;
-
-public class OrderItemImp(
-    RFPSDbContext context,
-    IMapper       mapper) : BasicLogic(
-                                       context,
-                                       mapper), IOrderItem
+namespace Application.BusinessLogic.OrderItemLogic
 {
-    public async Task<int> Insert(OrderItemQueryDto orderItemQuery)
+    public class OrderItemImp(
+        RFPSDbContext context,
+        IMapper       mapper) : BasicLogic(
+                                           context,
+                                           mapper), IOrderItem
     {
-        _context.OrderItem.Add(_mapper.Map<OrderItem>(orderItemQuery));
+        public async Task<DbOperationResult<OrderItemResultDto>> Insert(OrderItemQueryDto orderItemQuery)
+        {
+            DbOperationResult<OrderItemResultDto> result    = new DbOperationResult<OrderItemResultDto>();
+            OrderItem                             orderItem = _mapper.Map<OrderItem>(orderItemQuery);
+            
+            _context.OrderItem.Add(orderItem);
+            
+            result.amount    = await _context.SaveChangesAsync();
+            result.resultDto = _mapper.Map<OrderItemResultDto>(orderItem);
+            
+            return result;
+        }
 
-        return await _context.SaveChangesAsync();
-    }
+        public async Task<DbOperationResult<OrderItemResultDto>> Update(OrderItemQueryDto orderItemQuery)
+        {
+            DbOperationResult<OrderItemResultDto> result = new DbOperationResult<OrderItemResultDto>();
+            OrderItem orderItem = _mapper.Map<OrderItem>(orderItemQuery);
+            
+            _context.OrderItem.Update(orderItem);
+            
+            result.amount    = await _context.SaveChangesAsync();
+            result.resultDto = _mapper.Map<OrderItemResultDto>(orderItem);
 
-    public async Task<int> Update(OrderItemQueryDto orderItemQuery)
-    {
-        _context.OrderItem.Update(_mapper.Map<OrderItem>(orderItemQuery));
+            return result;
+        }
 
-        return await _context.SaveChangesAsync();
-    }
+        public async Task<DbOperationResult<List<OrderItemResultDto>>> Read(OrderItemQueryDto orderItemQuery)
+        {
+            DbOperationResult<List<OrderItemResultDto>> result = new DbOperationResult<List<OrderItemResultDto>>();
 
-    public async Task<List<OrderItemResultDto>> Read(OrderItemQueryDto orderItemQuery)
-    {
-        return _context
-               .OrderItem.Where(
-                                orderItem =>
-                                    (orderItem.OrderId == orderItemQuery.OrderId || orderItemQuery.OrderId == null)
-                                 && (orderItem.MenuItemId      == orderItemQuery.MenuItemId
-                                  || orderItemQuery.MenuItemId == null))
-               .ProjectTo<OrderItemResultDto>(_mapper.ConfigurationProvider)
-               .ToList();
-    }
+            List<OrderItemResultDto> orderItemResultDtos = _context
+                                                           .OrderItem.Where(
+                                                                            orderItem =>
+                                                                                (orderItem.OrderId
+                                                                              == orderItemQuery.OrderId
+                                                                              || orderItemQuery.OrderId == null)
+                                                                             && (orderItem.MenuItemId
+                                                                              == orderItemQuery.MenuItemId
+                                                                              || orderItemQuery.MenuItemId == null))
+                                                           .ProjectTo<OrderItemResultDto>(_mapper.ConfigurationProvider)
+                                                           .ToList();
 
-    public async Task<int> Delete(int id)
-    {
-        _context.OrderItem.Remove(_context.OrderItem.Find(id));
+            result.amount    = orderItemResultDtos.Count;
+            result.resultDto = orderItemResultDtos;
 
-        return await _context.SaveChangesAsync();
+            return result;
+        }
+
+        public async Task<DbOperationResult<OrderItemResultDto>> Delete(int id)
+        {
+            DbOperationResult<OrderItemResultDto> result = new DbOperationResult<OrderItemResultDto>();
+
+            OrderItem orderItem = _context.OrderItem.Find(id);
+
+            _context.OrderItem.Remove(orderItem);
+
+            result.amount = await _context.SaveChangesAsync();
+
+            result.resultDto = _mapper.Map<OrderItemResultDto>(orderItem);
+
+            return result;
+        }
     }
 }

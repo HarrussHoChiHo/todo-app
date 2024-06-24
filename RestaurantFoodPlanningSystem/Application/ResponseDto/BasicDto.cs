@@ -1,6 +1,6 @@
 ﻿namespace Application.ResponseDto;
 
-public class BasicDto<T>
+public class BasicDto<T> : DbOperationResult<T>
 {
-    public T resultDto { get; set; }
+    public bool IsSuccess { get; set; }
 }

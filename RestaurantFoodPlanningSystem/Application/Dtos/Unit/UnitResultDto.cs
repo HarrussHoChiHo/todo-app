@@ -1,7 +1,8 @@
-﻿namespace Application.Dtos.Unit;
-
-public class UnitResultDto
+﻿namespace Application.Dtos.Unit
 {
-    public int    Id   { get; set; }
-    public String Name { get; set; }
+    public class UnitResultDto
+    {
+        public int    Id   { get; set; }
+        public String Name { get; set; }
+    }
 }
