@@ -4,12 +4,12 @@ namespace Application.BusinessLogic.MenuLogic
 {
     public interface IMenu
     {
-        public Task<int> Insert(MenuQueryDto menuQuery);
+        public Task<DbOperationResult<MenuResultDto>> Insert(MenuQueryDto menuQuery);
 
-        public Task<int> Update(MenuQueryDto menuQuery);
+        public Task<DbOperationResult<MenuResultDto>> Update(MenuQueryDto menuQuery);
 
-        public Task<List<MenuResultDto>> Read(MenuQueryDto menuQuery);
+        public Task<DbOperationResult<List<MenuResultDto>>> Read(MenuQueryDto menuQuery);
 
-        public Task<int> Delete(int id);
+        public Task<DbOperationResult<MenuResultDto>> Delete(int id);
     }
 }

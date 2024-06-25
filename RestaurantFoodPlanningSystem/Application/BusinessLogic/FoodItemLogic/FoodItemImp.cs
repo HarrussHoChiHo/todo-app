@@ -12,39 +12,67 @@ namespace Application.BusinessLogic.FoodItemLogic
                                            context,
                                            mapper), IFoodItem
     {
-        public async Task<int> Insert(FoodItemQueryDto foodItemQuery)
+        public async Task<DbOperationResult<FoodItemResultDto>> Insert(FoodItemQueryDto foodItemQuery)
         {
-            _context.FoodItem.Add(_mapper.Map<FoodItem>(foodItemQuery));
+            DbOperationResult<FoodItemResultDto> result   = new DbOperationResult<FoodItemResultDto>();
+            FoodItem                             foodItem = _mapper.Map<FoodItem>(foodItemQuery);
 
-            return await _context.SaveChangesAsync();
+            _context.FoodItem.Add(foodItem);
+
+            result.amount    = await _context.SaveChangesAsync();
+            result.resultDto = _mapper.Map<FoodItemResultDto>(foodItem);
+
+            return result;
         }
 
-        public async Task<int> Update(FoodItemQueryDto foodItemQuery)
+        public async Task<DbOperationResult<FoodItemResultDto>> Update(FoodItemQueryDto foodItemQuery)
         {
-            _context.FoodItem.Update(_mapper.Map<FoodItem>(foodItemQuery));
+            DbOperationResult<FoodItemResultDto> result   = new DbOperationResult<FoodItemResultDto>();
+            FoodItem                             foodItem = _mapper.Map<FoodItem>(foodItemQuery);
 
-            return await _context.SaveChangesAsync();
+            _context.FoodItem.Update(foodItem);
+
+            result.amount    = await _context.SaveChangesAsync();
+            result.resultDto = _mapper.Map<FoodItemResultDto>(foodItem);
+
+            return result;
         }
 
-        public async Task<List<FoodItemResultDto>> Read(FoodItemQueryDto foodItemQuery)
+        public async Task<DbOperationResult<List<FoodItemResultDto>>> Read(FoodItemQueryDto foodItemQuery)
         {
-            return _context.FoodItem.Where(
-                                           foodItem => (foodItem.Id   == foodItemQuery.Id   || foodItemQuery.Id   == null)
-                                                    && (foodItem.Name == foodItemQuery.Name || foodItemQuery.Name == null)
-                                                    && (foodItem.Quantity == foodItemQuery.Quantity || foodItemQuery.Quantity == null)
-                                                    && (foodItem.Type_Id == foodItemQuery.Type_Id || foodItemQuery.Type_Id == null)
-                                                    && (foodItem.Unit_Id == foodItemQuery.Unit_Id || foodItemQuery.Unit_Id == null))
-                           .ProjectTo<FoodItemResultDto>(_mapper.ConfigurationProvider)
-                           .ToList();
+            DbOperationResult<List<FoodItemResultDto>> result = new DbOperationResult<List<FoodItemResultDto>>();
+            
+            result.resultDto = _context
+                               .FoodItem.Where(
+                                               foodItem => (foodItem.Id == foodItemQuery.Id || foodItemQuery.Id == null)
+                                                        && (foodItem.Name      == foodItemQuery.Name
+                                                         || foodItemQuery.Name == null)
+                                                        && (foodItem.Quantity      == foodItemQuery.Quantity
+                                                         || foodItemQuery.Quantity == null)
+                                                        && (foodItem.Type_Id      == foodItemQuery.Type_Id
+                                                         || foodItemQuery.Type_Id == null)
+                                                        && (foodItem.Unit_Id      == foodItemQuery.Unit_Id
+                                                         || foodItemQuery.Unit_Id == null))
+                               .ProjectTo<FoodItemResultDto>(_mapper.ConfigurationProvider)
+                               .ToList();
+
+            result.amount = result.resultDto.Count;
+
+            return result;
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<DbOperationResult<FoodItemResultDto>> Delete(int id)
         {
-            FoodItem item = _context.FoodItem.First(item => item.Id == id);
+            DbOperationResult<FoodItemResultDto> result = new DbOperationResult<FoodItemResultDto>();
+            FoodItem                             foodItem   = _context.FoodItem.First(item => item.Id == id);
 
-            _context.FoodItem.Remove(item);
+            _context.FoodItem.Remove(foodItem);
 
-            return await _context.SaveChangesAsync();
+            result.amount = await _context.SaveChangesAsync();
+
+            result.resultDto = _mapper.Map<FoodItemResultDto>(foodItem);
+
+            return result;
         }
     }
 }

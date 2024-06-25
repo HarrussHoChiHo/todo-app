@@ -13,46 +13,65 @@ namespace Application.BusinessLogic.MenuItemLogic
                      context,
                      mapper), IMenuItem
     {
-        public async Task<int> Insert(MenuItemQueryDto menuItemQuery)
+        public async Task<DbOperationResult<MenuItemResultDto>> Insert(MenuItemQueryDto menuItemQuery)
         {
-            _context.MenuItem.Add(_mapper.Map<MenuItem>(menuItemQuery));
+            DbOperationResult<MenuItemResultDto> result = new DbOperationResult<MenuItemResultDto>();
 
-            return await _context.SaveChangesAsync();
+            MenuItem menuItem = _mapper.Map<MenuItem>(menuItemQuery);
+
+            _context.MenuItem.Add(menuItem);
+
+            result.amount    = await _context.SaveChangesAsync();
+            result.resultDto = _mapper.Map<MenuItemResultDto>(menuItem);
+
+            return result;
         }
 
-        public async Task<int> Update(MenuItemQueryDto menuItemQuery)
+        public async Task<DbOperationResult<MenuItemResultDto>> Update(MenuItemQueryDto menuItemQuery)
         {
+            DbOperationResult<MenuItemResultDto> result = new DbOperationResult<MenuItemResultDto>();
+
+            MenuItem menuItem = _mapper.Map<MenuItem>(menuItemQuery);
+
             _context.MenuItem.Update(_mapper.Map<MenuItem>(menuItemQuery));
 
-            return await _context.SaveChangesAsync();
+            result.amount = await _context.SaveChangesAsync();
+
+            result.resultDto = _mapper.Map<MenuItemResultDto>(menuItem);
+
+            return result;
         }
 
-        public async Task<List<MenuItemResultDto>> Read(MenuItemQueryDto menuItemQuery)
+        public async Task<DbOperationResult<List<MenuItemResultDto>>> Read(MenuItemQueryDto menuItemQuery)
         {
-            return _context
-                   .MenuItem.Where(
-                                   x =>
-                                       (x.Id             == menuItemQuery.Id
-                                     || menuItemQuery.Id == null)
-                                    || (x.Name             == menuItemQuery.Name
-                                     || menuItemQuery.Name == null)
-                                  )
-                   .ProjectTo<MenuItemResultDto>(_mapper.ConfigurationProvider)
-                   .ToList();
+            DbOperationResult<List<MenuItemResultDto>> result = new DbOperationResult<List<MenuItemResultDto>>();
+            
+            result.resultDto = _context
+                               .MenuItem.Where(
+                                               x =>
+                                                   (x.Id             == menuItemQuery.Id
+                                                 || menuItemQuery.Id == null)
+                                                || (x.Name             == menuItemQuery.Name
+                                                 || menuItemQuery.Name == null)
+                                              )
+                               .ProjectTo<MenuItemResultDto>(_mapper.ConfigurationProvider)
+                               .ToList();
+
+            return result;
         }
 
-        public async Task<List<MenuItemResultDto>> Read()
+        public async Task<DbOperationResult<MenuItemResultDto>> Delete(int id)
         {
-            return _context
-                   .MenuItem.ProjectTo<MenuItemResultDto>(_mapper.ConfigurationProvider)
-                   .ToList();
-        }
-
-        public async Task<int> Delete(int id)
-        {
-            MenuItem menuItem = await _context.MenuItem.FindAsync(id);
+            DbOperationResult<MenuItemResultDto> result   = new DbOperationResult<MenuItemResultDto>();
+            MenuItem                             menuItem = await _context.MenuItem.FindAsync(id);
+            
             _context.MenuItem.Remove(menuItem);
-            return await _context.SaveChangesAsync();
+            
+            result.amount = await _context.SaveChangesAsync();
+
+            result.resultDto = _mapper.Map<MenuItemResultDto>(menuItem);
+
+            return result;
         }
     }
 }

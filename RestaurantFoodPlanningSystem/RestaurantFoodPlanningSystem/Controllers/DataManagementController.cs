@@ -41,14 +41,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await unit.Insert(queryDto);
+            DbOperationResult<UnitResultDto> response = await unit.Insert(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<UnitResultDto>>.Success(response));
             }
 
-            logger.LogError($"Unit insertion failed: {result}");
+            logger.LogError($"Unit insertion failed: {response}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
@@ -64,14 +64,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await unit.Update(queryDto);
+            DbOperationResult<UnitResultDto> response = await unit.Update(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<UnitResultDto>>.Success(response));
             }
 
-            logger.LogError($"Unit update failed: {result}");
+            logger.LogError($"Unit update failed: {response}");
             return HandlerResult(Result<string>.Failure("Update Failed"));
         }
         catch (Exception e)
@@ -87,10 +87,9 @@ public class DataManagementController(
     {
         try
         {
-            UnitResDto<List<UnitResultDto>> response = new UnitResDto<List<UnitResultDto>>();
-            response.resultDto = await unit.Read(queryDto);
+            DbOperationResult<List<UnitResultDto>> response = await unit.Read(queryDto);
 
-            return HandlerResult(Result<UnitResDto<List<UnitResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<List<UnitResultDto>>>.Success(response));
         }
         catch (Exception e)
         {
@@ -105,14 +104,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await unit.Delete(id);
+            DbOperationResult<UnitResultDto> response = await unit.Delete(id);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<UnitResultDto>>.Success(response));
             }
 
-            logger.LogError($"Unit deletion failed: {result}");
+            logger.LogError($"Unit deletion failed: {response}");
             return HandlerResult(Result<string>.Failure("Deletion Failed"));
         }
         catch (Exception e)
@@ -132,14 +131,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await type.Insert(queryDto);
+            DbOperationResult<TypeResultDto> response = await type.Insert(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<TypeResultDto>>.Success(response));
             }
 
-            logger.LogError($"Type insertion failed: {result}");
+            logger.LogError($"Type insertion failed: {response}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
@@ -155,14 +154,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await type.Update(queryDto);
+            DbOperationResult<TypeResultDto> response = await type.Update(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<TypeResultDto>>.Success(response));
             }
 
-            logger.LogError($"Unit update failed: {result}");
+            logger.LogError($"Type update failed: {response}");
             return HandlerResult(Result<string>.Failure("Update Failed"));
         }
         catch (Exception e)
@@ -178,10 +177,9 @@ public class DataManagementController(
     {
         try
         {
-            TypeResDto<List<TypeResultDto>> response = new TypeResDto<List<TypeResultDto>>();
-            response.resultDto = await type.Read(queryDto);
-
-            return HandlerResult(Result<TypeResDto<List<TypeResultDto>>>.Success(response));
+             DbOperationResult<List<TypeResultDto>> response = await type.Read(queryDto);
+            
+            return HandlerResult(Result<DbOperationResult<List<TypeResultDto>>>.Success(response));
         }
         catch (Exception e)
         {
@@ -196,14 +194,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await type.Delete(id);
+            DbOperationResult<TypeResultDto> result = await type.Delete(id);
 
-            if (result > 0)
+            if (result.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<TypeResultDto>>.Success(result));
             }
 
-            logger.LogError($"Unit deletion failed: {result}");
+            logger.LogError($"Type deletion failed: {result}");
             return HandlerResult(Result<string>.Failure("Deletion Failed"));
         }
         catch (Exception e)
@@ -223,14 +221,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await foodItem.Insert(queryDto);
+            DbOperationResult<FoodItemResultDto> response = await foodItem.Insert(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<FoodItemResultDto>>.Success(response));
             }
 
-            logger.LogError($"FoodItem insertion failed: {result}");
+            logger.LogError($"FoodItem insertion failed: {response}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
@@ -246,15 +244,15 @@ public class DataManagementController(
     {
         try
         {
-            int result = await foodItem.Update(queryDto);
+            DbOperationResult<FoodItemResultDto> response = await foodItem.Update(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<FoodItemResultDto>>.Success(response));
             }
 
-            logger.LogError($"FoodItem insertion failed: {result}");
-            return HandlerResult(Result<string>.Failure("Insertion Failed"));
+            logger.LogError($"FoodItem update failed: {response}");
+            return HandlerResult(Result<string>.Failure("Update Failed"));
         }
         catch (Exception e)
         {
@@ -269,10 +267,9 @@ public class DataManagementController(
     {
         try
         {
-            FoodItemResDto<List<FoodItemResultDto>> response = new FoodItemResDto<List<FoodItemResultDto>>();
-            response.resultDto = await foodItem.Read(queryDto);
+            DbOperationResult<List<FoodItemResultDto>> response = await foodItem.Read(queryDto);
 
-            return HandlerResult(Result<FoodItemResDto<List<FoodItemResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<List<FoodItemResultDto>>>.Success(response));
         }
         catch (Exception e)
         {
@@ -287,9 +284,15 @@ public class DataManagementController(
     {
         try
         {
-            int result = await foodItem.Delete(id);
+            DbOperationResult<FoodItemResultDto> response = await foodItem.Delete(id);
+            
+            if (response.amount > 0)
+            {
+                return HandlerResult(Result<DbOperationResult<FoodItemResultDto>>.Success(response));
+            }
 
-            return HandlerResult(Result<int>.Success(result));
+            logger.LogError($"FoodItem update failed: {response}");
+            return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
         {
@@ -308,14 +311,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await menuItem.Insert(queryDto);
+            DbOperationResult<MenuItemResultDto> response = await menuItem.Insert(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<MenuItemResultDto>>.Success(response));
             }
 
-            logger.LogError($"FoodItem insertion failed: {result}");
+            logger.LogError($"MenuItem insertion failed: {response}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
@@ -331,14 +334,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await menuItem.Update(queryDto);
+            DbOperationResult<MenuItemResultDto> response = await menuItem.Update(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<MenuItemResultDto>>.Success(response));
             }
 
-            logger.LogError($"FoodItem insertion failed: {result}");
+            logger.LogError($"MenuItem update failed: {response}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
@@ -354,10 +357,9 @@ public class DataManagementController(
     {
         try
         {
-            MenuItemResDto<List<MenuItemResultDto>> response = new MenuItemResDto<List<MenuItemResultDto>>();
-            response.resultDto = await menuItem.Read(queryDto);
+             DbOperationResult<List<MenuItemResultDto>> response = await menuItem.Read(queryDto);
 
-            return HandlerResult(Result<MenuItemResDto<List<MenuItemResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<List<MenuItemResultDto>>>.Success(response));
         }
         catch (Exception e)
         {
@@ -372,9 +374,15 @@ public class DataManagementController(
     {
         try
         {
-            int result = await foodItem.Delete(id);
+            DbOperationResult<MenuItemResultDto> response = await menuItem.Delete(id);
 
-            return HandlerResult(Result<int>.Success(result));
+            if (response.amount > 0)
+            {
+                return HandlerResult(Result<DbOperationResult<MenuItemResultDto>>.Success(response));
+            }
+
+            logger.LogError($"MenuItem delete failed: {response}");
+            return HandlerResult(Result<string>.Failure("Delete Failed"));
         }
         catch (Exception e)
         {
@@ -393,14 +401,14 @@ public class DataManagementController(
     {
         try
         {
-            int result = await menu.Insert(queryDto);
+             DbOperationResult<MenuResultDto> response = await menu.Insert(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<MenuResultDto>>.Success(response));
             }
 
-            logger.LogError($"Menu insertion failed: {result}");
+            logger.LogError($"Menu insertion failed: {response}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
@@ -416,15 +424,15 @@ public class DataManagementController(
     {
         try
         {
-            int result = await menu.Update(queryDto);
+            DbOperationResult<MenuResultDto> response = await menu.Update(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<MenuResultDto>>.Success(response));
             }
 
-            logger.LogError($"Menu insertion failed: {result}");
-            return HandlerResult(Result<string>.Failure("Insertion Failed"));
+            logger.LogError($"Menu update failed: {response}");
+            return HandlerResult(Result<string>.Failure("Update Failed"));
         }
         catch (Exception e)
         {
@@ -439,11 +447,9 @@ public class DataManagementController(
     {
         try
         {
-            logger.LogDebug(queryDto.Date.ToString());
-            MenuResDto<List<MenuResultDto>> response = new MenuResDto<List<MenuResultDto>>();
-            response.resultDto = await menu.Read(queryDto);
+            DbOperationResult<List<MenuResultDto>> response = await menu.Read(queryDto);
 
-            return HandlerResult(Result<MenuResDto<List<MenuResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<List<MenuResultDto>>>.Success(response));
         }
         catch (Exception e)
         {
@@ -458,9 +464,15 @@ public class DataManagementController(
     {
         try
         {
-            int result = await menu.Delete(id);
+            DbOperationResult<MenuResultDto> response = await menu.Delete(id);
 
-            return HandlerResult(Result<int>.Success(result));
+            if (response.amount > 0)
+            {
+                return HandlerResult(Result<DbOperationResult<MenuResultDto>>.Success(response));
+            }
+            
+            logger.LogError($"Menu delete failed: {response}");
+            return HandlerResult(Result<string>.Failure("Delete failed."));
         }
         catch (Exception e)
         {

@@ -1,3 +1,4 @@
+using System.Reflection;
 using Domain;
 using EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -45,6 +46,18 @@ builder.Services.AddSwaggerGen(
                                                                          }
                                                                      }
                                                                  });
+
+                                   /*
+                                   string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                                   
+                                   string xmlPath = Path.Combine(
+                                                              AppContext.BaseDirectory,
+                                                              xmlFile);
+                                   
+                                   option.IncludeXmlComments(xmlPath);
+                                   */
+                                   
+                                   option.SwaggerDoc("v1", new OpenApiInfo{ Title = "Restaurant Food Planning System", Version = "v1"});
                                });
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));

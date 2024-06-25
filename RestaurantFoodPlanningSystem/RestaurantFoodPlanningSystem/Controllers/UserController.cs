@@ -15,6 +15,11 @@ public class UserController(
     TokenService            tokenService,
     ILogger<UserController> logger) : BaseApiController
 {
+    /// <summary>
+    /// Send login information to validate
+    /// </summary>
+    /// <param name="queryDto">The object containing username and password.</param>
+    /// <returns name="ActionResult">Http Response with object "UserResultDto"</returns>
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserQueryDto queryDto)
@@ -22,7 +27,7 @@ public class UserController(
         try
         {
             UserResDto<UserResultDto> response = new UserResDto<UserResultDto>();
-            
+
             response.resultDto = await user.Validate(queryDto);
 
             if (response.resultDto != null)
@@ -38,6 +43,7 @@ public class UserController(
                 {
                     logger.LogError("Failed to save token.");
                 }
+
                 return HandlerResult(Result<UserResDto<UserResultDto>>.Success(response));
             }
 
@@ -50,20 +56,25 @@ public class UserController(
         }
     }
 
+    /// <summary>
+    /// Send user information to do registration
+    /// </summary>
+    /// <param name="queryDto">The object containing username and password.</param>
+    /// <returns name="ActionResult">Http Response with object "UserResultDto"</returns>
     [AllowAnonymous]
     [HttpPost("Register")]
     public async Task<IActionResult> Register(UserQueryDto queryDto)
     {
         try
         {
-            int result = await user.Insert(queryDto);
+            DbOperationResult<UserResultDto> response = await user.Insert(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<UserResultDto>>.Success(response));
             }
 
-            logger.LogError($"Insertion Failed: {JsonConvert.SerializeObject(result)}");
+            logger.LogError($"Insertion Failed: {JsonConvert.SerializeObject(response)}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
@@ -73,15 +84,26 @@ public class UserController(
         }
     }
 
+    /// <summary>
+    /// Get user information by user's id
+    /// </summary>
+    /// <param name="id">The integer id of a user</param>
+    /// <returns name="ActionResult">Http Response with object "UserResultDto"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCurrentUser(int id)
     {
         try
         {
-            UserResultDto dto = await user.Read(id);
+            DbOperationResult<UserResultDto> response = await user.Read(id);
 
-            return HandlerResult(Result<UserResultDto>.Success(dto));
+            if (response.amount > 0)
+            {
+                return HandlerResult(Result<DbOperationResult<UserResultDto>>.Success(response));
+            }
+
+            logger.LogError($"User retrieval failed: {response}");
+            return HandlerResult(Result<string>.Failure("Read Failed"));
         }
         catch (Exception e)
         {
@@ -90,15 +112,19 @@ public class UserController(
         }
     }
 
+    /// <summary>
+    /// Get user information by user's id
+    /// </summary>
+    /// <returns name="ActionResult">Http Response with list of objects "UserResultDto"</returns>
     [Authorize("ManagerOnly")]
     [HttpGet]
     public async Task<IActionResult> GetAllUser()
     {
         try
         {
-            List<UserResultDto> response = await user.Read();
+            DbOperationResult<List<UserResultDto>> response = await user.Read();
 
-            return HandlerResult(Result<List<UserResultDto>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<List<UserResultDto>>>.Success(response));
         }
         catch (Exception e)
         {

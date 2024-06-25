@@ -12,37 +12,64 @@ namespace Application.BusinessLogic.UnitLogic
                                            context,
                                            mapper), IUnit
     {
-        public async Task<int> Insert(UnitQueryDto unitQuery)
+        public async Task<DbOperationResult<UnitResultDto>> Insert(UnitQueryDto unitQuery)
         {
-            _context.Unit.Add(_mapper.Map<Unit>(unitQuery));
+            DbOperationResult<UnitResultDto> result = new DbOperationResult<UnitResultDto>();
 
-            return await _context.SaveChangesAsync();
+            Unit unit = _mapper.Map<Unit>(unitQuery);
+
+            _context.Unit.Add(unit);
+
+            result.amount = await _context.SaveChangesAsync();
+
+            result.resultDto = _mapper.Map<UnitResultDto>(unit);
+
+            return result;
         }
 
-        public async Task<int> Update(UnitQueryDto unitQuery)
+        public async Task<DbOperationResult<UnitResultDto>> Update(UnitQueryDto unitQuery)
         {
-            _context.Unit.Update(_mapper.Map<Unit>(unitQuery));
+            DbOperationResult<UnitResultDto> result = new DbOperationResult<UnitResultDto>();
 
-            return await _context.SaveChangesAsync();
+            Unit unit = _mapper.Map<Unit>(unitQuery);
+
+            _context.Unit.Update(unit);
+
+            result.amount = await _context.SaveChangesAsync();
+
+            result.resultDto = _mapper.Map<UnitResultDto>(unit);
+
+            return result;
         }
 
-        public async Task<List<UnitResultDto>> Read(UnitQueryDto unitQuery)
+        public async Task<DbOperationResult<List<UnitResultDto>>> Read(UnitQueryDto unitQuery)
         {
-            return _context
-                   .Unit.Where(
-                               item => (item.Id   == unitQuery.Id   || unitQuery.Id   == null)
-                                    && (item.Name == unitQuery.Name || unitQuery.Name == null))
-                   .ProjectTo<UnitResultDto>(_mapper.ConfigurationProvider)
-                   .ToList();
+            DbOperationResult<List<UnitResultDto>> result = new DbOperationResult<List<UnitResultDto>>();
+            
+            result.resultDto = _context
+                               .Unit.Where(
+                                           item => (item.Id   == unitQuery.Id   || unitQuery.Id   == null)
+                                                && (item.Name == unitQuery.Name || unitQuery.Name == null))
+                               .ProjectTo<UnitResultDto>(_mapper.ConfigurationProvider)
+                               .ToList();
+
+            result.amount = result.resultDto.Count;
+
+            return result;
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<DbOperationResult<UnitResultDto>> Delete(int id)
         {
-            Unit unit = _context.Unit.First(item => item.Id == id);
+            DbOperationResult<UnitResultDto> result = new DbOperationResult<UnitResultDto>();
+            Unit                             unit   = _context.Unit.First(item => item.Id == id);
 
             _context.Unit.Remove(unit);
 
-            return await _context.SaveChangesAsync();
+            result.amount = await _context.SaveChangesAsync();
+
+            result.resultDto = _mapper.Map<UnitResultDto>(unit);
+
+            return result;
         }
     }
 }

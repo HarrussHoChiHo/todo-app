@@ -12,37 +12,64 @@ namespace Application.BusinessLogic.TypeLogic
                                            context,
                                            mapper), IType
     {
-        public async Task<int> Insert(TypeQueryDto typeQuery)
+        public async Task<DbOperationResult<TypeResultDto>> Insert(TypeQueryDto typeQuery)
         {
-            _context.Type.Add(_mapper.Map<Type>(typeQuery));
+            DbOperationResult<TypeResultDto> result = new DbOperationResult<TypeResultDto>();
 
-            return await _context.SaveChangesAsync();
+            Type type = _mapper.Map<Type>(typeQuery);
+
+            _context.Type.Add(type);
+
+            result.amount = await _context.SaveChangesAsync();
+
+            result.resultDto = _mapper.Map<TypeResultDto>(type);
+
+            return result;
         }
 
-        public async Task<int> Update(TypeQueryDto typeQuery)
+        public async Task<DbOperationResult<TypeResultDto>> Update(TypeQueryDto typeQuery)
         {
-            _context.Type.Update(_mapper.Map<Type>(typeQuery));
+            DbOperationResult<TypeResultDto> result = new DbOperationResult<TypeResultDto>();
 
-            return await _context.SaveChangesAsync();
+            Type type = _mapper.Map<Type>(typeQuery);
+
+            _context.Type.Update(type);
+
+            result.amount = await _context.SaveChangesAsync();
+
+            result.resultDto = _mapper.Map<TypeResultDto>(type);
+
+            return result;
         }
 
-        public async Task<List<TypeResultDto>> Read(TypeQueryDto typeQuery)
+        public async Task<DbOperationResult<List<TypeResultDto>>> Read(TypeQueryDto typeQuery)
         {
-            return _context
-                   .Type.Where(
-                               item => (item.Id   == typeQuery.Id   || typeQuery.Id   == null)
-                                    && (item.Name == typeQuery.Name || typeQuery.Name == null))
-                   .ProjectTo<TypeResultDto>(_mapper.ConfigurationProvider)
-                   .ToList();
+            DbOperationResult<List<TypeResultDto>> result = new DbOperationResult<List<TypeResultDto>>();
+
+            result.resultDto = _context
+                               .Type.Where(
+                                           item => (item.Id   == typeQuery.Id   || typeQuery.Id   == null)
+                                                && (item.Name == typeQuery.Name || typeQuery.Name == null))
+                               .ProjectTo<TypeResultDto>(_mapper.ConfigurationProvider)
+                               .ToList();
+
+            result.amount = result.resultDto.Count;
+
+            return result;
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<DbOperationResult<TypeResultDto>> Delete(int id)
         {
-            Type type = _context.Type.First(item => item.Id == id);
+            DbOperationResult<TypeResultDto> result = new DbOperationResult<TypeResultDto>();
+            Type                             type   = _context.Type.First(item => item.Id == id);
 
             _context.Type.Remove(type);
 
-            return await _context.SaveChangesAsync();
+            result.amount = await _context.SaveChangesAsync();
+
+            result.resultDto = _mapper.Map<TypeResultDto>(type);
+
+            return result;
         }
     }
 }

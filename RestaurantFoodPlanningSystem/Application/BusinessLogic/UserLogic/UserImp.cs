@@ -1,10 +1,8 @@
 ﻿using Application.Dtos.User;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using EntityFrameworkCore;
 using Domain;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.BusinessLogic.UserLogic
 {
@@ -16,30 +14,48 @@ namespace Application.BusinessLogic.UserLogic
                      context,
                      mapper), IUser
     {
-        public async Task<int> Insert(UserQueryDto userQuery)
+        public async Task<DbOperationResult<UserResultDto>> Insert(UserQueryDto userQuery)
         {
-            _context.Users.Add(_mapper.Map<User>(userQuery));
+            DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
 
-            return await _context.SaveChangesAsync();
+            User user = _mapper.Map<User>(userQuery);
+
+            _context.Users.Add(user);
+
+            result.amount = await _context.SaveChangesAsync();
+
+            result.resultDto = _mapper.Map<UserResultDto>(user);
+
+            return result;
+        }
+        
+
+        public async Task<DbOperationResult<UserResultDto>> Update(UserQueryDto userQuery)
+        {
+            DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
+
+            User user = _mapper.Map<User>(userQuery);
+
+            _context.Users.Update(user);
+
+            result.amount = await _context.SaveChangesAsync();
+
+            result.resultDto = _mapper.Map<UserResultDto>(user);
+
+            return result;
         }
 
-        public async Task<int> Update(int          id,
-                                      UserQueryDto userQuery)
+        public async Task<DbOperationResult<UserResultDto>> Read(int id)
         {
-            User userEnt = _mapper.Map<User>(userQuery);
-            userEnt.Id = id;
+            DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
 
-            _context.Users.Update(userEnt);
+            User? user = _context.Users.Find(id);
 
-            return await _context.SaveChangesAsync();
-        }
+            result.resultDto = _mapper.Map<UserResultDto>(user);
 
-        public async Task<UserResultDto> Read(int id)
-        {
-            User?         user = _context.Users.Find(id);
-            UserResultDto dto  = _mapper.Map<UserResultDto>(user);
-            dto.Role = await userManager.GetRolesAsync(user);
-            return dto;
+            result.resultDto.Role = await userManager.GetRolesAsync(user);
+
+            return result;
         }
 
         public async Task<UserResultDto> Validate(UserQueryDto userQuery)
@@ -54,33 +70,44 @@ namespace Application.BusinessLogic.UserLogic
             return dto;
         }
 
-        public async Task<List<UserResultDto>> Read()
+        public async Task<DbOperationResult<List<UserResultDto>>> Read()
         {
-            List<UserResultDto> userResults = new List<UserResultDto>();
-            List<User>          users       = userManager.Users.ToList();
-            UserResultDto       dto;
+            DbOperationResult<List<UserResultDto>> result = new DbOperationResult<List<UserResultDto>>();
+            List<User> users = userManager
+                               .Users
+                               .ToList();
+
+            result.resultDto = new List<UserResultDto>();
+
+            UserResultDto dto;
             users.ForEach(
                           user =>
                           {
                               dto = _mapper.Map<UserResultDto>(user);
                               dto.Role = userManager.GetRolesAsync(user)
                                                     .Result;
-                              userResults.Add(dto);
+                              result.resultDto.Add(dto);
                           });
-            return userResults;
+            return result;
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<DbOperationResult<UserResultDto>> Delete(int id)
         {
+            DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
+            
             User user = _context
                         .Users.First(user => user.Id == id);
 
             _context.Users.Remove(user);
 
-            return await _context.SaveChangesAsync();
+            result.amount = await _context.SaveChangesAsync();
+
+            result.resultDto = _mapper.Map<UserResultDto>(user);
+
+            return result;
         }
 
-        public async Task<IdentityResult> SaveToken(int userId,
+        public async Task<IdentityResult> SaveToken(int    userId,
                                                     string loginProvider,
                                                     string name,
                                                     string token)
@@ -96,7 +123,7 @@ namespace Application.BusinessLogic.UserLogic
                                                                        Name          = name,
                                                                        Value         = token
                                                                    };
-                
+
                 return await userManager.SetAuthenticationTokenAsync(
                                                                      user,
                                                                      loginProvider,

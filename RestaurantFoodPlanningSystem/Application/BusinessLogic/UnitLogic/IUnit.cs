@@ -4,12 +4,12 @@ namespace Application.BusinessLogic.UnitLogic
 {
     public interface IUnit
     {
-        public Task<int> Insert(UnitQueryDto unitQuery);
+        public Task<DbOperationResult<UnitResultDto>> Insert(UnitQueryDto unitQuery);
 
-        public Task<int> Update(UnitQueryDto unitQuery);
+        public Task<DbOperationResult<UnitResultDto>> Update(UnitQueryDto unitQuery);
 
-        public Task<List<UnitResultDto>> Read(UnitQueryDto unitQuery);
+        public Task<DbOperationResult<List<UnitResultDto>>> Read(UnitQueryDto unitQuery);
 
-        public Task<int> Delete(int id);
+        public Task<DbOperationResult<UnitResultDto>> Delete(int id);
     }
 }
