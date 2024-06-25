@@ -46,8 +46,7 @@ builder.Services.AddSwaggerGen(
                                                                          }
                                                                      }
                                                                  });
-
-                                   /*
+                                   
                                    string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                                    
                                    string xmlPath = Path.Combine(
@@ -55,7 +54,7 @@ builder.Services.AddSwaggerGen(
                                                               xmlFile);
                                    
                                    option.IncludeXmlComments(xmlPath);
-                                   */
+                                   
                                    
                                    option.SwaggerDoc("v1", new OpenApiInfo{ Title = "Restaurant Food Planning System", Version = "v1"});
                                });

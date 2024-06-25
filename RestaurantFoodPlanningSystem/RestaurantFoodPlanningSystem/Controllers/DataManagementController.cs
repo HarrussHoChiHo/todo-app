@@ -15,7 +15,6 @@ using Application.Dtos.Order;
 using Application.Dtos.OrderItem;
 using Application.Dtos.Type;
 using Application.Dtos.Unit;
-using Application.ResponseDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -35,9 +34,14 @@ public class DataManagementController(
 {
     #region Unit
 
+    /// <summary>
+    /// Insert a record into table "Unit"
+    /// </summary>
+    /// <param name="queryDto">This object contains the name of the unit</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("unit/creation")]
-    public async Task<IActionResult> CreateUnit(UnitQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<UnitResultDto>>>> CreateUnit(UnitQueryDto queryDto)
     {
         try
         {
@@ -58,9 +62,14 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Update a record in table "Unit"
+    /// </summary>
+    /// <param name="queryDto">This object contains the name required to be updated and the id of a unit</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("unit/update")]
-    public async Task<IActionResult> UpdateUnit(UnitQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<UnitResultDto>>>> UpdateUnit(UnitQueryDto queryDto)
     {
         try
         {
@@ -81,9 +90,14 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Retrieve records from table "Unit"
+    /// </summary>
+    /// <param name="queryDto">This object contains the name and id of a unit</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("unit/read")]
-    public async Task<IActionResult> ReadUnit(UnitQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<UnitResultDto>>>> ReadUnit(UnitQueryDto queryDto)
     {
         try
         {
@@ -98,9 +112,14 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Delete specific record in table "Unit"
+    /// </summary>
+    /// <param name="id">This id of a unit</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpDelete("unit/{id}")]
-    public async Task<IActionResult> DeleteUnit(int id)
+    public async Task<ActionResult<Result<DbOperationResult<UnitResultDto>>>> DeleteUnit(int id)
     {
         try
         {
@@ -125,9 +144,14 @@ public class DataManagementController(
 
     #region Type
 
+    /// <summary>
+    /// Insert a record into table "Type"
+    /// </summary>
+    /// <param name="queryDto">This object contains the name and id of a food category</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("type/creation")]
-    public async Task<IActionResult> CreateType(TypeQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<TypeResultDto>>>> CreateType(TypeQueryDto queryDto)
     {
         try
         {
@@ -148,9 +172,14 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Update a record in table "Type"
+    /// </summary>
+    /// <param name="queryDto">This object contains the name and id of a food category</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("type/update")]
-    public async Task<IActionResult> UpdateType(TypeQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<TypeResultDto>>>> UpdateType(TypeQueryDto queryDto)
     {
         try
         {
@@ -171,14 +200,19 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Retrieve records from table "Type"
+    /// </summary>
+    /// <param name="queryDto">This object contains the name and id of a food category</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("type/read")]
-    public async Task<IActionResult> ReadType(TypeQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<List<TypeResultDto>>>>> ReadType(TypeQueryDto queryDto)
     {
         try
         {
-             DbOperationResult<List<TypeResultDto>> response = await type.Read(queryDto);
-            
+            DbOperationResult<List<TypeResultDto>> response = await type.Read(queryDto);
+
             return HandlerResult(Result<DbOperationResult<List<TypeResultDto>>>.Success(response));
         }
         catch (Exception e)
@@ -188,9 +222,14 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Delete record in table "Type"
+    /// </summary>
+    /// <param name="id">This object contains the id of a food category</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpDelete("type/{id}")]
-    public async Task<IActionResult> DeleteType(int id)
+    public async Task<ActionResult<Result<DbOperationResult<TypeResultDto>>>> DeleteType(int id)
     {
         try
         {
@@ -215,9 +254,15 @@ public class DataManagementController(
 
     #region FoodItem
 
+    /// <summary>
+    /// Insert a record into table "FoodItem"
+    /// </summary>
+    /// <param name="queryDto">This object contains: id,  name, quantity, the id of type, and the id of unit</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("food-item/creation")]
-    public async Task<IActionResult> CreateFoodItem(FoodItemQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<FoodItemResultDto>>>> CreateFoodItem(
+        FoodItemQueryDto queryDto)
     {
         try
         {
@@ -238,9 +283,15 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Update a record in table "FoodItem"
+    /// </summary>
+    /// <param name="queryDto">This object contains: id,  name, quantity, the id of type, and the id of unit</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("food-item/update")]
-    public async Task<IActionResult> UpdateFoodItem(FoodItemQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<FoodItemResultDto>>>> UpdateFoodItem(
+        FoodItemQueryDto queryDto)
     {
         try
         {
@@ -261,9 +312,15 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Retrieve records from table "FoodItem"
+    /// </summary>
+    /// <param name="queryDto">This object contains: id,  name, quantity, the id of type, and the id of unit</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("food-item/read")]
-    public async Task<IActionResult> ReadFoodItem(FoodItemQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<List<FoodItemResultDto>>>>> ReadFoodItem(
+        FoodItemQueryDto queryDto)
     {
         try
         {
@@ -278,14 +335,19 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Delete record in table "FoodItem"
+    /// </summary>
+    /// <param name="id">the id of a food item</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpDelete("food-item/{id}")]
-    public async Task<IActionResult> DeleteFoodItem(int id)
+    public async Task<ActionResult<Result<DbOperationResult<FoodItemResultDto>>>> DeleteFoodItem(int id)
     {
         try
         {
             DbOperationResult<FoodItemResultDto> response = await foodItem.Delete(id);
-            
+
             if (response.amount > 0)
             {
                 return HandlerResult(Result<DbOperationResult<FoodItemResultDto>>.Success(response));
@@ -305,9 +367,15 @@ public class DataManagementController(
 
     #region MenuItem
 
+    /// <summary>
+    /// Insert a record into table "MenuItem"
+    /// </summary>
+    /// <param name="queryDto">This object contains the id and name of a menu item</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("menu-item/creation")]
-    public async Task<IActionResult> CreateMenuItem(MenuItemQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<MenuItemResultDto>>>> CreateMenuItem(
+        MenuItemQueryDto queryDto)
     {
         try
         {
@@ -328,9 +396,15 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Update a record in table "MenuItem"
+    /// </summary>
+    /// <param name="queryDto">This object contains the id and name of a menu item</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("menu-item/update")]
-    public async Task<IActionResult> UpdateMenuItem(MenuItemQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<MenuItemResultDto>>>> UpdateMenuItem(
+        MenuItemQueryDto queryDto)
     {
         try
         {
@@ -351,13 +425,19 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Retrieve records from table "MenuItem"
+    /// </summary>
+    /// <param name="queryDto">This object contains the id and name of a menu item</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("menu-item/read")]
-    public async Task<IActionResult> ReadMenuItem(MenuItemQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<List<MenuItemResultDto>>>>> ReadMenuItem(
+        MenuItemQueryDto queryDto)
     {
         try
         {
-             DbOperationResult<List<MenuItemResultDto>> response = await menuItem.Read(queryDto);
+            DbOperationResult<List<MenuItemResultDto>> response = await menuItem.Read(queryDto);
 
             return HandlerResult(Result<DbOperationResult<List<MenuItemResultDto>>>.Success(response));
         }
@@ -368,9 +448,14 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Delete a record in table "MenuItem"
+    /// </summary>
+    /// <param name="id">The id of a menu item</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpDelete("menu-item/{id}")]
-    public async Task<IActionResult> DeleteMenuItem(int id)
+    public async Task<ActionResult<Result<DbOperationResult<MenuItemResultDto>>>> DeleteMenuItem(int id)
     {
         try
         {
@@ -395,13 +480,18 @@ public class DataManagementController(
 
     #region Menu
 
+    /// <summary>
+    /// Insert a record into table "Menu"
+    /// </summary>
+    /// <param name="queryDto">This object contains: id, the date of a menu, the id of menu items</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("menu/creation")]
-    public async Task<IActionResult> CreateMenu(MenuQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<MenuResultDto>>>> CreateMenu(MenuQueryDto queryDto)
     {
         try
         {
-             DbOperationResult<MenuResultDto> response = await menu.Insert(queryDto);
+            DbOperationResult<MenuResultDto> response = await menu.Insert(queryDto);
 
             if (response.amount > 0)
             {
@@ -418,9 +508,14 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Update a record in table "Menu"
+    /// </summary>
+    /// <param name="queryDto">This object contains: id, the date of a menu, the id of menu items</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("menu/update")]
-    public async Task<IActionResult> UpdateMenu(MenuQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<MenuResultDto>>>> UpdateMenu(MenuQueryDto queryDto)
     {
         try
         {
@@ -441,9 +536,14 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Retrieve records from table "Menu"
+    /// </summary>
+    /// <param name="queryDto">This object contains: id, the date of a menu, the id of menu items</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("menu/read")]
-    public async Task<IActionResult> ReadMenu(MenuQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<List<MenuResultDto>>>>> ReadMenu(MenuQueryDto queryDto)
     {
         try
         {
@@ -458,6 +558,11 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Delete a record from table "Menu"
+    /// </summary>
+    /// <param name="id">the id of a menu</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpDelete("menu/{id}")]
     public async Task<IActionResult> DeleteMenu(int id)
@@ -470,7 +575,7 @@ public class DataManagementController(
             {
                 return HandlerResult(Result<DbOperationResult<MenuResultDto>>.Success(response));
             }
-            
+
             logger.LogError($"Menu delete failed: {response}");
             return HandlerResult(Result<string>.Failure("Delete failed."));
         }
@@ -485,20 +590,26 @@ public class DataManagementController(
 
     #region MenuItemFoodItem
 
+    /// <summary>
+    /// Insert a record into table "MenuItemFoodItem"
+    /// </summary>
+    /// <param name="queryDto">This object contains the id of a menu item, the id of a food item, and the consumption</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("menu-item-food-item/creation")]
-    public async Task<IActionResult> CreateMenuItemFoodItem(MenuItemFoodItemQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<MenuItemFoodItemResultDto>>>> CreateMenuItemFoodItem(
+        MenuItemFoodItemQueryDto queryDto)
     {
         try
         {
-            int result = await menuItemFoodItem.Insert(queryDto);
+            DbOperationResult<MenuItemFoodItemResultDto> response = await menuItemFoodItem.Insert(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<MenuItemFoodItemResultDto>>.Success(response));
             }
 
-            logger.LogError($"MenuItem insertion failed: {result}");
+            logger.LogError($"MenuItem insertion failed: {response}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
@@ -508,20 +619,26 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Update a record in table "MenuItemFoodItem"
+    /// </summary>
+    /// <param name="queryDto">This object contains the id of a menu item, the id of a food item, and the consumption</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("menu-item-food-item/update")]
-    public async Task<IActionResult> UpdateMenuItemFoodItem(MenuItemFoodItemQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<MenuItemFoodItemResultDto>>>> UpdateMenuItemFoodItem(
+        MenuItemFoodItemQueryDto queryDto)
     {
         try
         {
-            int result = await menuItemFoodItem.Update(queryDto);
+            DbOperationResult<MenuItemFoodItemResultDto> response = await menuItemFoodItem.Update(queryDto);
 
-            if (result > 0)
+            if (response.amount > 0)
             {
-                return HandlerResult(Result<int>.Success(result));
+                return HandlerResult(Result<DbOperationResult<MenuItemFoodItemResultDto>>.Success(response));
             }
 
-            logger.LogError($"MenuItem insertion failed: {result}");
+            logger.LogError($"MenuItem insertion failed: {response}");
             return HandlerResult(Result<string>.Failure("Insertion Failed"));
         }
         catch (Exception e)
@@ -531,17 +648,21 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Retrieve records from table "MenuItemFoodItem"
+    /// </summary>
+    /// <param name="queryDto">This object contains the id of a menu item, the id of a food item, and the consumption</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("menu-item-food-item/read")]
-    public async Task<IActionResult> ReadMenuItemFoodItem(MenuItemFoodItemQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<List<MenuItemFoodItemResultDto>>>>> ReadMenuItemFoodItem(
+        MenuItemFoodItemQueryDto queryDto)
     {
         try
         {
-            MenuItemFoodItemResDto<List<MenuItemFoodItemResultDto>> response =
-                new MenuItemFoodItemResDto<List<MenuItemFoodItemResultDto>>();
-            response.resultDto = await menuItemFoodItem.Read(queryDto);
+            DbOperationResult<List<MenuItemFoodItemResultDto>> response = await menuItemFoodItem.Read(queryDto);
 
-            return HandlerResult(Result<MenuItemFoodItemResDto<List<MenuItemFoodItemResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<List<MenuItemFoodItemResultDto>>>.Success(response));
         }
         catch (Exception e)
         {
@@ -550,15 +671,21 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Delete record in table "MenuItemFoodItem"
+    /// </summary>
+    /// <param name="queryDto">This object contains the id of a menu item, the id of a food item, and the consumption</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpDelete("menu-item-food-item")]
-    public async Task<IActionResult> DeleteMenuItemFoodItem(MenuItemFoodItemQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<List<MenuItemFoodItemResultDto>>>>> DeleteMenuItemFoodItem(
+        MenuItemFoodItemQueryDto queryDto)
     {
         try
         {
-            int result = await menuItemFoodItem.Delete(queryDto);
+            DbOperationResult<List<MenuItemFoodItemResultDto>> response = await menuItemFoodItem.Delete(queryDto);
 
-            return HandlerResult(Result<int>.Success(result));
+            return HandlerResult(Result<DbOperationResult<List<MenuItemFoodItemResultDto>>>.Success(response));
         }
         catch (Exception e)
         {
@@ -571,9 +698,14 @@ public class DataManagementController(
 
     #region Order
 
+    /// <summary>
+    /// Insert record into table "Order"
+    /// </summary>
+    /// <param name="queryDto">This object contains the id of an order and the flag of cancellation</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("order/creation")]
-    public async Task<IActionResult> CreateOrder(OrderQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<OrderResultDto>>>> CreateOrder(OrderQueryDto queryDto)
     {
         try
         {
@@ -594,9 +726,14 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Update record in table "Order"
+    /// </summary>
+    /// <param name="queryDto">This object contains the id of an order and the flag of cancellation</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("order/update")]
-    public async Task<IActionResult> UpdateOrder(OrderQueryDto queryDto)
+    public async Task<ActionResult<DbOperationResult<OrderResultDto>>> UpdateOrder(OrderQueryDto queryDto)
     {
         try
         {
@@ -617,6 +754,11 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Retrieve records from table "Order"
+    /// </summary>
+    /// <param name="queryDto">This object contains the id of an order and the flag of cancellation</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("order/read")]
     public async Task<IActionResult> ReadOrder(OrderQueryDto queryDto)
@@ -634,6 +776,11 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Delete a record from table "Order"
+    /// </summary>
+    /// <param name="id">The id of an order</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpDelete("order/{id}")]
     public async Task<IActionResult> DeleteOrder(int id)
@@ -655,9 +802,14 @@ public class DataManagementController(
 
     #region OrderItem
 
+    /// <summary>
+    /// Insert a record into table "OrderItem"
+    /// </summary>
+    /// <param name="queryDto">This object contains the id of an order item, the id of an order, and the id of a menu item</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("order-item/creation")]
-    public async Task<IActionResult> CreateOrder(OrderItemQueryDto queryDto)
+    public async Task<ActionResult<DbOperationResult<OrderItemResultDto>>> CreateOrder(OrderItemQueryDto queryDto)
     {
         try
         {
@@ -678,9 +830,14 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Update a record in table "OrderItem"
+    /// </summary>
+    /// <param name="queryDto">This object contains the id of an order item, the id of an order, and the id of a menu item</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("order-item/update")]
-    public async Task<IActionResult> UpdateOrder(OrderItemQueryDto queryDto)
+    public async Task<ActionResult<DbOperationResult<OrderItemResultDto>>> UpdateOrder(OrderItemQueryDto queryDto)
     {
         try
         {
@@ -701,9 +858,14 @@ public class DataManagementController(
         }
     }
 
+    /// <summary>
+    /// Retrieve records from table "OrderItem"
+    /// </summary>
+    /// <param name="queryDto">This object contains the id of an order item, the id of an order, and the id of a menu item</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("order-item/read")]
-    public async Task<IActionResult> ReadOrder(OrderItemQueryDto queryDto)
+    public async Task<ActionResult<DbOperationResult<List<OrderItemResultDto>>>> ReadOrder(OrderItemQueryDto queryDto)
     {
         try
         {
@@ -717,10 +879,15 @@ public class DataManagementController(
             return HandlerResult(Result<string>.Failure(e.Message));
         }
     }
-
+    
+    /// <summary>
+    /// Delete a record in table "OrderItem"
+    /// </summary>
+    /// <param name="id">The id of an order item</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpDelete("order-item/{id}")]
-    public async Task<IActionResult> DeleteOrderItem(int id)
+    public async Task<ActionResult<DbOperationResult<OrderItemResultDto>>> DeleteOrderItem(int id)
     {
         try
         {

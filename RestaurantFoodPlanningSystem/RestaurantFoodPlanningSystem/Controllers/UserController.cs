@@ -63,7 +63,7 @@ public class UserController(
     /// <returns name="ActionResult">Http Response with object "UserResultDto"</returns>
     [AllowAnonymous]
     [HttpPost("Register")]
-    public async Task<IActionResult> Register(UserQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<UserResultDto>>>> Register(UserQueryDto queryDto)
     {
         try
         {
@@ -85,13 +85,13 @@ public class UserController(
     }
 
     /// <summary>
-    /// Get user information by user's id
+    /// Get a specific user information by user's id
     /// </summary>
     /// <param name="id">The integer id of a user</param>
     /// <returns name="ActionResult">Http Response with object "UserResultDto"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetCurrentUser(int id)
+    public async Task<ActionResult<Result<DbOperationResult<UserResultDto>>>> GetCurrentUser(int id)
     {
         try
         {
@@ -113,12 +113,12 @@ public class UserController(
     }
 
     /// <summary>
-    /// Get user information by user's id
+    /// Get all user information
     /// </summary>
     /// <returns name="ActionResult">Http Response with list of objects "UserResultDto"</returns>
     [Authorize("ManagerOnly")]
     [HttpGet]
-    public async Task<IActionResult> GetAllUser()
+    public async Task<ActionResult<Result<DbOperationResult<List<UserResultDto>>>>> GetAllUser()
     {
         try
         {

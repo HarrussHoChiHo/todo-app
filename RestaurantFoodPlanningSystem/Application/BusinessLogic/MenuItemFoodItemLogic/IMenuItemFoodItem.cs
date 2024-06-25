@@ -4,12 +4,12 @@ namespace Application.BusinessLogic.MenuItemFoodItemLogic
 {
     public interface IMenuItemFoodItem
     {
-        public Task<int> Insert(MenuItemFoodItemQueryDto menuIteFoodItemQuery);
+        public Task<DbOperationResult<MenuItemFoodItemResultDto>> Insert(MenuItemFoodItemQueryDto menuIteFoodItemQuery);
 
-        public Task<int> Update(MenuItemFoodItemQueryDto menuIteFoodItemQuery);
+        public Task<DbOperationResult<MenuItemFoodItemResultDto>> Update(MenuItemFoodItemQueryDto menuIteFoodItemQuery);
 
-        public Task<List<MenuItemFoodItemResultDto>> Read(MenuItemFoodItemQueryDto menuItemFoodItemQueryDto);
+        public Task<DbOperationResult<List<MenuItemFoodItemResultDto>>> Read(MenuItemFoodItemQueryDto menuItemFoodItemQueryDto);
 
-        public Task<int> Delete(MenuItemFoodItemQueryDto queryDto);
+        public Task<DbOperationResult<List<MenuItemFoodItemResultDto>>> Delete(MenuItemFoodItemQueryDto queryDto);
     }
 }

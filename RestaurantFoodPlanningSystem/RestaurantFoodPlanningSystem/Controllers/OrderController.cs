@@ -15,9 +15,15 @@ public class OrderController(
     IOrderItem               orderItem,
     ILogger<OrderController> logger) : BaseApiController
 {
+    
+    /// <summary>
+    /// Place an order
+    /// </summary>
+    /// <param name="OrderPlacementQueryDto">This object contains the object "OrderQueryDto" and a list of "OrderItemQueryDto"</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "StaffAndManager")]
     [HttpPost("place-order")]
-    public async Task<IActionResult> PlaceOrder(OrderPlacementQueryDto queryDto)
+    public async Task<ActionResult<Result<OrderPlacementResDto>>> PlaceOrder(OrderPlacementQueryDto queryDto)
     {
         try
         {
@@ -44,9 +50,14 @@ public class OrderController(
         }
     }
     
+    /// <summary>
+    /// Cancel an order
+    /// </summary>
+    /// <param name="id">This is the id of a specific order</param>
+    /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "StaffAndManager")]
     [HttpGet("cancel-order/{id}")]
-    public async Task<IActionResult> CancelOrder(int id)
+    public async Task<ActionResult<Result<DbOperationResult<OrderResultDto>>>> CancelOrder(int id)
     {
         try
         {
