@@ -14,33 +14,44 @@ namespace Application.BusinessLogic.UserLogic
                      context,
                      mapper), IUser
     {
-        public async Task<DbOperationResult<UserResultDto>> Insert(UserQueryDto userQuery)
+        public async Task<DbOperationResult<UserResultDto>> Insert(UserBasicDto basicDto)
         {
             DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
 
-            User user = _mapper.Map<User>(userQuery);
+            User user = _mapper.Map<User>(basicDto);
 
-            _context.Users.Add(user);
+            IdentityResult createResult = await userManager.CreateAsync(user);
 
-            result.amount = await _context.SaveChangesAsync();
+            if (!createResult.Succeeded)
+            {
+                throw new Exception(createResult.ToString());
+            }
+
+            result.amount = 1;
 
             result.resultDto = _mapper.Map<UserResultDto>(user);
+
+            result.resultDto.Role = await userManager.GetRolesAsync(user);
 
             return result;
         }
-        
 
-        public async Task<DbOperationResult<UserResultDto>> Update(UserQueryDto userQuery)
+        public async Task<DbOperationResult<UserResultDto>> Update(UserFullDto fullDto)
         {
             DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
 
-            User user = _mapper.Map<User>(userQuery);
+            User user = _mapper.Map<User>(fullDto);
 
-            _context.Users.Update(user);
+            IdentityResult updateUserResult = await userManager.UpdateAsync(user);
 
-            result.amount = await _context.SaveChangesAsync();
+            if (!updateUserResult.Succeeded)
+            {
+                throw new Exception(updateUserResult.ToString());
+            }
 
             result.resultDto = _mapper.Map<UserResultDto>(user);
+
+            result.resultDto.Role = await userManager.GetRolesAsync(user);
 
             return result;
         }
@@ -55,16 +66,23 @@ namespace Application.BusinessLogic.UserLogic
 
             result.resultDto.Role = await userManager.GetRolesAsync(user);
 
+            if (user != null)
+            {
+                result.amount = 1;
+            }
+
             return result;
         }
 
-        public async Task<UserResultDto> Validate(UserQueryDto userQuery)
+        public async Task<UserResultDto> Validate(UserBasicDto basicDto)
         {
             User? user = _context.Users.FirstOrDefault(
-                                                       x => x.UserName == userQuery.Name
+                                                       x => x.UserName == basicDto.Name
                                                          && x.PasswordHash
-                                                         == userQuery.Password);
+                                                         == basicDto.Password);
+
             UserResultDto dto = _mapper.Map<UserResultDto>(user);
+
             dto.Role = await userManager.GetRolesAsync(user);
 
             return dto;
@@ -94,7 +112,7 @@ namespace Application.BusinessLogic.UserLogic
         public async Task<DbOperationResult<UserResultDto>> Delete(int id)
         {
             DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
-            
+
             User user = _context
                         .Users.First(user => user.Id == id);
 
@@ -114,24 +132,59 @@ namespace Application.BusinessLogic.UserLogic
         {
             User user = await userManager.FindByIdAsync(userId.ToString());
 
-            if (user != null)
-            {
-                IdentityUserToken<string> identityUserTokentoken = new IdentityUserToken<string>()
-                                                                   {
-                                                                       UserId        = userId.ToString(),
-                                                                       LoginProvider = loginProvider,
-                                                                       Name          = name,
-                                                                       Value         = token
-                                                                   };
+            return await userManager.SetAuthenticationTokenAsync(
+                                                                 user,
+                                                                 loginProvider,
+                                                                 name,
+                                                                 token);
+        }
 
-                return await userManager.SetAuthenticationTokenAsync(
-                                                                     user,
-                                                                     loginProvider,
-                                                                     name,
-                                                                     token);
+        public async Task<DbOperationResult<UserResultDto>> AssignRole(int    userId,
+                                                                       string roleName)
+        {
+            DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
+
+
+            User user = await userManager.FindByIdAsync(userId.ToString());
+
+            IdentityResult addRoleResult = await userManager.AddToRoleAsync(
+                                                                      user,
+                                                                      roleName);
+
+            if (!addRoleResult.Succeeded)
+            {
+                throw new Exception(addRoleResult.ToString());
             }
 
-            return null;
+            result.resultDto      = _mapper.Map<UserResultDto>(user);
+            result.resultDto.Role = await userManager.GetRolesAsync(user);
+            result.amount         = 1;
+
+            return result;
         }
+
+        public async Task<DbOperationResult<UserResultDto>> RemoveRole(int    userId,
+                                                                       string roleName)
+        {
+            DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
+
+
+            User user = await userManager.FindByIdAsync(userId.ToString());
+
+            IdentityResult removeRoleResult = await userManager.RemoveFromRoleAsync(
+                                                                            user,
+                                                                            roleName);
+
+            if (!removeRoleResult.Succeeded)
+            {
+                throw new Exception(removeRoleResult.ToString());
+            }
+
+            result.resultDto      = _mapper.Map<UserResultDto>(user);
+            result.resultDto.Role = await userManager.GetRolesAsync(user);
+            result.amount         = 1;
+
+            return result;
+        } 
     }
 }

@@ -5,6 +5,7 @@ using Application.BusinessLogic.MenuItemLogic;
 using Application.BusinessLogic.MenuLogic;
 using Application.BusinessLogic.OrderItemLogic;
 using Application.BusinessLogic.OrderLogic;
+using Application.BusinessLogic.RoleLogic;
 using Application.BusinessLogic.TypeLogic;
 using Application.BusinessLogic.UnitLogic;
 using Application.BusinessLogic.UserLogic;
@@ -100,6 +101,7 @@ public static class ApplicationServiceExtensions
         services.AddTransient<IType, TypeImp>();
         services.AddTransient<IUnit, UnitImp>();
         services.AddTransient<IUser, UserImp>();
+        services.AddTransient<IRole, RoleImp>();
         services.AddTransient<IOrder, OrderImp>();
         services.AddTransient<IOrderItem, OrderItemImp>();
         services.AddScoped<TokenService>();

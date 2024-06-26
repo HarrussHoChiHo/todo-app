@@ -45,16 +45,33 @@ namespace Application.BusinessLogic.MenuLogic
         public async Task<DbOperationResult<List<MenuResultDto>>> Read(MenuQueryDto menuQuery)
         {
             DbOperationResult<List<MenuResultDto>> result = new DbOperationResult<List<MenuResultDto>>();
-            result.resultDto = _context
-                               .Menu.Where(
-                                           menu => (menu.Id == menuQuery.Id || menuQuery.Id == null)
-                                                && (menu.Date      == menuQuery.Date
-                                                 || menuQuery.Date == null)
-                                                && (menu.MenuItem_Id      == menuQuery.MenuItem_Id
-                                                 || menuQuery.MenuItem_Id == null)
-                                          )
-                               .ProjectTo<MenuResultDto>(_mapper.ConfigurationProvider)
-                               .ToList();
+            if (menuQuery.Date != null)
+            {
+                result.resultDto = _context
+                                   .Menu.Where(
+                                               menu => (menu.Id == menuQuery.Id || menuQuery.Id == null)
+                                                    && ((menu.Date.Day   == menuQuery.Date.Value.Day
+                                                      && menu.Date.Month == menuQuery.Date.Value.Month
+                                                      && menu.Date.Year  == menuQuery.Date.Value.Year)
+                                                     || menuQuery.Date == null)
+                                                    && (menu.MenuItem_Id      == menuQuery.MenuItem_Id
+                                                     || menuQuery.MenuItem_Id == null)
+                                              )
+                                   .ProjectTo<MenuResultDto>(_mapper.ConfigurationProvider)
+                                   .ToList();
+            }
+            else
+            {
+                result.resultDto = _context
+                                   .Menu.Where(
+                                               menu => (menu.Id == menuQuery.Id || menuQuery.Id == null)
+                                                    && (menu.MenuItem_Id      == menuQuery.MenuItem_Id
+                                                     || menuQuery.MenuItem_Id == null)
+                                              )
+                                   .ProjectTo<MenuResultDto>(_mapper.ConfigurationProvider)
+                                   .ToList();
+            }
+
 
             result.amount = result.resultDto.Count;
 

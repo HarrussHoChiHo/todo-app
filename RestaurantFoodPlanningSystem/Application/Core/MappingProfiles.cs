@@ -4,6 +4,7 @@ using Application.Dtos.MenuItem;
 using Application.Dtos.MenuItemFoodItem;
 using Application.Dtos.Order;
 using Application.Dtos.OrderItem;
+using Application.Dtos.Role;
 using Application.Dtos.Type;
 using Application.Dtos.Unit;
 using Application.Dtos.User;
@@ -18,6 +19,7 @@ namespace Application.Core
         public MappingProfiles()
         {
             UserMapper();
+            RoleMapper();
             UnitMapper();
             TypeMapper();
             MenuMapper();
@@ -30,7 +32,18 @@ namespace Application.Core
 
         private void UserMapper()
         {
-            CreateMap<UserQueryDto, User>()
+            CreateMap<UserBasicDto, User>()
+                .ForMember(
+                           user => user.UserName,
+                           userDto => userDto.MapFrom(o => o.Name))
+                .ForMember(
+                           user => user.PasswordHash,
+                           userDto => userDto.MapFrom(o => o.Password));
+
+            CreateMap<UserFullDto, User>()
+                .ForMember(
+                           user => user.Id,
+                           fullDto => fullDto.MapFrom(o => o.Id))
                 .ForMember(
                            user => user.UserName,
                            userDto => userDto.MapFrom(o => o.Name))
@@ -45,6 +58,56 @@ namespace Application.Core
                 .ForMember(
                            user => user.Id,
                            result => result.MapFrom(o => o.Id));
+        }
+
+        private void RoleMapper()
+        {
+            CreateMap<RoleBasicDto, Role>()
+                .ForMember(
+                           role => role.Name,
+                           basicDto => basicDto.MapFrom(o => o.Name))
+                .ForMember(
+                           role => role.Description,
+                           basicDto => basicDto.MapFrom(o => o.Description));
+
+            CreateMap<RoleFullDto, Role>()
+                .ForMember(
+                           role => role.Id,
+                           fullDto => fullDto.MapFrom(o => o.Id))
+                .ForMember(
+                           role => role.Name,
+                           fullDto => fullDto.MapFrom(o => o.Name))
+                .ForMember(
+                           role => role.Description,
+                           fullDto => fullDto.MapFrom(o => o.Description));
+
+            CreateMap<RoleQueryDto, Role>()
+                .ForMember(
+                           role => role.Id,
+                           queryDto => queryDto.MapFrom(o => o.Id))
+                .ForMember(
+                           role => role.Name,
+                           queryDto => queryDto.MapFrom(o => o.Name))
+                .ForMember(
+                           role => role.Description,
+                           queryDto => queryDto.MapFrom(o => o.Description))
+                .ForMember(
+                           role => role.CreatedDate,
+                           queryDto => queryDto.MapFrom(o => o.CreatedDate));
+
+            CreateMap<Role, RoleResultDto>()
+                .ForMember(
+                           resultDto => resultDto.Id,
+                           role => role.MapFrom(o => o.Id))
+                .ForMember(
+                           resultDto => resultDto.Name,
+                           role => role.MapFrom(o => o.Name))
+                .ForMember(
+                           resultDto => resultDto.Description,
+                           role => role.MapFrom(o => o.Description))
+                .ForMember(
+                           resultDto => resultDto.CreatedDate,
+                           role => role.MapFrom(o => o.CreatedDate));
         }
 
         private void UnitMapper()

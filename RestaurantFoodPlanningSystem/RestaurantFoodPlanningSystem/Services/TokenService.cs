@@ -33,7 +33,7 @@ public class TokenService
                                            user.Id.ToString()),
                                  new Claim(
                                            ClaimTypes.Role,
-                                           user.Role.First()),
+                                           string.Join(",", user.Role)),
                                  new Claim(
                                            JwtRegisteredClaimNames.Sub,
                                            user.UserName),

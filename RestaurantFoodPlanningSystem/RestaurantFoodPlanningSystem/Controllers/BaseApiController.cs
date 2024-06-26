@@ -14,7 +14,7 @@ public class BaseApiController: ControllerBase
         Console.WriteLine(JsonConvert.SerializeObject(result));
         if (result == null)
         {
-            return NotFound();
+            return NotFound(result);
         }
 
         if (result.IsSuccess && result.Value != null)
@@ -22,11 +22,11 @@ public class BaseApiController: ControllerBase
             return Ok(result);
         } else if (result.IsSuccess && result.Value == null)
         {
-            return NotFound();
+            return NotFound(result);
         }
         else
         {
-            return BadRequest();
+            return BadRequest(result);
         }
     }
 }

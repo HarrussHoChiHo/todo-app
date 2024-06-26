@@ -1,5 +1,7 @@
 ﻿using Application;
+using Application.BusinessLogic.RoleLogic;
 using Application.BusinessLogic.UserLogic;
+using Application.Dtos.Role;
 using Application.Dtos.User;
 using Application.ResponseDto;
 using Microsoft.AspNetCore.Authorization;
@@ -12,23 +14,24 @@ namespace RestaurantFoodPlanningSystem.Controllers;
 
 public class UserController(
     IUser                   user,
+    IRole                   role,
     TokenService            tokenService,
     ILogger<UserController> logger) : BaseApiController
 {
     /// <summary>
     /// Send login information to validate
     /// </summary>
-    /// <param name="queryDto">The object containing username and password.</param>
+    /// <param name="basicDto">The object containing username and password.</param>
     /// <returns name="ActionResult">Http Response with object "UserResultDto"</returns>
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<IActionResult> Login(UserQueryDto queryDto)
+    public async Task<ActionResult<Result<UserResDto<UserResultDto>>>> Login(UserBasicDto basicDto)
     {
         try
         {
             UserResDto<UserResultDto> response = new UserResDto<UserResultDto>();
 
-            response.resultDto = await user.Validate(queryDto);
+            response.resultDto = await user.Validate(basicDto);
 
             if (response.resultDto != null)
             {
@@ -39,9 +42,10 @@ public class UserController(
                                                                      "AccessToken",
                                                                      response.Token);
 
-                if (identityResult != null)
+                if (!identityResult.Succeeded)
                 {
                     logger.LogError("Failed to save token.");
+                    return HandlerResult(Result<string>.Failure(JsonConvert.SerializeObject(identityResult.Errors)));
                 }
 
                 return HandlerResult(Result<UserResDto<UserResultDto>>.Success(response));
@@ -59,15 +63,15 @@ public class UserController(
     /// <summary>
     /// Send user information to do registration
     /// </summary>
-    /// <param name="queryDto">The object containing username and password.</param>
+    /// <param name="basicDto">The object containing username and password.</param>
     /// <returns name="ActionResult">Http Response with object "UserResultDto"</returns>
     [AllowAnonymous]
     [HttpPost("Register")]
-    public async Task<ActionResult<Result<DbOperationResult<UserResultDto>>>> Register(UserQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<UserResultDto>>>> Register(UserBasicDto basicDto)
     {
         try
         {
-            DbOperationResult<UserResultDto> response = await user.Insert(queryDto);
+            DbOperationResult<UserResultDto> response = await user.Insert(basicDto);
 
             if (response.amount > 0)
             {
@@ -125,6 +129,109 @@ public class UserController(
             DbOperationResult<List<UserResultDto>> response = await user.Read();
 
             return HandlerResult(Result<DbOperationResult<List<UserResultDto>>>.Success(response));
+        }
+        catch (Exception e)
+        {
+            logger.LogError(JsonConvert.SerializeObject(e));
+            return HandlerResult(Result<string>.Failure(e.Message));
+        }
+    }
+
+    /// <summary>
+    /// Delete a user from table "User"
+    /// </summary>
+    /// <returns name="ActionResult">Http Response with list of objects "UserResultDto"</returns>
+    [Authorize("ManagerOnly")]
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<Result<DbOperationResult<List<UserResultDto>>>>> DeleteUser(int id)
+    {
+        try
+        {
+            DbOperationResult<UserResultDto> response = await user.Delete(id);
+
+            if (response.amount > 0)
+            {
+                return HandlerResult(Result<DbOperationResult<UserResultDto>>.Success(response));
+            }
+
+            logger.LogDebug($"Delete Failed: {JsonConvert.SerializeObject(response)}");
+            return HandlerResult(Result<string>.Failure("Delete Failed."));
+        }
+        catch (Exception e)
+        {
+            logger.LogError(JsonConvert.SerializeObject(e));
+            return HandlerResult(Result<string>.Failure(e.Message));
+        }
+    }
+
+    /// <summary>
+    /// Assign User to a Role
+    /// </summary>
+    /// <returns name="ActionResult">Http Response with list of objects "UserResultDto"</returns>
+    [Authorize("ManagerOnly")]
+    [HttpPost("assign-role")]
+    public async Task<ActionResult<Result<DbOperationResult<List<UserResultDto>>>>> AssignRole(int userId,
+                                                                                               int roleId)
+    {
+        try
+        {
+            DbOperationResult<UserResultDto> response = new DbOperationResult<UserResultDto>();
+            DbOperationResult<List<RoleResultDto>> roleResult = await role.Read(
+                                                                                new RoleQueryDto()
+                                                                                {
+                                                                                    Id = roleId
+                                                                                });
+
+            if (roleResult.amount > 0)
+            {
+                response = await user.AssignRole(
+                                                 userId,
+                                                 roleResult.resultDto.First()
+                                                           .Name);
+
+                return HandlerResult(Result<DbOperationResult<UserResultDto>>.Success(response));
+            }
+
+            logger.LogDebug($"Assign Role Failed: {JsonConvert.SerializeObject(response)}");
+            return HandlerResult(Result<string>.Failure("Assign Role Failed."));
+        }
+        catch (Exception e)
+        {
+            logger.LogError(JsonConvert.SerializeObject(e));
+            return HandlerResult(Result<string>.Failure(e.Message));
+        }
+    }
+
+    /// <summary>
+    /// Remove a Role from a user
+    /// </summary>
+    /// <returns name="ActionResult">Http Response with list of objects "UserResultDto"</returns>
+    [Authorize("ManagerOnly")]
+    [HttpPost("remove-role")]
+    public async Task<ActionResult<Result<DbOperationResult<List<UserResultDto>>>>> RemoveRole(int userId,
+                                                                                               int roleId)
+    {
+        try
+        {
+            DbOperationResult<UserResultDto> response = new DbOperationResult<UserResultDto>();
+            DbOperationResult<List<RoleResultDto>> roleResult = await role.Read(
+                                                                                new RoleQueryDto()
+                                                                                {
+                                                                                    Id = roleId
+                                                                                });
+
+            if (roleResult.amount > 0)
+            {
+                response = await user.RemoveRole(
+                                                 userId,
+                                                 roleResult.resultDto.First()
+                                                           .Name);
+
+                return HandlerResult(Result<DbOperationResult<UserResultDto>>.Success(response));
+            }
+
+            logger.LogDebug($"Remove Role Failed: {JsonConvert.SerializeObject(response)}");
+            return HandlerResult(Result<string>.Failure("Remove Role Failed."));
         }
         catch (Exception e)
         {
