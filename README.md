@@ -59,138 +59,131 @@ Restaurant Food Planning System
       
 ## API Endpoints
 ### User
-   1. POST /api/User/login
-      - Request Body
-        
-        ```JSON
-        {
-          "name": "<string>",
-          "password": "<string>"
-        }
-        ```
-       
-   2. POST /api/User/register
-      - Request Body
-        
-        ```JSON
-        {
-          "name": "<string>",
-          "password": "<string>"
-        }
-        ```
-       
-  3. GET /api/User/{id}
+<table>
+ <thead>
+  <th>Method</th>
+  <th>Route</th>
+  <th>Request Body</th>
+  <th>Path Variable</th>
+ </thead>
+ <tbody>
+  <tr>
+   <td>GET</td>
+   <td>/api/User/{id}</td>
+   <td>None</td>
+   <td>id : integer</td>
+  </tr>
+  <tr>
+   <td>GET</td>
+   <td>/api/User</td>
+   <td>None</td>
+   <td>None</td>
+  </tr>
+  <tr>
+   <td>POST</td>
+   <td>/api/User/login</td>
+   <td> <pre>{<br/>  "name": "&lt;string&gt;",<br/>  "password": "&lt;string&gt;"<br/>}</pre> </td>
+   <td>None</td>
+  </tr>
+  <tr>
+   <td>POST</td>
+   <td>/api/User/register</td>
+   <td> <pre>{<br/>  "name": "&lt;string&gt;",<br/>  "password": "&lt;string&gt;"<br/>}</pre> </td>
+   <td>None</td>
+  </tr>
+  <tr>
+   <td>POST</td>
+   <td>/api/User/assign-role/{userId}/{roleId}</td>
+   <td>None</td>
+   <td><pre>userId : integer,<br/>roleId : integer</pre></td>
+  </tr>
+  <tr>
+   <td>POST</td>
+   <td>/api/User/remove-role/{userId}/{roleId}</td>
+   <td>None</td>
+   <td><pre>userId : integer,<br/>roleId : integer</pre></td>
+  </tr>
+  <tr>
+   <td>DELETE</td>
+   <td>/api/User/{id}</td>
+   <td>None</td>
+   <td><pre>id : integer</pre></td>
+  </tr>
+ </tbody>
+</table>
 
-     - Path Variables
 
-        ```
-        id : integer
-        ```
-  
-  5. DELETE /api/User/{id}
-
-     - Path Variables
-
-       ```
-       id : integer
-       ```
-     
-  6. GET /api/User
-  
-  7. POST /api/User/assign-role/{userId}/{roleId}
-
-     - Path Variables
-
-       ```
-       userId : integer
-       roleId : integer
-       ```
-  
-  
-  8. POST /api/User/remove-role/{userId}/{roleId}
-
-     - Path Variables
-
-       ```
-       userId : integer
-       roleId : integer
-       ```
 
 ### Role
-   1. POST /api/Role/creation
-      - Request Body
-        
-        ```JSON
-         {
-           "name": "<string>",
-           "description": "<string>"
-         }
-        ```
-   
-   2. DELETE /api/Role/{id}
-
-      - Path Variables
-
-        ```
-        id : integer
-        ```
-   
-   4. POST /api/Role/read
-      - Request Body
-        
-        ```JSON
-        {
-          "name": "<string>",
-          "description": "<string>",
-          "id": "<integer>",
-          "createdDate": "<dateTime>"
-        }
-        ```
-      
-   5. POST /api/Role/update
-      - Request Body
-        
-        ```JSON
-        {
-          "name": "<string>",
-          "description": "<string>",
-          "id": "<integer>"
-        }
-        ```
+<table>
+ <thead>
+  <th>Method</th>
+  <th>Route</th>
+  <th>Request Body</th>
+  <th>Path Variable</th>
+ </thead>
+ <tbody>
+  <tr>
+   <td>POST</td>
+   <td>/api/Role/creation</td>
+   <td><pre>{<br/>  "name": "&lt;string&gt;",<br/>  "description": "&lt;string&gt;"<br/>}</pre></td>
+   <td>None</td>
+  </tr>
+  <tr>
+   <td>DELETE</td>
+   <td>/api/Role/{id}</td>
+   <td>None</td>
+   <td><pre>id : integer</pre></td>
+  </tr>
+  <tr>
+   <td>POST</td>
+   <td>/api/Role/read</td>
+   <td><pre>{<br/>  "name": "&lt;string&gt;",<br/>  "description": "&lt;string&gt;",<br/>  "id": "&lt;integer&gt;",<br/>  "createdDate": "&lt;dateTime&gt;"<br/>}</pre></td>
+   <td>None</td>
+  </tr>
+  <tr>
+   <td>POST</td>
+   <td>/api/Role/update</td>
+   <td><pre>{<br/>  "name": "&lt;string&gt;",<br/>  "description": "&lt;string&gt;",<br/>  "id": "&lt;integer&gt;"<br/>}</pre></td>
+   <td>None</td>
+  </tr>
+ </tbody>
+</table>
 
 ### Order
-   1. GET /api/Order/cancel-order/{id}
-
-      - Path Variables
-
-        ```
-        id : integer
-        ```
-
-      
-   2. POST /api/Order/place-order
-      - Request Body
-        
-        ```JSON
-        {
-          "order": {
-            "id": "<integer>",
-            "isCanceled": "<boolean>"
-          },
-          "orderItems": [
-            {
-              "id": "<integer>",
-              "orderId": "<integer>",
-              "menuItemId": "<integer>"
-            },
-            {
-              "id": "<integer>",
-              "orderId": "<integer>",
-              "menuItemId": "<integer>"
-            }
-          ]
-        }
-        ```
+   <table>
+ <thead>
+  <th>Method</th>
+  <th>Route</th>
+  <th>Request Body</th>
+  <th>Path Variable</th>
+ </thead>
+ <tbody>
+  <tr>
+   <td>GET</td>
+   <td>/api/Order/cancel-order/{id}</td>
+   <td><pre>{
+  "order": {
+    "id": "<integer>",
+    "isCanceled": "<boolean>"
+   },
+   "orderItems": [
+     {
+         "id": "<integer>",
+         "orderId": "<integer>",
+         "menuItemId": "<integer>"
+      },
+      {
+         "id": "<integer>",
+         "orderId": "<integer>",
+         "menuItemId": "<integer>"
+      }
+   ]
+}</pre></td>
+   <td><pre>None</pre></td>
+  </tr>
+ </tbody>
+</table>
 
 ### DataManagement
    1. Unit
