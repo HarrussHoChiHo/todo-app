@@ -170,19 +170,19 @@ Restaurant Food Planning System
    <td>/api/Order/place-order</td>
    <td><pre>{
   "order": {
-    "id": "<integer>",
-    "isCanceled": "<boolean>"
+    "id": "&lt;integer&gt;",
+    "isCanceled": "&lt;boolean&gt;"
    },
    "orderItems": [
      {
-         "id": "<integer>",
-         "orderId": "<integer>",
-         "menuItemId": "<integer>"
+         "id": "&lt;integer&gt;",
+         "orderId": "&lt;integer&gt;",
+         "menuItemId": "&lt;integer&gt;"
       },
       {
-         "id": "<integer>",
-         "orderId": "<integer>",
-         "menuItemId": "<integer>"
+         "id": "&lt;integer&gt;",
+         "orderId": "&lt;integer&gt;",
+         "menuItemId": "&lt;integer&gt;"
       }
    ]
 }</pre></td>
@@ -193,363 +193,296 @@ Restaurant Food Planning System
 
 ### DataManagement
    1. Unit
-      - POST api/DataManagement/unit/creation
+   <table>
+   <thead>
+     <th>Method</th>
+     <th>Route</th>
+     <th>Request Body</th>
+     <th>Path Variable</th>
+    </thead>
+    <tbody>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/unit/creation</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "name": "&lt;string&gt;"}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/unit/update</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "name": "&lt;string&gt;"}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/unit/read</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "name": "&lt;string&gt;"}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>DELETE</td>
+   	  <td>api/DataManagement/unit/{id}</td>
+   	  <td><pre>None</pre></td>
+   	  <td><pre>id : integer</pre></td>
+   	</tr>
+   </tbody>
+   </table>
 
-        - Request Body
-          
-          ```JSON
-          {
-            "id": "<integer>",
-            "name": "<string>"
-          }
-          ```
-
-      - POST api/DataManagement/unit/update
-
-        - Request Body
-          
-          ```JSON
-          {
-            "id": "<integer>",
-            "name": "<string>"
-          }
-          ```
-
-      - POST api/DataManagement/unit/read
-
-        - Request Body
-          
-          ```JSON
-          {
-            "id": "<integer>",
-            "name": "<string>"
-          }
-          ```
-
-      - DELETE api/DataManagement/unit/{id}
-
-        - Path Variables
-
-           ```
-           id : integer
-           ```
-        
    2. Type
-
-      -  POST api/DataManagement/type/creation
-
-         - Request Body
-
-           ```JSON
-           {
-             "id": "<integer>",
-             "name": "<string>"
-           }
-           ```
-      - POST api/DataManagement/type/update
-
-        - Request Body
-       
-          ```
-          {
-            "id": "<integer>",
-            "name": "<string>"
-          }
-          ```
-
-      - POST api/DataManagement/type/read
-
-        - Request Body
-       
-          ```
-          {
-            "id": "<integer>",
-            "name": "<string>"
-          }
-          ```
-
-      - DELETE api/DataManagement/type/{id}
-
-        - Path Variables
-
-          ```
-          id : integer
-          ```
+   <table>
+   <thead>
+     <th>Method</th>
+     <th>Route</th>
+     <th>Request Body</th>
+     <th>Path Variable</th>
+    </thead>
+    <tbody>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/type/creation</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "name": "&lt;string&gt;"}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/type/update</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "name": "&lt;string&gt;"}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/type/read</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "name": "&lt;string&gt;"}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>DELETE</td>
+   	  <td>api/DataManagement/type/{id}</td>
+   	  <td><pre>None</pre></td>
+   	  <td><pre>id : integer</pre></td>
+   	</tr>
+   </tbody>
+   </table>
           
    4. FoodItem
 
-      - POST api/DataManagement/food-item/creation
-
-        - Request Body
-
-          ```
-          {
-            "id": "<integer>",
-            "name": "<string>",
-            "quantity": "<integer>",
-            "unit_Id": "<integer>",
-            "type_Id": "<integer>"
-          }
-          ```
-
-      - POST api/DataManagement/food-item/update
-
-        - Request Body
-
-          ```
-          {
-            "id": "<integer>",
-            "name": "<string>",
-            "quantity": "<integer>",
-            "unit_Id": "<integer>",
-            "type_Id": "<integer>"
-          }
-          ```
-
-      - POST api/DataManagement/food-item/read
-
-        -  Request Body
-       
-           ```
-           {
-             "id": "<integer>",
-             "name": "<string>",
-             "quantity": "<integer>",
-             "unit_Id": "<integer>",
-             "type_Id": "<integer>"
-           }
-           ```
-
-      - DELETE api/DataManagement/food-item/{id}
-
-        - Path Variables
-
-          ```
-          id : integer
-          ```
-        
+   <table>
+     <thead>
+       <th>Method</th>
+       <th>Route</th>
+       <th>Request Body</th>
+       <th>Path Variable</th>
+      </thead>
+      <tbody>
+     	<tr>
+     	  <td>POST</td>
+     	  <td>api/DataManagement/food-item/creation</td>
+     	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "name": "&lt;string&gt;" ,<br/>  "quantity": "&lt;string&gt;",<br/>  "unit_Id": "&lt;string&gt;",<br/>  "type_Id": "&lt;string&gt;"}</pre></td>
+     	  <td><pre>None</pre></td>
+     	</tr>
+     	<tr>
+     	  <td>POST</td>
+     	  <td>api/DataManagement/food-item/update</td>
+     	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "name": "&lt;string&gt;" ,<br/>  "quantity": "&lt;string&gt;",<br/>  "unit_Id": "&lt;string&gt;",<br/>  "type_Id": "&lt;string&gt;"}</pre></td>
+     	  <td><pre>None</pre></td>
+     	</tr>
+     	<tr>
+     	  <td>POST</td>
+     	  <td>api/DataManagement/food-item/read</td>
+     	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "name": "&lt;string&gt;" ,<br/>  "quantity": "&lt;string&gt;",<br/>  "unit_Id": "&lt;string&gt;",<br/>  "type_Id": "&lt;string&gt;"}</pre></td>
+     	  <td><pre>None</pre></td>
+     	</tr>
+     	<tr>
+     	  <td>DELETE</td>
+     	  <td>api/DataManagement/type/{id}</td>
+     	  <td><pre>None</pre></td>
+     	  <td><pre>id : integer</pre></td>
+     	</tr>
+     </tbody>
+   </table>
+     
    6. MenuItem
-
-      - POST api/DataManagement/menu-item/creation
-
-        - Request Body
-
-          ```
-          {
-            "id": "<integer>",
-            "name": "<string>"
-          }
-          ```
-
-      - POST api/DataManagement/menu-item/update
-
-        - Request Body
-
-          ```
-          {
-            "id": "<integer>",
-            "name": "<string>"
-          }
-          ```
-
-      - POST api/DataManagement/food-item/read
-
-        - Request Body
-
-          ```
-          {
-            "id": "<integer>",
-            "name": "<string>",
-            "quantity": "<integer>",
-            "unit_Id": "<integer>",
-            "type_Id": "<integer>"
-          }
-          ```
-
-      - DELETE api/DataManagement/food-item/{id}
+   <table>
+   <thead>
+     <th>Method</th>
+     <th>Route</th>
+     <th>Request Body</th>
+     <th>Path Variable</th>
+    </thead>
+    <tbody>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/menu-item/creation</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "name": "&lt;string&gt;"<br/>}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/menu-item/update</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "name": "&lt;string&gt;"<br/>}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/menu-item/read</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "name": "&lt;string&gt;"<br/>}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>DELETE</td>
+   	  <td>api/DataManagement/food-item/{id}</td>
+   	  <td><pre>None</pre></td>
+   	  <td><pre>id : integer</pre></td>
+   	</tr>
+   </tbody>
+   </table>
+      
         
    7. Menu
-
-      - POST api/DataManagement/menu/creation
-
-        - Request Body
-
-          ```
-          {
-            "id": "<integer>",
-            "date": "<dateTime>",
-            "menuItem_Id": "<integer>"
-          }
-          ```
-
-      - POST api/DataManagement/menu/update
-     
-        - Request Body
-       
-          ```
-          {
-            "id": "<integer>",
-            "date": "<dateTime>",
-            "menuItem_Id": "<integer>"
-          }
-          ```
-
-      - POST api/DataManagement/menu/read
-
-        - Request Body
-
-          ```
-          {
-            "id": "<integer>",
-            "date": "<dateTime>",
-            "menuItem_Id": "<integer>"
-          }
-          ```
-
-      - DELETE api/DataManagement/menu/{id}
-
-        - Path Variables
-
-          ```
-          id : integer
-          ```
+   <table>
+   <thead>
+     <th>Method</th>
+     <th>Route</th>
+     <th>Request Body</th>
+     <th>Path Variable</th>
+    </thead>
+    <tbody>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/menu/creation</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "date": "&lt;dateTime&gt;" ,<br/>  "menuItem_Id": "&lt;integer&gt;"}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/menu/update</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "date": "&lt;dateTime&gt;" ,<br/>  "menuItem_Id": "&lt;integer&gt;"}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/menu/read</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "date": "&lt;dateTime&gt;" ,<br/>  "menuItem_Id": "&lt;integer&gt;"}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>DELETE</td>
+   	  <td>api/DataManagement/menu/{id}</td>
+   	  <td><pre>None</pre></td>
+   	  <td><pre>id : integer</pre></td>
+   	</tr>
+   </tbody>
+   </table>
+    
           
    8. MenuItemFoodItem
+   <table>
+   <thead>
+     <th>Method</th>
+     <th>Route</th>
+     <th>Request Body</th>
+     <th>Path Variable</th>
+    </thead>
+    <tbody>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/menu-item-food-item/creation</td>
+   	  <td><pre>{<br/>  "menuItem_Id": "&lt;integer&gt;",<br/>  "foodItem_Id": "&lt;integer&gt;" ,<br/>  "consumption": "&lt;integer&gt;"}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/menu-item-food-item/update</td>
+   	  <td><pre>{<br/>  "menuItem_Id": "&lt;integer&gt;",<br/>  "foodItem_Id": "&lt;integer&gt;" ,<br/>  "consumption": "&lt;integer&gt;"}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/menu-item-food-item/read</td>
+   	  <td><pre>{<br/>  "menuItem_Id": "&lt;integer&gt;",<br/>  "foodItem_Id": "&lt;integer&gt;" ,<br/>  "consumption": "&lt;integer&gt;"}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>DELETE</td>
+   	  <td>api/DataManagement/menu-item-food-item</td>
+   	  <td><pre>{<br/>  "menuItem_Id": "&lt;integer&gt;",<br/>  "foodItem_Id": "&lt;integer&gt;" ,<br/>  "consumption": "&lt;integer&gt;"}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   </tbody>
+   </table>
 
-      - POST api/DataManagement/menu-item-food-item/creation
-
-        - Request Body
-       
-          ```
-          {
-            "menuItem_Id": "<integer>",
-            "foodItem_Id": "<integer>",
-            "consumption": "<integer>"
-          }
-          ```
-
-      - POST api/DataManagement/menu-item-food-item/update
-     
-        - Request Body
-
-          ```
-          {
-            "menuItem_Id": "<integer>",
-            "foodItem_Id": "<integer>",
-            "consumption": "<integer>"
-          }
-          ```
-
-      - POST api/DataManagement/menu-item-food-item/read
-
-        - Request Body
-       
-          ```
-          {
-            "menuItem_Id": "<integer>",
-            "foodItem_Id": "<integer>",
-            "consumption": "<integer>"
-          }
-          ```
-
-      - DELETE api/DataManagement/menu-item-food-item
-     
-        - Request Body
-
-          ```
-          {
-            "menuItem_Id": "<integer>",
-            "foodItem_Id": "<integer>",
-            "consumption": "<integer>"
-          }
-          ```
-       
+   
    9. Order
+   <table>
+   <thead>
+     <th>Method</th>
+     <th>Route</th>
+     <th>Request Body</th>
+     <th>Path Variable</th>
+    </thead>
+    <tbody>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/order/creation</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "isCanceled": "&lt;integer&gt;"<br/>}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/order/update</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "isCanceled": "&lt;integer&gt;"<br/>}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/order/read</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "isCanceled": "&lt;integer&gt;"<br/>}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>DELETE</td>
+   	  <td>api/DataManagement/order/{id}</td>
+   	  <td><pre>None</pre></td>
+   	  <td><pre>id : integer</pre></td>
+   	</tr>
+   </tbody>
+   </table>
 
-      - POST api/DataManagement/order/creation
-
-        - Request Body
-
-          ```
-          {
-            "id": "<integer>",
-            "isCanceled": "<boolean>"
-          }
-          ```
-
-       - POST api/DataManagement/order/update
-
-         - Request Body
-
-           ```
-           {
-             "id": "<integer>",
-             "isCanceled": "<boolean>"
-           }
-           ```
-
-       - POST api/DataManagement/order/read
-
-         - Request Body
-
-           ```
-           {
-             "id": "<integer>",
-             "isCanceled": "<boolean>"
-           }
-           ```
-
-       - DELETE api/DataManagement/order/{id}
-
-         - Path Variables
-
-           ```
-           id : integer
-           ```
-           
+   
    10. OrderItem
 
-       - POST api/DataManagement/order-item/creation
-
-         - Request Body
-
-           ```
-           {
-             "id": "<integer>",
-             "orderId": "<integer>",
-             "menuItemId": "<integer>"
-           }
-           ```
-
-       - POST api/DataManagement/order-item/update
-
-         - Request Body
-
-           ```
-           {
-             "id": "<integer>",
-             "orderId": "<integer>",
-             "menuItemId": "<integer>"
-           }
-           ```
-
-       - POST api/DataManagement/order-item/read
-
-         - Request Body
-
-           ```
-           {
-             "id": "<integer>",
-             "orderId": "<integer>",
-             "menuItemId": "<integer>"
-           }
-           ```
-
-       - POST api/DataManagement/order-item/{id}
-
-         - Path Variables
-
-           ```
-           id : integer
-           ```
+   <table>
+   <thead>
+     <th>Method</th>
+     <th>Route</th>
+     <th>Request Body</th>
+     <th>Path Variable</th>
+    </thead>
+    <tbody>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/order-item/creation</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "orderId": "&lt;integer&gt;",<br/>  "menuItemId": "&lt;integer&gt;"<br/>}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/order-item/update</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "orderId": "&lt;integer&gt;",<br/>  "menuItemId": "&lt;integer&gt;"<br/>}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>POST</td>
+   	  <td>api/DataManagement/order-item/read</td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "orderId": "&lt;integer&gt;",<br/>  "menuItemId": "&lt;integer&gt;"<br/>}</pre></td>
+   	  <td><pre>None</pre></td>
+   	</tr>
+   	<tr>
+   	  <td>DELETE</td>
+   	  <td>api/DataManagement/order-item/{id}</td>
+   	  <td><pre>None</pre></td>
+   	  <td><pre>id : integer</pre></td>
+   	</tr>
+   </tbody>
+   </table>
        
