@@ -79,11 +79,42 @@ Restaurant Food Planning System
         }
         ```
        
-  3. GET /api/User/:id
-  4. DELETE /api/User/:id
-  5. GET /api/User
-  6. POST /api/User/assign-role/{userId}/{roleId}
-  7. POST /api/User/remove-role/{userId}/{roleId}
+  3. GET /api/User/{id}
+
+     - Path Variables
+
+        ```
+        id : integer
+        ```
+  
+  5. DELETE /api/User/{id}
+
+     - Path Variables
+
+       ```
+       id : integer
+       ```
+     
+  6. GET /api/User
+  
+  7. POST /api/User/assign-role/{userId}/{roleId}
+
+     - Path Variables
+
+       ```
+       userId : integer
+       roleId : integer
+       ```
+  
+  
+  8. POST /api/User/remove-role/{userId}/{roleId}
+
+     - Path Variables
+
+       ```
+       userId : integer
+       roleId : integer
+       ```
 
 ### Role
    1. POST /api/Role/creation
@@ -97,8 +128,14 @@ Restaurant Food Planning System
         ```
    
    2. DELETE /api/Role/{id}
+
+      - Path Variables
+
+        ```
+        id : integer
+        ```
    
-   3. POST /api/Role/read
+   4. POST /api/Role/read
       - Request Body
         
         ```JSON
@@ -110,7 +147,7 @@ Restaurant Food Planning System
         }
         ```
       
-   4. POST /api/Role/update
+   5. POST /api/Role/update
       - Request Body
         
         ```JSON
@@ -123,7 +160,14 @@ Restaurant Food Planning System
 
 ### Order
    1. GET /api/Order/cancel-order/{id}
-   
+
+      - Path Variables
+
+        ```
+        id : integer
+        ```
+
+      
    2. POST /api/Order/place-order
       - Request Body
         
@@ -151,6 +195,7 @@ Restaurant Food Planning System
 ### DataManagement
    1. Unit
       - POST api/DataManagement/unit/creation
+
         - Request Body
           
           ```JSON
@@ -161,6 +206,7 @@ Restaurant Food Planning System
           ```
 
       - POST api/DataManagement/unit/update
+
         - Request Body
           
           ```JSON
@@ -171,6 +217,7 @@ Restaurant Food Planning System
           ```
 
       - POST api/DataManagement/unit/read
+
         - Request Body
           
           ```JSON
@@ -181,10 +228,17 @@ Restaurant Food Planning System
           ```
 
       - DELETE api/DataManagement/unit/{id}
+
+        - Path Variables
+
+           ```
+           id : integer
+           ```
         
    2. Type
 
       -  POST api/DataManagement/type/creation
+
          - Request Body
 
            ```JSON
@@ -194,6 +248,7 @@ Restaurant Food Planning System
            }
            ```
       - POST api/DataManagement/type/update
+
         - Request Body
        
           ```
@@ -204,6 +259,7 @@ Restaurant Food Planning System
           ```
 
       - POST api/DataManagement/type/read
+
         - Request Body
        
           ```
@@ -215,9 +271,16 @@ Restaurant Food Planning System
 
       - DELETE api/DataManagement/type/{id}
 
+        - Path Variables
+
+          ```
+          id : integer
+          ```
+          
    4. FoodItem
 
       - POST api/DataManagement/food-item/creation
+
         - Request Body
 
           ```
@@ -229,6 +292,7 @@ Restaurant Food Planning System
             "type_Id": "<integer>"
           }
           ```
+
       - POST api/DataManagement/food-item/update
 
         - Request Body
@@ -258,14 +322,235 @@ Restaurant Food Planning System
            ```
 
       - DELETE api/DataManagement/food-item/{id}
+
+        - Path Variables
+
+          ```
+          id : integer
+          ```
         
-   5. MenuItem
-   
-   6. Menu
-   
-   7. MenuItemFoodItem
-   
-   8. Order
-   
-   9. OrderItem
+   6. MenuItem
+
+      - POST api/DataManagement/menu-item/creation
+
+        - Request Body
+
+          ```
+          {
+            "id": "<integer>",
+            "name": "<string>"
+          }
+          ```
+
+      - POST api/DataManagement/menu-item/update
+
+        - Request Body
+
+          ```
+          {
+            "id": "<integer>",
+            "name": "<string>"
+          }
+          ```
+
+      - POST api/DataManagement/food-item/read
+
+        - Request Body
+
+          ```
+          {
+            "id": "<integer>",
+            "name": "<string>",
+            "quantity": "<integer>",
+            "unit_Id": "<integer>",
+            "type_Id": "<integer>"
+          }
+          ```
+
+      - DELETE api/DataManagement/food-item/{id}
+        
+   7. Menu
+
+      - POST api/DataManagement/menu/creation
+
+        - Request Body
+
+          ```
+          {
+            "id": "<integer>",
+            "date": "<dateTime>",
+            "menuItem_Id": "<integer>"
+          }
+          ```
+
+      - POST api/DataManagement/menu/update
+     
+        - Request Body
+       
+          ```
+          {
+            "id": "<integer>",
+            "date": "<dateTime>",
+            "menuItem_Id": "<integer>"
+          }
+          ```
+
+      - POST api/DataManagement/menu/read
+
+        - Request Body
+
+          ```
+          {
+            "id": "<integer>",
+            "date": "<dateTime>",
+            "menuItem_Id": "<integer>"
+          }
+          ```
+
+      - DELETE api/DataManagement/menu/{id}
+
+        - Path Variables
+
+          ```
+          id : integer
+          ```
+          
+   8. MenuItemFoodItem
+
+      - POST api/DataManagement/menu-item-food-item/creation
+
+        - Request Body
+       
+          ```
+          {
+            "menuItem_Id": "<integer>",
+            "foodItem_Id": "<integer>",
+            "consumption": "<integer>"
+          }
+          ```
+
+      - POST api/DataManagement/menu-item-food-item/update
+     
+        - Request Body
+
+          ```
+          {
+            "menuItem_Id": "<integer>",
+            "foodItem_Id": "<integer>",
+            "consumption": "<integer>"
+          }
+          ```
+
+      - POST api/DataManagement/menu-item-food-item/read
+
+        - Request Body
+       
+          ```
+          {
+            "menuItem_Id": "<integer>",
+            "foodItem_Id": "<integer>",
+            "consumption": "<integer>"
+          }
+          ```
+
+      - DELETE api/DataManagement/menu-item-food-item
+     
+        - Request Body
+
+          ```
+          {
+            "menuItem_Id": "<integer>",
+            "foodItem_Id": "<integer>",
+            "consumption": "<integer>"
+          }
+          ```
+       
+   9. Order
+
+      - POST api/DataManagement/order/creation
+
+        - Request Body
+
+          ```
+          {
+            "id": "<integer>",
+            "isCanceled": "<boolean>"
+          }
+          ```
+
+       - POST api/DataManagement/order/update
+
+         - Request Body
+
+           ```
+           {
+             "id": "<integer>",
+             "isCanceled": "<boolean>"
+           }
+           ```
+
+       - POST api/DataManagement/order/read
+
+         - Request Body
+
+           ```
+           {
+             "id": "<integer>",
+             "isCanceled": "<boolean>"
+           }
+           ```
+
+       - DELETE api/DataManagement/order/{id}
+
+         - Path Variables
+
+           ```
+           id : integer
+           ```
+           
+   10. OrderItem
+
+       - POST api/DataManagement/order-item/creation
+
+         - Request Body
+
+           ```
+           {
+             "id": "<integer>",
+             "orderId": "<integer>",
+             "menuItemId": "<integer>"
+           }
+           ```
+
+       - POST api/DataManagement/order-item/update
+
+         - Request Body
+
+           ```
+           {
+             "id": "<integer>",
+             "orderId": "<integer>",
+             "menuItemId": "<integer>"
+           }
+           ```
+
+       - POST api/DataManagement/order-item/read
+
+         - Request Body
+
+           ```
+           {
+             "id": "<integer>",
+             "orderId": "<integer>",
+             "menuItemId": "<integer>"
+           }
+           ```
+
+       - POST api/DataManagement/order-item/{id}
+
+         - Path Variables
+
+           ```
+           id : integer
+           ```
        
