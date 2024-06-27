@@ -66,7 +66,7 @@ public class UserController(
     /// <param name="basicDto">The object containing username and password.</param>
     /// <returns name="ActionResult">Http Response with object "UserResultDto"</returns>
     [AllowAnonymous]
-    [HttpPost("Register")]
+    [HttpPost("register")]
     public async Task<ActionResult<Result<DbOperationResult<UserResultDto>>>> Register(UserBasicDto basicDto)
     {
         try
