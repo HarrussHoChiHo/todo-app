@@ -45,5 +45,14 @@ Restaurant Food Planning System
 ### Database Design
 ![Database Design](https://github.com/HarusHoChiHo/Restaurant_Food_Planning_System/blob/main/RestaurantFoodPlanningDatabase.png)
 
-### Labaries
-  - **JWT**: https://github.com/jwt-dotnet/jwt?tab=readme-ov-file#jwtnet-aspnet-core
+### API Document
+  - The API document can be viewed in the ways below:
+    1. Swagger UI
+       - URL: http://localhost:8081/swagger/index.html
+       - After launching the application, the document can be accessed by visiting the URL above.
+           
+    2. Postman
+       - Importing "Postman_collection-RestaurantFoodPlanningSystem.json" into Postman.
+         
+    3. HTML file
+       - Unzipping the html-api-documentation.zip and open the file "index.html."
