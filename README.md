@@ -123,6 +123,7 @@ Restaurant Food Planning System
 
 ### Order
    1. GET /api/Order/cancel-order/{id}
+   
    2. POST /api/Order/place-order
       - Request Body
         
@@ -179,19 +180,92 @@ Restaurant Food Planning System
           }
           ```
 
-      - DELETE api/DataManagement/unit/:id
+      - DELETE api/DataManagement/unit/{id}
         
    2. Type
+
+      -  POST api/DataManagement/type/creation
+         - Request Body
+
+           ```JSON
+           {
+             "id": "<integer>",
+             "name": "<string>"
+           }
+           ```
+      - POST api/DataManagement/type/update
+        - Request Body
+       
+          ```
+          {
+            "id": "<integer>",
+            "name": "<string>"
+          }
+          ```
+
+      - POST api/DataManagement/type/read
+        - Request Body
+       
+          ```
+          {
+            "id": "<integer>",
+            "name": "<string>"
+          }
+          ```
+
+      - DELETE api/DataManagement/type/{id}
+
+   4. FoodItem
+
+      - POST api/DataManagement/food-item/creation
+        - Request Body
+
+          ```
+          {
+            "id": "<integer>",
+            "name": "<string>",
+            "quantity": "<integer>",
+            "unit_Id": "<integer>",
+            "type_Id": "<integer>"
+          }
+          ```
+      - POST api/DataManagement/food-item/update
+
+        - Request Body
+
+          ```
+          {
+            "id": "<integer>",
+            "name": "<string>",
+            "quantity": "<integer>",
+            "unit_Id": "<integer>",
+            "type_Id": "<integer>"
+          }
+          ```
+
+      - POST api/DataManagement/food-item/read
+
+        -  Request Body
+       
+           ```
+           {
+             "id": "<integer>",
+             "name": "<string>",
+             "quantity": "<integer>",
+             "unit_Id": "<integer>",
+             "type_Id": "<integer>"
+           }
+           ```
+
+      - DELETE api/DataManagement/food-item/{id}
+        
+   5. MenuItem
    
-   3. FoodItem
+   6. Menu
    
-   4. MenuItem
+   7. MenuItemFoodItem
    
-   5. Menu
+   8. Order
    
-   6. MenuItemFoodItem
-   
-   7. Order
-   
-   8. OrderItem
+   9. OrderItem
        
