@@ -56,3 +56,142 @@ Restaurant Food Planning System
          
     3. HTML file
        - Unzipping the html-api-documentation.zip and open the file "index.html."
+      
+## API Endpoints
+### User
+   1. POST /api/User/login
+      - Request Body
+        
+        ```JSON
+        {
+          "name": "<string>",
+          "password": "<string>"
+        }
+        ```
+       
+   2. POST /api/User/register
+      - Request Body
+        
+        ```JSON
+        {
+          "name": "<string>",
+          "password": "<string>"
+        }
+        ```
+       
+  3. GET /api/User/:id
+  4. DELETE /api/User/:id
+  5. GET /api/User
+  6. POST /api/User/assign-role/{userId}/{roleId}
+  7. POST /api/User/remove-role/{userId}/{roleId}
+
+### Role
+   1. POST /api/Role/creation
+      - Request Body
+        
+        ```JSON
+         {
+           "name": "<string>",
+           "description": "<string>"
+         }
+        ```
+   
+   2. DELETE /api/Role/{id}
+   
+   3. POST /api/Role/read
+      - Request Body
+        
+        ```JSON
+        {
+          "name": "<string>",
+          "description": "<string>",
+          "id": "<integer>",
+          "createdDate": "<dateTime>"
+        }
+        ```
+      
+   4. POST /api/Role/update
+      - Request Body
+        
+        ```JSON
+        {
+          "name": "<string>",
+          "description": "<string>",
+          "id": "<integer>"
+        }
+        ```
+
+### Order
+   1. GET /api/Order/cancel-order/{id}
+   2. POST /api/Order/place-order
+      - Request Body
+        
+        ```JSON
+        {
+          "order": {
+            "id": "<integer>",
+            "isCanceled": "<boolean>"
+          },
+          "orderItems": [
+            {
+              "id": "<integer>",
+              "orderId": "<integer>",
+              "menuItemId": "<integer>"
+            },
+            {
+              "id": "<integer>",
+              "orderId": "<integer>",
+              "menuItemId": "<integer>"
+            }
+          ]
+        }
+        ```
+
+### DataManagement
+   1. Unit
+      - POST api/DataManagement/unit/creation
+        - Request Body
+          
+          ```JSON
+          {
+            "id": "<integer>",
+            "name": "<string>"
+          }
+          ```
+
+      - POST api/DataManagement/unit/update
+        - Request Body
+          
+          ```JSON
+          {
+            "id": "<integer>",
+            "name": "<string>"
+          }
+          ```
+
+      - POST api/DataManagement/unit/read
+        - Request Body
+          
+          ```JSON
+          {
+            "id": "<integer>",
+            "name": "<string>"
+          }
+          ```
+
+      - DELETE api/DataManagement/unit/:id
+        
+   2. Type
+   
+   3. FoodItem
+   
+   4. MenuItem
+   
+   5. Menu
+   
+   6. MenuItemFoodItem
+   
+   7. Order
+   
+   8. OrderItem
+       
