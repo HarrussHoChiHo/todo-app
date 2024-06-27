@@ -113,7 +113,6 @@ Restaurant Food Planning System
 </table>
 
 
-
 ### Role
 <table>
  <thead>
@@ -149,6 +148,7 @@ Restaurant Food Planning System
   </tr>
  </tbody>
 </table>
+
 
 ### Order
 <table>
@@ -191,8 +191,10 @@ Restaurant Food Planning System
  </tbody>
 </table>
 
+
 ### DataManagement
-   1. Unit
+
+  1. Unit
    <table>
    <thead>
      <th>Method</th>
@@ -228,7 +230,8 @@ Restaurant Food Planning System
    </tbody>
    </table>
 
-   2. Type
+
+  2. Type
    <table>
    <thead>
      <th>Method</th>
@@ -263,9 +266,9 @@ Restaurant Food Planning System
    	</tr>
    </tbody>
    </table>
-          
-   4. FoodItem
 
+          
+  4. FoodItem
    <table>
      <thead>
        <th>Method</th>
@@ -300,8 +303,9 @@ Restaurant Food Planning System
      	</tr>
      </tbody>
    </table>
-     
-   6. MenuItem
+
+  
+  6. MenuItem
    <table>
    <thead>
      <th>Method</th>
@@ -338,7 +342,7 @@ Restaurant Food Planning System
    </table>
       
         
-   7. Menu
+  7. Menu
    <table>
    <thead>
      <th>Method</th>
@@ -375,7 +379,7 @@ Restaurant Food Planning System
    </table>
     
           
-   8. MenuItemFoodItem
+  8. MenuItemFoodItem
    <table>
    <thead>
      <th>Method</th>
@@ -412,7 +416,7 @@ Restaurant Food Planning System
    </table>
 
    
-   9. Order
+  9. Order
    <table>
    <thead>
      <th>Method</th>
@@ -449,8 +453,7 @@ Restaurant Food Planning System
    </table>
 
    
-   10. OrderItem
-
+  10. OrderItem
    <table>
    <thead>
      <th>Method</th>
