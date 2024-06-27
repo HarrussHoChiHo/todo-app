@@ -140,6 +140,7 @@ public class UserController(
     /// <summary>
     /// Delete a user from table "User"
     /// </summary>
+    /// <param name="id">The integer id of a user</param>
     /// <returns name="ActionResult">Http Response with list of objects "UserResultDto"</returns>
     [Authorize("ManagerOnly")]
     [HttpDelete("{id}")]
@@ -167,9 +168,11 @@ public class UserController(
     /// <summary>
     /// Assign User to a Role
     /// </summary>
+    /// <param name="userId">The integer id of a user</param>
+    /// <param name="roleId">The integer id of a role</param>
     /// <returns name="ActionResult">Http Response with list of objects "UserResultDto"</returns>
     [Authorize("ManagerOnly")]
-    [HttpPost("assign-role")]
+    [HttpPost("assign-role/{userId}/{roleId}")]
     public async Task<ActionResult<Result<DbOperationResult<List<UserResultDto>>>>> AssignRole(int userId,
                                                                                                int roleId)
     {
@@ -205,9 +208,11 @@ public class UserController(
     /// <summary>
     /// Remove a Role from a user
     /// </summary>
+    /// <param name="userId">The integer id of a user</param>
+    /// <param name="roleId">The integer id of a role</param>
     /// <returns name="ActionResult">Http Response with list of objects "UserResultDto"</returns>
     [Authorize("ManagerOnly")]
-    [HttpPost("remove-role")]
+    [HttpPost("remove-role/{userId}/{roleId}")]
     public async Task<ActionResult<Result<DbOperationResult<List<UserResultDto>>>>> RemoveRole(int userId,
                                                                                                int roleId)
     {
