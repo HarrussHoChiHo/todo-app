@@ -151,7 +151,7 @@ Restaurant Food Planning System
 </table>
 
 ### Order
-   <table>
+<table>
  <thead>
   <th>Method</th>
   <th>Route</th>
@@ -159,9 +159,15 @@ Restaurant Food Planning System
   <th>Path Variable</th>
  </thead>
  <tbody>
-  <tr>
+ <tr>
    <td>GET</td>
    <td>/api/Order/cancel-order/{id}</td>
+   <td><pre>None</pre></td>
+   <td><pre>id : integer</pre></td>
+  </tr>
+  <tr>
+   <td>POST</td>
+   <td>/api/Order/place-order</td>
    <td><pre>{
   "order": {
     "id": "<integer>",
