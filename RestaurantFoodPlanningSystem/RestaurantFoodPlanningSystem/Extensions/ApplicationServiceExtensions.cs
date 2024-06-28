@@ -30,6 +30,7 @@ public static class ApplicationServiceExtensions
         services
             .AddDataProtection()
             .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/DataProtection-Keys"));
+        
         services.AddDbContext<RFPSDbContext>(
                                              opt =>
                                              {
