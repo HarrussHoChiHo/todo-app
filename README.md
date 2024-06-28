@@ -1,5 +1,14 @@
-[!IMPORTANT] 
-The Microsoft SQL Server image only supports architecture "amd64". Therefore, this project can only run on PC with Intel CPU.
+> [!IMPORTANT] 
+> The Microsoft SQL Server image only supports architecture "amd64". Therefore, the SQL server is not available on the Mac with M1 or above, and not available on those PC with non-amd CPU.
+> For more information: [Docker image of SQL Server](https://hub.docker.com/r/microsoft/mssql-server)
+
+# Steps for setting up the project
+Assuming the current directory is /RestaurantFoodPlanningSystem
+1. Place docker-compose.yml in folder RestaurantFoodPlanningSystem
+2. Place appsettings.json and appsettings.Development.json in folder /RestaurantFoodPlanningSystem/RestaurantFoodPlanningSystem
+3. Once openning the project, the project require to restore package by using Nuget. In Intellij Rider, Go to Tools > Nuget > Nuget Restore.
+4. In Intellij Rider, adding Run/Debug configuration to run docker-compose.yml to start the database and API applicaiton.
+5. Then lauch application.
 
 # Details of this Project
 
@@ -51,8 +60,8 @@ Restaurant Food Planning System
 ### API Document
   - The API document can be viewed in the ways below:
     1. Swagger UI
-       - URL: http://localhost:8081/swagger/index.html
        - After launching the application, the document can be accessed by visiting the URL above.
+       - URL: http://localhost:8081/swagger/index.html
 
     2. Postman
        - Importing "Postman_collection-RestaurantFoodPlanningSystem.json" into Postman.
