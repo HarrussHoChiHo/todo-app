@@ -84,6 +84,15 @@ using (var scope = app.Services.CreateScope())
                                       services.GetRequiredService<UserManager<User>>(),
                                       context,
                                       services.GetRequiredService<ILogger<SeedData>>());
+        
+        var optionsBuilder = new DbContextOptionsBuilder<RFPSDbContext>();
+        optionsBuilder.UseSqlServer(app.Configuration.GetConnectionString("DefaultConnection"));
+
+        using (var dbContext = new RFPSDbContext(optionsBuilder.Options))
+        {
+            var migrationService = new MigrationService(dbContext, app.Configuration);
+            migrationService.Migration(null, null, true);
+        }
     }
     catch (Exception e)
     {

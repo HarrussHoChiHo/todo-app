@@ -34,15 +34,6 @@ public static class ApplicationServiceExtensions
                                                  //Console.WriteLine(config.GetConnectionString("DefaultConnection"));
                                                  opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
                                              });
-
-        var optionsBuilder = new DbContextOptionsBuilder<RFPSDbContext>();
-        optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
-
-        using (var context = new RFPSDbContext(optionsBuilder.Options))
-        {
-            var migrationService = new MigrationService(context, config);
-            migrationService.Migration(null, null, true);
-        }
         
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
         
