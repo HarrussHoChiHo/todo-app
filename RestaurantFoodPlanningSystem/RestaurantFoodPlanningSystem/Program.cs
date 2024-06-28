@@ -3,6 +3,7 @@ using Domain;
 using EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.OpenApi.Models;
 using RestaurantFoodPlanningSystem.Extensions;
 
@@ -77,22 +78,32 @@ using (var scope = app.Services.CreateScope())
 
     try
     {
-        var context = services.GetRequiredService<RFPSDbContext>();
+        await using var context = services.GetRequiredService<RFPSDbContext>();
         context.Database.Migrate();
-        await SeedData.CreateSeedData(
-                                      services.GetRequiredService<RoleManager<Role>>(),
-                                      services.GetRequiredService<UserManager<User>>(),
-                                      context,
-                                      services.GetRequiredService<ILogger<SeedData>>());
         
         var optionsBuilder = new DbContextOptionsBuilder<RFPSDbContext>();
         optionsBuilder.UseSqlServer(app.Configuration.GetConnectionString("DefaultConnection"));
-
-        using (var dbContext = new RFPSDbContext(optionsBuilder.Options))
+        
+        await using (var dbContext = new RFPSDbContext(optionsBuilder.Options))
         {
-            var migrationService = new MigrationService(dbContext, app.Configuration);
-            migrationService.Migration(null, null, true);
+            var migrationService = new MigrationService(
+                                                        dbContext,
+                                                        app.Configuration,
+                                                        services.GetRequiredService<ILogger<MigrationService>>());
+            await migrationService.Migration(
+                                       null,
+                                       null,
+                                       true);
         }
+        
+        await using var createSeedDatacontext = services.GetRequiredService<RFPSDbContext>();
+        await SeedData.CreateSeedData(
+                                      services.GetRequiredService<RoleManager<Role>>(),
+                                      services.GetRequiredService<UserManager<User>>(),
+                                      createSeedDatacontext,
+                                      services.GetRequiredService<ILogger<SeedData>>());
+
+        
     }
     catch (Exception e)
     {

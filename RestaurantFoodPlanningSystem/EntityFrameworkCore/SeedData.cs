@@ -9,9 +9,9 @@ public class SeedData
 {
     public static async Task CreateSeedData(RoleManager<Role> roleManager,
                                             UserManager<User> userManager,
-                                            RFPSDbContext     _context,
+                                            RFPSDbContext     context,
                                             ILogger<SeedData>
-                                                _logger)
+                                                logger)
     {
         if (roleManager == null)
         {
@@ -82,7 +82,7 @@ public class SeedData
             }
         }
 
-        if (!_context.Type.Any())
+        if (!context.Type.Any())
         {
             List<Type> types = new List<Type>()
                                {
@@ -100,158 +100,172 @@ public class SeedData
                                    }
                                };
 
-            _context.Type.AddRange(types);
-            _logger.LogDebug($"Type insertion result: {await _context.SaveChangesAsync()}");
+            context.Type.AddRange(types);
+            logger.LogDebug($"Type insertion result: {await context.SaveChangesAsync()}");
         }
 
-        if (!_context.Unit.Any())
+        if (!context.Unit.Any())
         {
-            List<Unit> units = new List<Unit>()
-                               {
-                                   new Unit()
-                                   {
-                                       Name = "milliliter"
-                                   },
-                                   new Unit()
-                                   {
-                                       Name = "liter"
-                                   },
-                                   new Unit()
-                                   {
-                                       Name = "gram"
-                                   },
-                                   new Unit()
-                                   {
-                                       Name = "kilogram"
-                                   }
-                               };
+            List<Unit> units =
+            [
+                new Unit()
+                {
+                    Name = "milliliter"
+                },
 
-            _context.Unit.AddRange(units);
-            _logger.LogDebug($"Unit insertion result: {await _context.SaveChangesAsync()}");
+                new Unit()
+                {
+                    Name = "liter"
+                },
+
+                new Unit()
+                {
+                    Name = "gram"
+                },
+
+                new Unit()
+                {
+                    Name = "kilogram"
+                }
+            ];
+
+            context.Unit.AddRange(units);
+            logger.LogDebug($"Unit insertion result: {await context.SaveChangesAsync()}");
         }
 
-        if (!_context.FoodItem.Any() && _context.Unit.Any() && _context.Type.Any())
+        if (!context.FoodItem.Any() && context.Unit.Any() && context.Type.Any())
         {
-            List<FoodItem> foodItems = new List<FoodItem>()
-                                       {
-                                           new FoodItem()
-                                           {
-                                               Name     = "Beef",
-                                               Quantity = 10,
-                                               Type_Id  = 1,
-                                               Unit_Id  = 4
-                                           },
-                                           new FoodItem()
-                                           {
-                                               Name     = "Carrot",
-                                               Quantity = 10,
-                                               Type_Id  = 2,
-                                               Unit_Id  = 4
-                                           },
-                                           new FoodItem()
-                                           {
-                                               Name     = "Soy Sauce",
-                                               Quantity = 10,
-                                               Type_Id  = 3,
-                                               Unit_Id  = 2
-                                           },
-                                           new FoodItem()
-                                           {
-                                               Name     = "Chicken",
-                                               Quantity = 20,
-                                               Type_Id  = 1,
-                                               Unit_Id  = 4
-                                           }
-                                       };
-            _context.FoodItem.AddRange(foodItems);
-            _logger.LogDebug($"FoodItem insertion result: {await _context.SaveChangesAsync()}");
+            List<FoodItem> foodItems =
+            [
+                new FoodItem()
+                {
+                    Name     = "Beef",
+                    Quantity = 10,
+                    Type_Id  = 1,
+                    Unit_Id  = 4
+                },
+
+                new FoodItem()
+                {
+                    Name     = "Carrot",
+                    Quantity = 10,
+                    Type_Id  = 2,
+                    Unit_Id  = 4
+                },
+
+                new FoodItem()
+                {
+                    Name     = "Soy Sauce",
+                    Quantity = 10,
+                    Type_Id  = 3,
+                    Unit_Id  = 2
+                },
+
+                new FoodItem()
+                {
+                    Name     = "Chicken",
+                    Quantity = 20,
+                    Type_Id  = 1,
+                    Unit_Id  = 4
+                }
+            ];
+            context.FoodItem.AddRange(foodItems);
+            logger.LogDebug($"FoodItem insertion result: {await context.SaveChangesAsync()}");
         }
 
-        if (!_context.MenuItem.Any())
+        if (!context.MenuItem.Any())
         {
-            List<MenuItem> menuItems = new List<MenuItem>()
-                                       {
-                                            new MenuItem()
-                                            {
-                                                Name = "BBQ Beef"
-                                            },
-                                            new MenuItem()
-                                            {
-                                                Name = "Roasted Chicken"
-                                            },
-                                            new MenuItem()
-                                            {
-                                                Name = "Steamed Chicken"
-                                            }
-                                       };
+            List<MenuItem> menuItems =
+            [
+                new MenuItem()
+                {
+                    Name = "BBQ Beef"
+                },
+
+                new MenuItem()
+                {
+                    Name = "Roasted Chicken"
+                },
+
+                new MenuItem()
+                {
+                    Name = "Steamed Chicken"
+                }
+            ];
             
-            _context.MenuItem.AddRange(menuItems);
-            _logger.LogDebug($"MenuItem insertion result: {await _context.SaveChangesAsync()}");
+            context.MenuItem.AddRange(menuItems);
+            logger.LogDebug($"MenuItem insertion result: {await context.SaveChangesAsync()}");
         }
         
-        if (!_context.Menu.Any() && _context.MenuItem.Any())
+        if (!context.Menu.Any() && context.MenuItem.Any())
         {
-            List<Menu> menus = new List<Menu>()
-                                       {
-                                           new Menu()
-                                           {
-                                               MenuItem_Id = 1,
-                                               Date = DateTime.Parse("2024-06-23")
-                                           },
-                                           new Menu()
-                                           {
-                                               MenuItem_Id = 2,
-                                               Date        = DateTime.Parse("2024-06-23")
-                                           },
-                                           new Menu()
-                                           {
-                                               MenuItem_Id = 3,
-                                               Date        = DateTime.Parse("2024-06-22")
-                                           }
-                                       };
+            List<Menu> menus =
+            [
+                new Menu()
+                {
+                    MenuItem_Id = 1,
+                    Date        = DateTime.Parse("2024-06-23")
+                },
+
+                new Menu()
+                {
+                    MenuItem_Id = 2,
+                    Date        = DateTime.Parse("2024-06-23")
+                },
+
+                new Menu()
+                {
+                    MenuItem_Id = 3,
+                    Date        = DateTime.Parse("2024-06-22")
+                }
+            ];
             
-            _context.Menu.AddRange(menus);
-            _logger.LogDebug($"Menu insertion result: {await _context.SaveChangesAsync()}");
+            context.Menu.AddRange(menus);
+            logger.LogDebug($"Menu insertion result: {await context.SaveChangesAsync()}");
         }
 
-        if (!_context.MenuItemFoodItem.Any() && _context.FoodItem.Any() && _context.MenuItem.Any())
+        if (!context.MenuItemFoodItem.Any() && context.FoodItem.Any() && context.MenuItem.Any())
         {
-            List<MenuItemFoodItem> menuItemFoodItems = new List<MenuItemFoodItem>()
-                                                      {
-                                                          new MenuItemFoodItem()
-                                                          {
-                                                            MenuItem_Id = 1,
-                                                            FoodItem_Id = 1,
-                                                            Consumption = 2
-                                                          },
-                                                          new MenuItemFoodItem()
-                                                          {
-                                                              MenuItem_Id = 1,
-                                                              FoodItem_Id = 3,
-                                                              Consumption = 1
-                                                          },
-                                                          new MenuItemFoodItem()
-                                                          {
-                                                              MenuItem_Id = 2,
-                                                              FoodItem_Id = 4,
-                                                              Consumption = 2
-                                                          },
-                                                          new MenuItemFoodItem()
-                                                          {
-                                                              MenuItem_Id = 3,
-                                                              FoodItem_Id = 4,
-                                                              Consumption = 2
-                                                          },
-                                                          new MenuItemFoodItem()
-                                                          {
-                                                              MenuItem_Id = 3,
-                                                              FoodItem_Id = 2,
-                                                              Consumption = 2
-                                                          }
-                                                      };
+            List<MenuItemFoodItem> menuItemFoodItems =
+            [
+                new MenuItemFoodItem()
+                {
+                    MenuItem_Id = 1,
+                    FoodItem_Id = 1,
+                    Consumption = 2
+                },
+
+                new MenuItemFoodItem()
+                {
+                    MenuItem_Id = 1,
+                    FoodItem_Id = 3,
+                    Consumption = 1
+                },
+
+                new MenuItemFoodItem()
+                {
+                    MenuItem_Id = 2,
+                    FoodItem_Id = 4,
+                    Consumption = 2
+                },
+
+                new MenuItemFoodItem()
+                {
+                    MenuItem_Id = 3,
+                    FoodItem_Id = 4,
+                    Consumption = 2
+                },
+
+                new MenuItemFoodItem()
+                {
+                    MenuItem_Id = 3,
+                    FoodItem_Id = 2,
+                    Consumption = 2
+                }
+            ];
             
-            _context.MenuItemFoodItem.AddRange(menuItemFoodItems);
-            _logger.LogDebug($"MenuItemFoodItem insertion result: {await _context.SaveChangesAsync()}");
+            context.MenuItemFoodItem.AddRange(menuItemFoodItems);
+            logger.LogDebug($"MenuItemFoodItem insertion result: {await context.SaveChangesAsync()}");
         }
     }
 }

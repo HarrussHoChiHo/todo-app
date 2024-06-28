@@ -1,25 +1,23 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace EntityFrameworkCore;
 
-public class MigrationService
+public class MigrationService(
+    RFPSDbContext              context,
+    IConfiguration             config,
+    ILogger<MigrationService> logger)
 {
-    private readonly RFPSDbContext  _context;
-    private readonly IConfiguration _config;
-    public MigrationService(RFPSDbContext context, IConfiguration config)
+    public async Task Migration(string fromMigration = null,
+                                string toMigration   = null,
+                                bool   idempotent    = false)
     {
-        _context = context;
-        _config  = config;
-    }
-
-    public void Migration(string fromMigration = null,
-                            string toMigration   = null,
-                            bool   idempotent    = false)
-    {
-        var migrator = _context.GetService<IMigrator>();
+        var migrator = context.GetService<IMigrator>();
         string script = migrator.GenerateScript(
                                                 fromMigration,
                                                 toMigration,
@@ -28,22 +26,45 @@ public class MigrationService
                                                     : MigrationsSqlGenerationOptions.Default);
 
         Console.WriteLine(script);
-        
-        using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+
+        await using var connection = new SqlConnection(config.GetConnectionString("DefaultConnection"));
+        connection.Open();
+        var batches = script.Split(
+                                   new[]
+                                   {
+                                       "GO"
+                                   },
+                                   StringSplitOptions.RemoveEmptyEntries);
+
+        await using (var transaction = await context.Database.BeginTransactionAsync())
         {
-            connection.Open();
-            var batches = script.Split(
-                                       new[]
-                                       {
-                                           "GO"
-                                       },
-                                       StringSplitOptions.RemoveEmptyEntries);
-            foreach (var batch in batches)
+            try
             {
-                using (var command = new SqlCommand(batch, connection))
+                await context.Database.OpenConnectionAsync();
+
+                foreach (var batch in batches)
                 {
-                    command.ExecuteNonQuery();
+                    var command = context
+                                  .Database.GetDbConnection()
+                                  .CreateCommand();
+
+                    command.CommandText = batch;
+                    command.Transaction = transaction.GetDbTransaction();
+
+                    await command.ExecuteNonQueryAsync();
                 }
+
+                await transaction.CommitAsync();
+                logger.LogInformation("Transaction Committed Successfully.");
+            }
+            catch (Exception e)
+            {
+                await transaction.RollbackAsync();
+                logger.LogError($"Migration Error: {e.ToString()}");
+            }
+            finally
+            {
+                 await connection.CloseAsync();
             }
         }
     }

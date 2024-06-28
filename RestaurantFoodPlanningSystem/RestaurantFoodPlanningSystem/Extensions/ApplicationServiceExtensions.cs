@@ -15,6 +15,7 @@ using Application.Core;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using RestaurantFoodPlanningSystem.Services;
@@ -26,8 +27,9 @@ public static class ApplicationServiceExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services,
                                                             IConfiguration          config)
     {
-        services.AddControllers();
-
+        services
+            .AddDataProtection()
+            .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/DataProtection-Keys"));
         services.AddDbContext<RFPSDbContext>(
                                              opt =>
                                              {
