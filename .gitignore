@@ -278,5 +278,5 @@ out
 gen
 
 # Custom Files
-*appsettings*.json
-docker-compose.yml
+#*appsettings*.json
+#docker-compose.yml

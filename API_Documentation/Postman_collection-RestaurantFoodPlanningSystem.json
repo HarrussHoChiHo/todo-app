@@ -1,0 +1,4343 @@
+{
+	"info": {
+		"_postman_id": "e133a04f-c037-4d3e-a9fd-a4089298d84c",
+		"name": "Restaurant Food Planning System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "273117"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "DataManagement",
+					"item": [
+						{
+							"name": "unit",
+							"item": [
+								{
+									"name": "creation",
+									"item": [
+										{
+											"name": "Insert a record into table \"Unit\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/unit/creation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"unit",
+														"creation"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/unit/creation",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"unit",
+																"creation"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "update",
+									"item": [
+										{
+											"name": "Update a record in table \"Unit\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/unit/update",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"unit",
+														"update"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/unit/update",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"unit",
+																"update"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "read",
+									"item": [
+										{
+											"name": "Retrieve records from table \"Unit\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/unit/read",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"unit",
+														"read"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/unit/read",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"unit",
+																"read"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "{id}",
+									"item": [
+										{
+											"name": "Delete specific record in table \"Unit\"",
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/unit/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"unit",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "<integer>",
+															"description": "(Required) This id of a unit"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/unit/:id",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"unit",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "type",
+							"item": [
+								{
+									"name": "creation",
+									"item": [
+										{
+											"name": "Insert a record into table \"Type\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/type/creation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"type",
+														"creation"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/type/creation",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"type",
+																"creation"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "update",
+									"item": [
+										{
+											"name": "Update a record in table \"Type\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/type/update",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"type",
+														"update"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/type/update",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"type",
+																"update"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "read",
+									"item": [
+										{
+											"name": "Retrieve records from table \"Type\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/type/read",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"type",
+														"read"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/type/read",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"type",
+																"read"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": [\n      {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\"\n      }\n    ]\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "{id}",
+									"item": [
+										{
+											"name": "Delete record in table \"Type\"",
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/type/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"type",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "<integer>",
+															"description": "(Required) This object contains the id of a food category"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/type/:id",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"type",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "food-item",
+							"item": [
+								{
+									"name": "creation",
+									"item": [
+										{
+											"name": "Insert a record into table \"FoodItem\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"quantity\": \"<integer>\",\n  \"unit_Id\": \"<integer>\",\n  \"type_Id\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/food-item/creation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"food-item",
+														"creation"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"quantity\": \"<integer>\",\n  \"unit_Id\": \"<integer>\",\n  \"type_Id\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/food-item/creation",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"food-item",
+																"creation"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"unit_Id\": \"<integer>\",\n      \"type_Id\": \"<integer>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "update",
+									"item": [
+										{
+											"name": "Update a record in table \"FoodItem\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"quantity\": \"<integer>\",\n  \"unit_Id\": \"<integer>\",\n  \"type_Id\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/food-item/update",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"food-item",
+														"update"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"quantity\": \"<integer>\",\n  \"unit_Id\": \"<integer>\",\n  \"type_Id\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/food-item/update",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"food-item",
+																"update"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"unit_Id\": \"<integer>\",\n      \"type_Id\": \"<integer>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "read",
+									"item": [
+										{
+											"name": "Retrieve records from table \"FoodItem\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"quantity\": \"<integer>\",\n  \"unit_Id\": \"<integer>\",\n  \"type_Id\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/food-item/read",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"food-item",
+														"read"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"quantity\": \"<integer>\",\n  \"unit_Id\": \"<integer>\",\n  \"type_Id\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/food-item/read",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"food-item",
+																"read"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": [\n      {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"quantity\": \"<integer>\",\n        \"unit_Id\": \"<integer>\",\n        \"type_Id\": \"<integer>\"\n      },\n      {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"quantity\": \"<integer>\",\n        \"unit_Id\": \"<integer>\",\n        \"type_Id\": \"<integer>\"\n      }\n    ]\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "{id}",
+									"item": [
+										{
+											"name": "Delete record in table \"FoodItem\"",
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/food-item/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"food-item",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "<integer>",
+															"description": "(Required) the id of a food item"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/food-item/:id",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"food-item",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"unit_Id\": \"<integer>\",\n      \"type_Id\": \"<integer>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "menu-item",
+							"item": [
+								{
+									"name": "creation",
+									"item": [
+										{
+											"name": "Insert a record into table \"MenuItem\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/menu-item/creation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"menu-item",
+														"creation"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/menu-item/creation",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"menu-item",
+																"creation"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "update",
+									"item": [
+										{
+											"name": "Update a record in table \"MenuItem\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/menu-item/update",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"menu-item",
+														"update"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/menu-item/update",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"menu-item",
+																"update"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "read",
+									"item": [
+										{
+											"name": "Retrieve records from table \"MenuItem\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/menu-item/read",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"menu-item",
+														"read"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/menu-item/read",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"menu-item",
+																"read"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": [\n      {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\"\n      }\n    ]\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "{id}",
+									"item": [
+										{
+											"name": "Delete a record in table \"MenuItem\"",
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/menu-item/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"menu-item",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "<integer>",
+															"description": "(Required) The id of a menu item"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/menu-item/:id",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"menu-item",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "menu",
+							"item": [
+								{
+									"name": "creation",
+									"item": [
+										{
+											"name": "Insert a record into table \"Menu\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"date\": \"<dateTime>\",\n  \"menuItem_Id\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/menu/creation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"menu",
+														"creation"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"date\": \"<dateTime>\",\n  \"menuItem_Id\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/menu/creation",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"menu",
+																"creation"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"date\": \"<dateTime>\",\n      \"menuItem_Id\": \"<integer>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "update",
+									"item": [
+										{
+											"name": "Update a record in table \"Menu\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"date\": \"<dateTime>\",\n  \"menuItem_Id\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/menu/update",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"menu",
+														"update"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"date\": \"<dateTime>\",\n  \"menuItem_Id\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/menu/update",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"menu",
+																"update"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"date\": \"<dateTime>\",\n      \"menuItem_Id\": \"<integer>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "read",
+									"item": [
+										{
+											"name": "Retrieve records from table \"Menu\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"date\": \"<dateTime>\",\n  \"menuItem_Id\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/menu/read",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"menu",
+														"read"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"date\": \"<dateTime>\",\n  \"menuItem_Id\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/menu/read",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"menu",
+																"read"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": [\n      {\n        \"id\": \"<integer>\",\n        \"date\": \"<dateTime>\",\n        \"menuItem_Id\": \"<integer>\"\n      },\n      {\n        \"id\": \"<integer>\",\n        \"date\": \"<dateTime>\",\n        \"menuItem_Id\": \"<integer>\"\n      }\n    ]\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "{id}",
+									"item": [
+										{
+											"name": "Delete a record from table \"Menu\"",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/menu/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"menu",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "<integer>",
+															"description": "(Required) the id of a menu"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/menu/:id",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"menu",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "menu-item-food-item",
+							"item": [
+								{
+									"name": "creation",
+									"item": [
+										{
+											"name": "Insert a record into table \"MenuItemFoodItem\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"menuItem_Id\": \"<integer>\",\n  \"foodItem_Id\": \"<integer>\",\n  \"consumption\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/menu-item-food-item/creation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"menu-item-food-item",
+														"creation"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"menuItem_Id\": \"<integer>\",\n  \"foodItem_Id\": \"<integer>\",\n  \"consumption\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/menu-item-food-item/creation",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"menu-item-food-item",
+																"creation"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"menuItem_Id\": \"<integer>\",\n      \"foodItem_Id\": \"<integer>\",\n      \"consumption\": \"<integer>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "update",
+									"item": [
+										{
+											"name": "Update a record in table \"MenuItemFoodItem\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"menuItem_Id\": \"<integer>\",\n  \"foodItem_Id\": \"<integer>\",\n  \"consumption\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/menu-item-food-item/update",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"menu-item-food-item",
+														"update"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"menuItem_Id\": \"<integer>\",\n  \"foodItem_Id\": \"<integer>\",\n  \"consumption\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/menu-item-food-item/update",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"menu-item-food-item",
+																"update"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"menuItem_Id\": \"<integer>\",\n      \"foodItem_Id\": \"<integer>\",\n      \"consumption\": \"<integer>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "read",
+									"item": [
+										{
+											"name": "Retrieve records from table \"MenuItemFoodItem\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"menuItem_Id\": \"<integer>\",\n  \"foodItem_Id\": \"<integer>\",\n  \"consumption\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/menu-item-food-item/read",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"menu-item-food-item",
+														"read"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"menuItem_Id\": \"<integer>\",\n  \"foodItem_Id\": \"<integer>\",\n  \"consumption\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/menu-item-food-item/read",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"menu-item-food-item",
+																"read"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": [\n      {\n        \"menuItem_Id\": \"<integer>\",\n        \"foodItem_Id\": \"<integer>\",\n        \"consumption\": \"<integer>\"\n      },\n      {\n        \"menuItem_Id\": \"<integer>\",\n        \"foodItem_Id\": \"<integer>\",\n        \"consumption\": \"<integer>\"\n      }\n    ]\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "Delete record in table \"MenuItemFoodItem\"",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"menuItem_Id\": \"<integer>\",\n  \"foodItem_Id\": \"<integer>\",\n  \"consumption\": \"<integer>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/DataManagement/menu-item-food-item",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"DataManagement",
+												"menu-item-food-item"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													},
+													{
+														"key": "Authorization",
+														"value": "<API Key>",
+														"description": "Added as a part of security scheme: apikey"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"menuItem_Id\": \"<integer>\",\n  \"foodItem_Id\": \"<integer>\",\n  \"consumption\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8081/api/DataManagement/menu-item-food-item",
+													"host": [
+														"localhost"
+													],
+													"port": "8081",
+													"path": [
+														"api",
+														"DataManagement",
+														"menu-item-food-item"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": [\n      {\n        \"menuItem_Id\": \"<integer>\",\n        \"foodItem_Id\": \"<integer>\",\n        \"consumption\": \"<integer>\"\n      },\n      {\n        \"menuItem_Id\": \"<integer>\",\n        \"foodItem_Id\": \"<integer>\",\n        \"consumption\": \"<integer>\"\n      }\n    ]\n  },\n  \"error\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "order",
+							"item": [
+								{
+									"name": "creation",
+									"item": [
+										{
+											"name": "Insert record into table \"Order\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"isCanceled\": \"<boolean>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/order/creation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"order",
+														"creation"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"isCanceled\": \"<boolean>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/order/creation",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"order",
+																"creation"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"isCanceled\": \"<boolean>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "update",
+									"item": [
+										{
+											"name": "Update record in table \"Order\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"isCanceled\": \"<boolean>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/order/update",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"order",
+														"update"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"isCanceled\": \"<boolean>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/order/update",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"order",
+																"update"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"amount\": \"<integer>\",\n  \"resultDto\": {\n    \"id\": \"<integer>\",\n    \"isCanceled\": \"<boolean>\"\n  }\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "read",
+									"item": [
+										{
+											"name": "Retrieve records from table \"Order\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"isCanceled\": \"<boolean>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/order/read",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"order",
+														"read"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"isCanceled\": \"<boolean>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/order/read",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"order",
+																"read"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "{id}",
+									"item": [
+										{
+											"name": "Delete a record from table \"Order\"",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/order/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"order",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "<integer>",
+															"description": "(Required) The id of an order"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/order/:id",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"order",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "order-item",
+							"item": [
+								{
+									"name": "creation",
+									"item": [
+										{
+											"name": "Insert a record into table \"OrderItem\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"orderId\": \"<integer>\",\n  \"menuItemId\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/order-item/creation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"order-item",
+														"creation"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"orderId\": \"<integer>\",\n  \"menuItemId\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/order-item/creation",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"order-item",
+																"creation"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"amount\": \"<integer>\",\n  \"resultDto\": {\n    \"id\": \"<integer>\",\n    \"orderId\": \"<integer>\",\n    \"menuItemId\": \"<integer>\"\n  }\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "update",
+									"item": [
+										{
+											"name": "Update a record in table \"OrderItem\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"orderId\": \"<integer>\",\n  \"menuItemId\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/order-item/update",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"order-item",
+														"update"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"orderId\": \"<integer>\",\n  \"menuItemId\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/order-item/update",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"order-item",
+																"update"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"amount\": \"<integer>\",\n  \"resultDto\": {\n    \"id\": \"<integer>\",\n    \"orderId\": \"<integer>\",\n    \"menuItemId\": \"<integer>\"\n  }\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "read",
+									"item": [
+										{
+											"name": "Retrieve records from table \"OrderItem\"",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"id\": \"<integer>\",\n  \"orderId\": \"<integer>\",\n  \"menuItemId\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/order-item/read",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"order-item",
+														"read"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"id\": \"<integer>\",\n  \"orderId\": \"<integer>\",\n  \"menuItemId\": \"<integer>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/order-item/read",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"order-item",
+																"read"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"amount\": \"<integer>\",\n  \"resultDto\": [\n    {\n      \"id\": \"<integer>\",\n      \"orderId\": \"<integer>\",\n      \"menuItemId\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"orderId\": \"<integer>\",\n      \"menuItemId\": \"<integer>\"\n    }\n  ]\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "{id}",
+									"item": [
+										{
+											"name": "Delete a record in table \"OrderItem\"",
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/DataManagement/order-item/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"DataManagement",
+														"order-item",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "<integer>",
+															"description": "(Required) The id of an order item"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"url": {
+															"raw": "localhost:8081/api/DataManagement/order-item/:id",
+															"host": [
+																"localhost"
+															],
+															"port": "8081",
+															"path": [
+																"api",
+																"DataManagement",
+																"order-item",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"amount\": \"<integer>\",\n  \"resultDto\": {\n    \"id\": \"<integer>\",\n    \"orderId\": \"<integer>\",\n    \"menuItemId\": \"<integer>\"\n  }\n}"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Order",
+					"item": [
+						{
+							"name": "place-order",
+							"item": [
+								{
+									"name": "Place an order",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"order\": {\n    \"id\": \"<integer>\",\n    \"isCanceled\": \"<boolean>\"\n  },\n  \"orderItems\": [\n    {\n      \"id\": \"<integer>\",\n      \"orderId\": \"<integer>\",\n      \"menuItemId\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"orderId\": \"<integer>\",\n      \"menuItemId\": \"<integer>\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/Order/place-order",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Order",
+												"place-order"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													},
+													{
+														"key": "Authorization",
+														"value": "<API Key>",
+														"description": "Added as a part of security scheme: apikey"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"order\": {\n    \"id\": \"<integer>\",\n    \"isCanceled\": \"<boolean>\"\n  },\n  \"orderItems\": [\n    {\n      \"id\": \"<integer>\",\n      \"orderId\": \"<integer>\",\n      \"menuItemId\": \"<integer>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"orderId\": \"<integer>\",\n      \"menuItemId\": \"<integer>\"\n    }\n  ]\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8081/api/Order/place-order",
+													"host": [
+														"localhost"
+													],
+													"port": "8081",
+													"path": [
+														"api",
+														"Order",
+														"place-order"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"orderResDto\": {\n      \"amount\": \"<integer>\",\n      \"resultDto\": {\n        \"id\": \"<integer>\",\n        \"isCanceled\": \"<boolean>\"\n      }\n    },\n    \"orderItemResDtos\": [\n      {\n        \"amount\": \"<integer>\",\n        \"resultDto\": {\n          \"id\": \"<integer>\",\n          \"orderId\": \"<integer>\",\n          \"menuItemId\": \"<integer>\"\n        }\n      },\n      {\n        \"amount\": \"<integer>\",\n        \"resultDto\": {\n          \"id\": \"<integer>\",\n          \"orderId\": \"<integer>\",\n          \"menuItemId\": \"<integer>\"\n        }\n      }\n    ]\n  },\n  \"error\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "cancel-order",
+							"item": [
+								{
+									"name": "{id}",
+									"item": [
+										{
+											"name": "Cancel an order",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/Order/cancel-order/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"Order",
+														"cancel-order",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "<integer>",
+															"description": "(Required) This is the id of a specific order"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Success",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															},
+															{
+																"key": "Authorization",
+																"value": "<API Key>",
+																"description": "Added as a part of security scheme: apikey"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/Order/cancel-order/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"Order",
+																"cancel-order",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"isCanceled\": \"<boolean>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Role",
+					"item": [
+						{
+							"name": "creation",
+							"item": [
+								{
+									"name": "Insert a record into table \"AspNetRoles\"",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/Role/creation",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Role",
+												"creation"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													},
+													{
+														"key": "Authorization",
+														"value": "<API Key>",
+														"description": "Added as a part of security scheme: apikey"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/Role/creation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"Role",
+														"creation"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"createdDate\": \"<dateTime>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "update",
+							"item": [
+								{
+									"name": "Update a record in table \"AspNetRoles\"",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<integer>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/Role/update",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Role",
+												"update"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													},
+													{
+														"key": "Authorization",
+														"value": "<API Key>",
+														"description": "Added as a part of security scheme: apikey"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<integer>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/Role/update",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"Role",
+														"update"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"createdDate\": \"<dateTime>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "read",
+							"item": [
+								{
+									"name": "Retrieve records from table \"AspNetRoles\"",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"createdDate\": \"<dateTime>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/Role/read",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Role",
+												"read"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													},
+													{
+														"key": "Authorization",
+														"value": "<API Key>",
+														"description": "Added as a part of security scheme: apikey"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"createdDate\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/Role/read",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"Role",
+														"read"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"createdDate\": \"<dateTime>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "Delete specific record in table \"AspNetRoles\"",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/Role/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Role",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "<integer>",
+													"description": "(Required) This id of a role"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													},
+													{
+														"key": "Authorization",
+														"value": "<API Key>",
+														"description": "Added as a part of security scheme: apikey"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/Role/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"Role",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"createdDate\": \"<dateTime>\"\n    }\n  },\n  \"error\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "login",
+							"item": [
+								{
+									"name": "Send login information to validate",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/User/login",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"User",
+												"login"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													},
+													{
+														"key": "Authorization",
+														"value": "<API Key>",
+														"description": "Added as a part of security scheme: apikey"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"name\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/User/login",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"User",
+														"login"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"userName\": \"<string>\",\n      \"role\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"token\": \"<string>\"\n  },\n  \"error\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "register",
+							"item": [
+								{
+									"name": "Send user information to do registration",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/User/register",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"User",
+												"register"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													},
+													{
+														"key": "Authorization",
+														"value": "<API Key>",
+														"description": "Added as a part of security scheme: apikey"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"name\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/User/register",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"User",
+														"register"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"userName\": \"<string>\",\n      \"role\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"error\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "Get a specific user information by user's id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/User/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"User",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "<integer>",
+													"description": "(Required) The integer id of a user"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													},
+													{
+														"key": "Authorization",
+														"value": "<API Key>",
+														"description": "Added as a part of security scheme: apikey"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/User/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"User",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": {\n      \"id\": \"<integer>\",\n      \"userName\": \"<string>\",\n      \"role\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"error\": \"<string>\"\n}"
+										}
+									]
+								},
+								{
+									"name": "Delete a user from table \"User\"",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/User/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"User",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "<integer>",
+													"description": "(Required) The integer id of a user"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													},
+													{
+														"key": "Authorization",
+														"value": "<API Key>",
+														"description": "Added as a part of security scheme: apikey"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/User/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"User",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": [\n      {\n        \"id\": \"<integer>\",\n        \"userName\": \"<string>\",\n        \"role\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"id\": \"<integer>\",\n        \"userName\": \"<string>\",\n        \"role\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  },\n  \"error\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "assign-role",
+							"item": [
+								{
+									"name": "{userId}",
+									"item": [
+										{
+											"name": "{roleId}",
+											"item": [
+												{
+													"name": "Assign User to a Role",
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/User/assign-role/:userId/:roleId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"User",
+																"assign-role",
+																":userId",
+																":roleId"
+															],
+															"variable": [
+																{
+																	"key": "userId",
+																	"value": "<integer>",
+																	"description": "(Required) The integer id of a user"
+																},
+																{
+																	"key": "roleId",
+																	"value": "<integer>",
+																	"description": "(Required) The integer id of a role"
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "Success",
+															"originalRequest": {
+																"method": "POST",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	},
+																	{
+																		"key": "Authorization",
+																		"value": "<API Key>",
+																		"description": "Added as a part of security scheme: apikey"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/User/assign-role/:userId/:roleId",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"User",
+																		"assign-role",
+																		":userId",
+																		":roleId"
+																	],
+																	"variable": [
+																		{
+																			"key": "userId"
+																		},
+																		{
+																			"key": "roleId"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": [\n      {\n        \"id\": \"<integer>\",\n        \"userName\": \"<string>\",\n        \"role\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"id\": \"<integer>\",\n        \"userName\": \"<string>\",\n        \"role\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  },\n  \"error\": \"<string>\"\n}"
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "remove-role",
+							"item": [
+								{
+									"name": "{userId}",
+									"item": [
+										{
+											"name": "{roleId}",
+											"item": [
+												{
+													"name": "Remove a Role from a user",
+													"request": {
+														"auth": {
+															"type": "bearer"
+														},
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/User/remove-role/:userId/:roleId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"User",
+																"remove-role",
+																":userId",
+																":roleId"
+															],
+															"variable": [
+																{
+																	"key": "userId",
+																	"value": "1",
+																	"description": "(Required) The integer id of a user"
+																},
+																{
+																	"key": "roleId",
+																	"value": "2",
+																	"description": "(Required) The integer id of a role"
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "Success",
+															"originalRequest": {
+																"method": "POST",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	},
+																	{
+																		"key": "Authorization",
+																		"value": "<API Key>",
+																		"description": "Added as a part of security scheme: apikey"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/User/remove-role/:userId/:roleId",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"User",
+																		"remove-role",
+																		":userId",
+																		":roleId"
+																	],
+																	"variable": [
+																		{
+																			"key": "userId"
+																		},
+																		{
+																			"key": "roleId"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": [\n      {\n        \"id\": \"<integer>\",\n        \"userName\": \"<string>\",\n        \"role\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"id\": \"<integer>\",\n        \"userName\": \"<string>\",\n        \"role\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  },\n  \"error\": \"<string>\"\n}"
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Get all user information",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/User",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"User"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											},
+											{
+												"key": "Authorization",
+												"value": "<API Key>",
+												"description": "Added as a part of security scheme: apikey"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/User",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"User"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"isSuccess\": \"<boolean>\",\n  \"value\": {\n    \"amount\": \"<integer>\",\n    \"resultDto\": [\n      {\n        \"id\": \"<integer>\",\n        \"userName\": \"<string>\",\n        \"role\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"id\": \"<integer>\",\n        \"userName\": \"<string>\",\n        \"role\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  },\n  \"error\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "{{apiKey}}",
+				"type": "string"
+			},
+			{
+				"key": "in",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "localhost:8081"
+		}
+	]
+}

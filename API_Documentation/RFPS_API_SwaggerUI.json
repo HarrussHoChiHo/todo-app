@@ -1,0 +1,3090 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Restaurant Food Planning System",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/DataManagement/unit/creation": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Insert a record into table \"Unit\"",
+        "requestBody": {
+          "description": "This object contains the name of the unit",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnitQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnitQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnitQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/unit/update": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Update a record in table \"Unit\"",
+        "requestBody": {
+          "description": "This object contains the name required to be updated and the id of a unit",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnitQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnitQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnitQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/unit/read": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Retrieve records from table \"Unit\"",
+        "requestBody": {
+          "description": "This object contains the name and id of a unit",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnitQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnitQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnitQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/unit/{id}": {
+      "delete": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Delete specific record in table \"Unit\"",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "This id of a unit",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnitResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/type/creation": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Insert a record into table \"Type\"",
+        "requestBody": {
+          "description": "This object contains the name and id of a food category",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypeQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypeQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypeQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/type/update": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Update a record in table \"Type\"",
+        "requestBody": {
+          "description": "This object contains the name and id of a food category",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypeQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypeQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypeQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/type/read": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Retrieve records from table \"Type\"",
+        "requestBody": {
+          "description": "This object contains the name and id of a food category",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypeQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypeQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypeQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeResultDtoListDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeResultDtoListDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeResultDtoListDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/type/{id}": {
+      "delete": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Delete record in table \"Type\"",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "This object contains the id of a food category",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TypeResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/food-item/creation": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Insert a record into table \"FoodItem\"",
+        "requestBody": {
+          "description": "This object contains: id,  name, quantity, the id of type, and the id of unit",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodItemQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodItemQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodItemQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/food-item/update": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Update a record in table \"FoodItem\"",
+        "requestBody": {
+          "description": "This object contains: id,  name, quantity, the id of type, and the id of unit",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodItemQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodItemQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodItemQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/food-item/read": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Retrieve records from table \"FoodItem\"",
+        "requestBody": {
+          "description": "This object contains: id,  name, quantity, the id of type, and the id of unit",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodItemQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodItemQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FoodItemQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemResultDtoListDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemResultDtoListDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemResultDtoListDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/food-item/{id}": {
+      "delete": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Delete record in table \"FoodItem\"",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the id of a food item",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodItemResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/menu-item/creation": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Insert a record into table \"MenuItem\"",
+        "requestBody": {
+          "description": "This object contains the id and name of a menu item",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/menu-item/update": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Update a record in table \"MenuItem\"",
+        "requestBody": {
+          "description": "This object contains the id and name of a menu item",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/menu-item/read": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Retrieve records from table \"MenuItem\"",
+        "requestBody": {
+          "description": "This object contains the id and name of a menu item",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResultDtoListDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResultDtoListDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResultDtoListDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/menu-item/{id}": {
+      "delete": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Delete a record in table \"MenuItem\"",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of a menu item",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/menu/creation": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Insert a record into table \"Menu\"",
+        "requestBody": {
+          "description": "This object contains: id, the date of a menu, the id of menu items",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/menu/update": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Update a record in table \"Menu\"",
+        "requestBody": {
+          "description": "This object contains: id, the date of a menu, the id of menu items",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/menu/read": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Retrieve records from table \"Menu\"",
+        "requestBody": {
+          "description": "This object contains: id, the date of a menu, the id of menu items",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuResultDtoListDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuResultDtoListDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuResultDtoListDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/menu/{id}": {
+      "delete": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Delete a record from table \"Menu\"",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the id of a menu",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/DataManagement/menu-item-food-item/creation": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Insert a record into table \"MenuItemFoodItem\"",
+        "requestBody": {
+          "description": "This object contains the id of a menu item, the id of a food item, and the consumption",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemFoodItemQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemFoodItemQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemFoodItemQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemFoodItemResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemFoodItemResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemFoodItemResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/menu-item-food-item/update": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Update a record in table \"MenuItemFoodItem\"",
+        "requestBody": {
+          "description": "This object contains the id of a menu item, the id of a food item, and the consumption",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemFoodItemQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemFoodItemQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemFoodItemQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemFoodItemResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemFoodItemResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemFoodItemResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/menu-item-food-item/read": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Retrieve records from table \"MenuItemFoodItem\"",
+        "requestBody": {
+          "description": "This object contains the id of a menu item, the id of a food item, and the consumption",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemFoodItemQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemFoodItemQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemFoodItemQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemFoodItemResultDtoListDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemFoodItemResultDtoListDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemFoodItemResultDtoListDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/menu-item-food-item": {
+      "delete": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Delete record in table \"MenuItemFoodItem\"",
+        "requestBody": {
+          "description": "This object contains the id of a menu item, the id of a food item, and the consumption",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemFoodItemQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemFoodItemQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MenuItemFoodItemQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemFoodItemResultDtoListDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemFoodItemResultDtoListDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuItemFoodItemResultDtoListDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/order/creation": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Insert record into table \"Order\"",
+        "requestBody": {
+          "description": "This object contains the id of an order and the flag of cancellation",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/order/update": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Update record in table \"Order\"",
+        "requestBody": {
+          "description": "This object contains the id of an order and the flag of cancellation",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResultDtoDbOperationResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResultDtoDbOperationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResultDtoDbOperationResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/order/read": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Retrieve records from table \"Order\"",
+        "requestBody": {
+          "description": "This object contains the id of an order and the flag of cancellation",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/DataManagement/order/{id}": {
+      "delete": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Delete a record from table \"Order\"",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of an order",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/DataManagement/order-item/creation": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Insert a record into table \"OrderItem\"",
+        "requestBody": {
+          "description": "This object contains the id of an order item, the id of an order, and the id of a menu item",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResultDtoDbOperationResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResultDtoDbOperationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResultDtoDbOperationResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/order-item/update": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Update a record in table \"OrderItem\"",
+        "requestBody": {
+          "description": "This object contains the id of an order item, the id of an order, and the id of a menu item",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResultDtoDbOperationResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResultDtoDbOperationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResultDtoDbOperationResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/order-item/read": {
+      "post": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Retrieve records from table \"OrderItem\"",
+        "requestBody": {
+          "description": "This object contains the id of an order item, the id of an order, and the id of a menu item",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResultDtoListDbOperationResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResultDtoListDbOperationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResultDtoListDbOperationResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DataManagement/order-item/{id}": {
+      "delete": {
+        "tags": [
+          "DataManagement"
+        ],
+        "summary": "Delete a record in table \"OrderItem\"",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of an order item",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResultDtoDbOperationResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResultDtoDbOperationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderItemResultDtoDbOperationResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Order/place-order": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Place an order",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderPlacementQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderPlacementQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderPlacementQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderPlacementResDtoResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderPlacementResDtoResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderPlacementResDtoResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Order/cancel-order/{id}": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Cancel an order",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "This is the id of a specific order",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Role/creation": {
+      "post": {
+        "tags": [
+          "Role"
+        ],
+        "summary": "Insert a record into table \"AspNetRoles\"",
+        "requestBody": {
+          "description": "This object contains the name of a role",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleBasicDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleBasicDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleBasicDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Role/update": {
+      "post": {
+        "tags": [
+          "Role"
+        ],
+        "summary": "Update a record in table \"AspNetRoles\"",
+        "requestBody": {
+          "description": "This object contains the name required to be updated and the id of a role",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleFullDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleFullDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleFullDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Role/read": {
+      "post": {
+        "tags": [
+          "Role"
+        ],
+        "summary": "Retrieve records from table \"AspNetRoles\"",
+        "requestBody": {
+          "description": "This object contains the name and id of a role",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleQueryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleQueryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleQueryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Role/{id}": {
+      "delete": {
+        "tags": [
+          "Role"
+        ],
+        "summary": "Delete specific record in table \"AspNetRoles\"",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "This id of a role",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Send login information to validate",
+        "requestBody": {
+          "description": "The object containing username and password.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserBasicDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserBasicDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserBasicDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoUserResDtoResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoUserResDtoResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoUserResDtoResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Send user information to do registration",
+        "requestBody": {
+          "description": "The object containing username and password.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserBasicDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserBasicDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserBasicDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get a specific user information by user's id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The integer id of a user",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete a user from table \"User\"",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The integer id of a user",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoListDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoListDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoListDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get all user information",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoListDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoListDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoListDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/assign-role/{userId}/{roleId}": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Assign User to a Role",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The integer id of a user",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "roleId",
+            "in": "path",
+            "description": "The integer id of a role",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoListDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoListDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoListDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/remove-role/{userId}/{roleId}": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Remove a Role from a user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The integer id of a user",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "roleId",
+            "in": "path",
+            "description": "The integer id of a role",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoListDbOperationResultResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoListDbOperationResultResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResultDtoListDbOperationResultResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FoodItemQueryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "unit_Id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "type_Id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FoodItemResultDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unit_Id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type_Id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FoodItemResultDtoDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "$ref": "#/components/schemas/FoodItemResultDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FoodItemResultDtoDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/FoodItemResultDtoDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FoodItemResultDtoListDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodItemResultDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FoodItemResultDtoListDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/FoodItemResultDtoListDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuItemFoodItemQueryDto": {
+        "type": "object",
+        "properties": {
+          "menuItem_Id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "foodItem_Id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "consumption": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuItemFoodItemResultDto": {
+        "type": "object",
+        "properties": {
+          "menuItem_Id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "foodItem_Id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "consumption": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuItemFoodItemResultDtoDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "$ref": "#/components/schemas/MenuItemFoodItemResultDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuItemFoodItemResultDtoDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/MenuItemFoodItemResultDtoDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuItemFoodItemResultDtoListDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuItemFoodItemResultDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuItemFoodItemResultDtoListDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/MenuItemFoodItemResultDtoListDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuItemQueryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuItemResultDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuItemResultDtoDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "$ref": "#/components/schemas/MenuItemResultDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuItemResultDtoDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/MenuItemResultDtoDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuItemResultDtoListDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuItemResultDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuItemResultDtoListDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/MenuItemResultDtoListDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuQueryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "menuItem_Id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuResultDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "menuItem_Id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuResultDtoDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "$ref": "#/components/schemas/MenuResultDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuResultDtoDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/MenuResultDtoDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuResultDtoListDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuResultDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuResultDtoListDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/MenuResultDtoListDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderItemQueryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "orderId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "menuItemId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderItemResultDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "menuItemId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderItemResultDtoDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "$ref": "#/components/schemas/OrderItemResultDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderItemResultDtoListDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItemResultDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderPlacementQueryDto": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/OrderQueryDto"
+          },
+          "orderItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItemQueryDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderPlacementResDto": {
+        "type": "object",
+        "properties": {
+          "orderResDto": {
+            "$ref": "#/components/schemas/OrderResultDtoDbOperationResult"
+          },
+          "orderItemResDtos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItemResultDtoDbOperationResult"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderPlacementResDtoResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/OrderPlacementResDto"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderQueryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isCanceled": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderResultDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isCanceled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderResultDtoDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "$ref": "#/components/schemas/OrderResultDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderResultDtoDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/OrderResultDtoDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoleBasicDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoleFullDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoleQueryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoleResultDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoleResultDtoDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "$ref": "#/components/schemas/RoleResultDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoleResultDtoDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/RoleResultDtoDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TypeQueryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TypeResultDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TypeResultDtoDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "$ref": "#/components/schemas/TypeResultDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TypeResultDtoDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/TypeResultDtoDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TypeResultDtoListDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TypeResultDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TypeResultDtoListDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/TypeResultDtoListDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnitQueryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnitResultDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnitResultDtoDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "$ref": "#/components/schemas/UnitResultDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnitResultDtoDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/UnitResultDtoDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserBasicDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserResultDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "role": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserResultDtoDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "$ref": "#/components/schemas/UserResultDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserResultDtoDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/UserResultDtoDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserResultDtoListDbOperationResult": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserResultDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserResultDtoListDbOperationResultResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/UserResultDtoListDbOperationResult"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserResultDtoUserResDto": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultDto": {
+            "$ref": "#/components/schemas/UserResultDto"
+          },
+          "token": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserResultDtoUserResDtoResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "value": {
+            "$ref": "#/components/schemas/UserResultDtoUserResDto"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "Add bearer token",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
+}
