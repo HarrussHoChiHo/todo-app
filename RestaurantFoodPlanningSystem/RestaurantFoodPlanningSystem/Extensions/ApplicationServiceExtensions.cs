@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Application.Core;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using RestaurantFoodPlanningSystem.Services;
@@ -105,7 +106,7 @@ public static class ApplicationServiceExtensions
         services.AddTransient<IOrder, OrderImp>();
         services.AddTransient<IOrderItem, OrderItemImp>();
         services.AddScoped<TokenService>();
-
+        services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationHandler>();
 
         return services;
     }
