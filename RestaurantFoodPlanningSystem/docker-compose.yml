@@ -8,7 +8,7 @@
     ports:
       - "8081:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=mssql-db;Database=RFPS;User Id=sa;Password=RestaurantFoodPlanningSystem123;TrustServerCertificate=True;MultipleActiveResultSets=True;
+      - ConnectionStrings__DefaultConnection=<YourConnectionString>
     depends_on:
       mssql-db:
         condition: service_healthy
@@ -22,10 +22,10 @@
     ports:
       - "1433:1433"
     environment:
-      MSSQL_SA_PASSWORD: RestaurantFoodPlanningSystem123
+      MSSQL_SA_PASSWORD: <YourStrongPassword>
       ACCEPT_EULA: Y
     healthcheck:
-      test: "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P RestaurantFoodPlanningSystem123 -Q 'SELECT 1' || exit 1"
+      test: "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P <YourStrongPassword> -Q 'SELECT 1' || exit 1"
       interval: 10s
       timeout: 5s
       retries: 3

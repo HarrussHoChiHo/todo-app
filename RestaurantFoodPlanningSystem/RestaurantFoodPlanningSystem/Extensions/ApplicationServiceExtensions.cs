@@ -27,6 +27,8 @@ public static class ApplicationServiceExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services,
                                                             IConfiguration          config)
     {
+        services.AddHealthChecks();
+        
         services
             .AddDataProtection()
             .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/DataProtection-Keys"));

@@ -70,7 +70,19 @@ builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
+builder.Services.AddCors(options =>
+                         {
+                             options.AddPolicy(name: "CORS",
+                                               policy  =>
+                                               {
+                                                   policy.WithOrigins(builder.Configuration.GetSection("AllowedHosts").Value).AllowAnyHeader().AllowAnyMethod();
+                                               });
+                             Console.WriteLine(builder.Configuration.GetSection("AllowedHosts").Value);
+                         });
+
 var app = builder.Build();
+
+app.MapHealthChecks("/health");
 
 using (var scope = app.Services.CreateScope())
 {
@@ -125,6 +137,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("CORS");
 
 app.UseAuthentication();
 app.UseAuthorization();
