@@ -1,7 +1,3 @@
-> [!IMPORTANT] 
-> The Microsoft SQL Server image only supports architecture "amd64". Therefore, the SQL server is not available on the Mac with M1 or above, and not available on those PC with non-amd CPU.
-> For more information: [Docker image of SQL Server](https://hub.docker.com/r/microsoft/mssql-server)
-
 # Steps for setting up the project
 Assuming the current directory is /RestaurantFoodPlanningSystem
 1. Place docker-compose.yml in folder RestaurantFoodPlanningSystem
@@ -21,11 +17,11 @@ Restaurant Food Planning System
 
 ## Technologies
 ### Front-end
-  - React, Next.js
+  - React
 ### Back-end
   - C#, .Net Core
 ### Database
-  - Microsoft SQL Server
+  - Postgres
 
 ## Functionalities
 ### Order Subsystem
