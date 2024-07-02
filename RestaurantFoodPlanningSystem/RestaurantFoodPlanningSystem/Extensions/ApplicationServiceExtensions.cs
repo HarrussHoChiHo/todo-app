@@ -37,7 +37,7 @@ public static class ApplicationServiceExtensions
                                              opt =>
                                              {
                                                  //Console.WriteLine(config.GetConnectionString("DefaultConnection"));
-                                                 opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+                                                 opt.UseNpgsql(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
                                              });
         
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
@@ -67,8 +67,7 @@ public static class ApplicationServiceExtensions
                                                                           new SymmetricSecurityKey(
                                                                                                    Encoding.UTF8
                                                                                                            .GetBytes(
-                                                                                                                     config
-                                                                                                                         ["TokenKey"]
+                                                                                                                     Environment.GetEnvironmentVariable("TOKEN")
                                                                                                                     )),
                                                                       RequireExpirationTime = true,
                                                                       ClockSkew             = TimeSpan.Zero

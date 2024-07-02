@@ -22,7 +22,7 @@ public class AuthorizationHandler : IAuthorizationMiddlewareResultHandler
                            Message = ""
                        };
 
-        if (authorizeResult.Challenged)
+        if (!authorizeResult.Succeeded)
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             response = new

@@ -87,7 +87,6 @@ public class RFPSDbContext : IdentityDbContext<User, Role, int>
         /* END: Define foreign key and relationship for each table */
 
         /* BEG: Define columns for each table */
-
         modelBuilder
             .Entity<Menu>()
             .Property(prop => prop.Id)
@@ -99,7 +98,7 @@ public class RFPSDbContext : IdentityDbContext<User, Role, int>
             .Entity<Menu>()
             .Property(prop => prop.Date)
             .IsRequired()
-            .HasColumnType("smalldatetime")
+            .HasColumnType("date")
             .HasColumnOrder(1);
 
         modelBuilder
@@ -238,7 +237,7 @@ public class RFPSDbContext : IdentityDbContext<User, Role, int>
             .ToTable(
                      table => table.HasCheckConstraint(
                                                        "CK_Consumption",
-                                                       "[Consumption] > 0"));
+                                                       "\"Consumption\" > 0"));
         /* END: Define constraints */
     }
 

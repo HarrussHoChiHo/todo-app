@@ -1,16 +1,15 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace EntityFrameworkCore;
 
 public class MigrationService(
     RFPSDbContext              context,
-    IConfiguration             config,
     ILogger<MigrationService> logger)
 {
     public async Task Migration(string fromMigration = null,
@@ -24,10 +23,8 @@ public class MigrationService(
                                                 idempotent
                                                     ? MigrationsSqlGenerationOptions.Idempotent
                                                     : MigrationsSqlGenerationOptions.Default);
-
-        Console.WriteLine(script);
-
-        await using var connection = new SqlConnection(config.GetConnectionString("DefaultConnection"));
+        
+        await using var connection = new NpgsqlConnection(Environment.GetEnvironmentVariable("CONNECTION_STRING"));
         connection.Open();
         var batches = script.Split(
                                    new[]
@@ -36,36 +33,37 @@ public class MigrationService(
                                    },
                                    StringSplitOptions.RemoveEmptyEntries);
 
-        await using (var transaction = await context.Database.BeginTransactionAsync())
+        
+        var transaction = await context.Database.BeginTransactionAsync();
+        
+        try
         {
-            try
+            await context.Database.OpenConnectionAsync();
+            
+            foreach (var batch in batches)
             {
-                await context.Database.OpenConnectionAsync();
+                
+                var command = context
+                              .Database.GetDbConnection()
+                              .CreateCommand();
 
-                foreach (var batch in batches)
-                {
-                    var command = context
-                                  .Database.GetDbConnection()
-                                  .CreateCommand();
+                command.CommandText = batch;
+                command.Transaction = transaction.GetDbTransaction();
 
-                    command.CommandText = batch;
-                    command.Transaction = transaction.GetDbTransaction();
-
-                    await command.ExecuteNonQueryAsync();
-                }
-
-                await transaction.CommitAsync();
-                logger.LogInformation("Transaction Committed Successfully.");
+                await command.ExecuteNonQueryAsync();
             }
-            catch (Exception e)
-            {
-                await transaction.RollbackAsync();
-                logger.LogError($"Migration Error: {e.ToString()}");
-            }
-            finally
-            {
-                 await connection.CloseAsync();
-            }
+
+            await transaction.CommitAsync();
+            logger.LogInformation("Transaction Committed Successfully.");
+        }
+        catch (Exception e)
+        {
+            await transaction.RollbackAsync();
+            logger.LogError($"Migration Error: {e.ToString()}");
+        }
+        finally
+        {
+            await connection.CloseAsync();
         }
     }
 }

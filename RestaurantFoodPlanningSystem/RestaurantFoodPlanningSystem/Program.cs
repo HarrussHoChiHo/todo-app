@@ -7,7 +7,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.OpenApi.Models;
 using RestaurantFoodPlanningSystem.Extensions;
 
-var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+
+var builder          = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -77,7 +80,7 @@ builder.Services.AddCors(options =>
                                                {
                                                    policy.WithOrigins(builder.Configuration.GetSection("AllowedHosts").Value).AllowAnyHeader().AllowAnyMethod();
                                                });
-                             Console.WriteLine(builder.Configuration.GetSection("AllowedHosts").Value);
+                             //Console.WriteLine(builder.Configuration.GetSection("AllowedHosts").Value);
                          });
 
 var app = builder.Build();
@@ -94,19 +97,18 @@ using (var scope = app.Services.CreateScope())
         context.Database.Migrate();
         
         var optionsBuilder = new DbContextOptionsBuilder<RFPSDbContext>();
-        optionsBuilder.UseSqlServer(app.Configuration.GetConnectionString("DefaultConnection"));
+        optionsBuilder.UseNpgsql(connectionString);
         
-        await using (var dbContext = new RFPSDbContext(optionsBuilder.Options))
-        {
-            var migrationService = new MigrationService(
-                                                        dbContext,
-                                                        app.Configuration,
-                                                        services.GetRequiredService<ILogger<MigrationService>>());
-            await migrationService.Migration(
-                                       null,
-                                       null,
-                                       true);
-        }
+        /* await using (var dbContext = new RFPSDbContext(optionsBuilder.Options))
+         {
+             var migrationService = new MigrationService(
+                                                         dbContext,
+                                                         services.GetRequiredService<ILogger<MigrationService>>());
+             await migrationService.Migration(
+                                        null,
+                                        null,
+                                        true); 
+        }*/
         
         await using var createSeedDatacontext = services.GetRequiredService<RFPSDbContext>();
         await SeedData.CreateSeedData(

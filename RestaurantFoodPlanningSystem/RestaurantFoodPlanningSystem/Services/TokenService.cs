@@ -56,7 +56,8 @@ public class TokenService
                                  aud));
         }
 
-        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"]));
+        Console.WriteLine(Environment.GetEnvironmentVariable("TOKEN"));
+        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("TOKEN")));
 
         SigningCredentials sc = new SigningCredentials(
                                                        key,
@@ -85,11 +86,13 @@ public class TokenService
                                                                  IssuerSigningKey =
                                                                      new SymmetricSecurityKey(
                                                                                               Encoding.UTF8.GetBytes(
-                                                                                                                     _config
-                                                                                                                         ["TokenKey"])),
+                                                                                                                     Environment
+                                                                                                                         .GetEnvironmentVariable(
+                                                                                                                                                 "TOKEN"))),
                                                                  RequireExpirationTime = true,
                                                                  ClockSkew             = TimeSpan.Zero
                                                              };
+            
 
             ClaimsPrincipal claimsPrincipal = tokenHandler.ValidateToken(
                                                                          token,

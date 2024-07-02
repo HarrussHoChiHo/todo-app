@@ -1,36 +1,34 @@
 ﻿services:
-  restaurantfoodplanningsystem:
-    image: restaurantfoodplanningsystem
+  rfps-api:
+    image: rfps-api
     container_name: rfps-api
     build:
       context: .
       dockerfile: RestaurantFoodPlanningSystem/Dockerfile
     ports:
       - "8081:8080"
-    environment:
-      - ConnectionStrings__DefaultConnection=<YourConnectionString>
+    env_file: web.env
     depends_on:
-      mssql-db:
+      rfps-db:
         condition: service_healthy
     volumes:
       - ./keys:/home/app/.aspnet/DataProtection-Keys
       
     
-  mssql-db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+  rfps-db:
+    image: arm64v8/postgres:latest
     container_name: rfps-db
     ports:
-      - "1433:1433"
-    environment:
-      MSSQL_SA_PASSWORD: <YourStrongPassword>
-      ACCEPT_EULA: Y
+      - "5432:5432"
+    env_file: db.env
     healthcheck:
-      test: "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P <YourStrongPassword> -Q 'SELECT 1' || exit 1"
+      test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 3
     volumes:
-      - mssql-data:/var/opt/mssql
+      - rfps-db:/var/lib/postgresql/data
 
 volumes:
-  mssql-data:
+  rfps-db:
+    driver: local
