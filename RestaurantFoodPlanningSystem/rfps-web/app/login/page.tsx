@@ -2,17 +2,10 @@
 
 import React, {useState} from "react";
 import {NextPage} from "next";
-import HttpServices from "../lib/HttpServices";
+import HttpServices from "../../lib/HttpServices";
 import {redirect, useRouter} from "next/navigation";
-import LoginQueryDto from "../lib/models/LoginQueryDto";
+import LoginQueryDto from "../../lib/models/LoginQueryDto";
 import {useAuth} from "../AuthContext";
-
-
-interface LoginState {
-    username: string;
-    password: string;
-    hidden: boolean;
-}
 
 const LoginComponent: NextPage = () => {
     const router                  = useRouter();

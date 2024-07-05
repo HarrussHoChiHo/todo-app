@@ -32,9 +32,6 @@ public class TokenService
                                            ClaimTypes.NameIdentifier,
                                            user.Id.ToString()),
                                  new Claim(
-                                           ClaimTypes.Role,
-                                           string.Join(",", user.Role)),
-                                 new Claim(
                                            JwtRegisteredClaimNames.Sub,
                                            user.UserName),
                                  new Claim(
@@ -47,6 +44,12 @@ public class TokenService
                                            _config["Issuer"])
                              };
 
+
+        foreach (string role in user.Role)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
+        
         foreach (string aud in _config["Audience"]
                      .Split(","))
         {
