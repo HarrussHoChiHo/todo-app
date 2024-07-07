@@ -75,7 +75,7 @@ public class RoleController(
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("read")]
-    public async Task<ActionResult<Result<DbOperationResult<RoleResultDto>>>> ReadRole(RoleQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<List<RoleResultDto>>>>> ReadRole(RoleQueryDto queryDto)
     {
         try
         {
@@ -89,7 +89,7 @@ public class RoleController(
             return HandlerResult(Result<string>.Failure(e.Message));
         }
     }
-
+    
     /// <summary>
     /// Delete specific record in table "AspNetRoles"
     /// </summary>

@@ -20,7 +20,6 @@ const LoginComponent: NextPage = () => {
         api.callAPI("/User/login", new LoginQueryDto(username, password), "POST").then(r => {
             if (r.status === 200) {
                 r.json().then(res => {
-                    console.log(res);
                     login(res.value.token);
                     router.push("/dashboard");
                 });

@@ -1,21 +1,26 @@
-interface IUserDto{
-    username: string,
+import {id} from "postcss-selector-parser";
+
+interface IUserDto {
+    userName: string,
     password: string,
+    role: string[]
     id: number
 }
 
 
 class UserDto implements IUserDto {
     password: string;
-    username: string;
+    userName: string;
+    role: string[];
     id: number;
 
-    constructor(username: string,  password: string, id: number) {
-        this.username     = username;
+    constructor(username: string, password: string, id: number, role: string[]) {
+        this.userName = username;
         this.password = password;
-        this.id = id;
+        this.role     = role;
+        this.id       = id;
     }
 }
 
 
-export  default UserDto;
+export default UserDto;
