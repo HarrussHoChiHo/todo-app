@@ -16,13 +16,13 @@ public class AuthorizationHandler : IAuthorizationMiddlewareResultHandler
                                   PolicyAuthorizationResult authorizeResult)
     {
         context.Response.ContentType = "application/json";
-
+        
         var response = new
                        {
                            Message = ""
                        };
 
-        if (!authorizeResult.Succeeded)
+        if (authorizeResult.Challenged)
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             response = new

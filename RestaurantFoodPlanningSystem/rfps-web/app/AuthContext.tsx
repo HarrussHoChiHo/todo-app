@@ -1,5 +1,6 @@
 'use client'
 import React, {createContext, useState, useEffect, ReactNode} from "react";
+import HttpServices from "../lib/HttpServices";
 
 interface AuthContextType {
     token: string | null;
@@ -15,10 +16,20 @@ interface AuthProviderProps {
 
 export function AuthProvider({children}: AuthProviderProps) {
     const [token, setToken] = useState<string | null>(null);
-
+    const httpServices = new HttpServices();
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
-        if (storedToken) setToken(storedToken);
+        (async () => {
+            if (token){
+                let server_res = await (await httpServices.callAPI("/api/TokenValidation", {token: storedToken}, "POST")).json();
+                if (server_res.value === "Authorized") {
+                    setToken(storedToken);
+                } else {
+                    localStorage.removeItem("token");
+                }
+            }
+        })();
+        
     }, []);
 
     const login = (newToken: string) => {
