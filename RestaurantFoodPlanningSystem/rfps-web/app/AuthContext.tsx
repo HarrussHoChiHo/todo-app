@@ -17,20 +17,24 @@ interface AuthProviderProps {
 export function AuthProvider({children}: AuthProviderProps) {
     const [token, setToken] = useState<string | null>(null);
     const httpServices = new HttpServices();
+    const [loading, setLoading] = useState(true);
+    
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
         (async () => {
-            if (token){
-                let server_res = await (await httpServices.callAPI("/api/TokenValidation", {token: storedToken}, "POST")).json();
+            setLoading(true);
+            if (storedToken){
+                let server_res = await (await httpServices.callAPI("/TokenValidation", {token: storedToken}, "POST")).json();
                 if (server_res.value === "Authorized") {
                     setToken(storedToken);
+                    setLoading(false);
                 } else {
                     localStorage.removeItem("token");
+                    setLoading(false);
                 }
             }
         })();
-        
-    }, []);
+    },[]);
 
     const login = (newToken: string) => {
         setToken(newToken);
@@ -50,7 +54,7 @@ export function AuthProvider({children}: AuthProviderProps) {
 
     return (
         <AuthContext.Provider value={value}>
-            {children}
+            {!loading && children}
         </AuthContext.Provider>
     );
 }

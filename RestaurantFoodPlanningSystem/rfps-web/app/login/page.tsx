@@ -13,7 +13,7 @@ const LoginComponent: NextPage = () => {
     const [password, setPassword] = useState("");
     const [hidden, setHidden]     = useState(true);
     const api                     = new HttpServices();
-    const {login} = useAuth();
+    const {token,login} = useAuth();
     
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,7 +29,11 @@ const LoginComponent: NextPage = () => {
             }
         });
     }
-
+    
+    if (token){
+        router.push("/dashboard");
+    }
+    
     return (<div className={"flex flex-col justify-center items-center h-screen"}>
         <div className={"w-1/4 flex flex-col justify-center items-center"}>
             <h2 className={"text-center mb-4 w-full"}>Login</h2>

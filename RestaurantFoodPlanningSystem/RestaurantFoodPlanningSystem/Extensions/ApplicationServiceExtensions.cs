@@ -70,7 +70,7 @@ public static class ApplicationServiceExtensions
                                                                                                                      Environment.GetEnvironmentVariable("TOKEN")
                                                                                                                     )),
                                                                       RequireExpirationTime = true,
-                                                                      ClockSkew             = TimeSpan.Zero
+                                                                      ClockSkew             = TimeSpan.FromHours(3)
                                                                   };
                           });
 

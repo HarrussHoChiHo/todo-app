@@ -1,4 +1,5 @@
 using Application;
+using Application.Dtos.TokenService;
 using Application.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +19,11 @@ public class TokenValidationController(
     /// <returns name="ActionResult">Http Response with Result object</returns>
     [AllowAnonymous]
     [HttpPost]
-    public async Task<ActionResult<Result<string>>> DeleteUser(string token)
+    public async Task<ActionResult<Result<string>>> DeleteUser(Token token)
     {
         try
         {
-            if (tokenService.ValidateToken(token))
+            if (tokenService.ValidateToken(token.token))
             {
                 return HandlerResult(Result<string>.Success("Authorized"));
             }

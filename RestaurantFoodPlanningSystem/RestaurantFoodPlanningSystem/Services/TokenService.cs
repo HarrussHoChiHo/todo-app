@@ -10,14 +10,14 @@ namespace RestaurantFoodPlanningSystem.Services;
 
 public class TokenService
 {
-    private readonly IConfiguration          _config;
+    private readonly IConfiguration          config;
     private          JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
     private          ILogger<TokenService>   _logger;
 
     public TokenService(IConfiguration        config,
                         ILogger<TokenService> logger)
     {
-        _config = config;
+        this.config = config;
         _logger = logger;
     }
 
@@ -41,7 +41,7 @@ public class TokenService
                                                .ToString()),
                                  new Claim(
                                            JwtRegisteredClaimNames.Iss,
-                                           _config["Issuer"])
+                                           config["Issuer"])
                              };
 
 
@@ -50,7 +50,7 @@ public class TokenService
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
         
-        foreach (string aud in _config["Audience"]
+        foreach (string aud in config["Audience"]
                      .Split(","))
         {
             claims.Add(
@@ -68,7 +68,7 @@ public class TokenService
 
         SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor()
                                              {
-                                                 Issuer             = _config["Issuer"],
+                                                 Issuer             = config["Issuer"],
                                                  Subject            = new ClaimsIdentity(claims),
                                                  Expires            = DateTime.UtcNow.AddDays(7),
                                                  SigningCredentials = sc
@@ -86,14 +86,19 @@ public class TokenService
             TokenValidationParameters validationParameters = new TokenValidationParameters()
                                                              {
                                                                  ValidateIssuerSigningKey = true,
+                                                                 ValidateLifetime = true,
+                                                                 ValidateIssuer = true,
+                                                                 ValidIssuer = config["Issuer"],
+                                                                 ValidateAudience = true,
+                                                                 ValidAudiences = config["Audience"]?.Split(","),
                                                                  IssuerSigningKey =
                                                                      new SymmetricSecurityKey(
-                                                                                              Encoding.UTF8.GetBytes(
-                                                                                                                     Environment
-                                                                                                                         .GetEnvironmentVariable(
-                                                                                                                                                 "TOKEN"))),
+                                                                                              Encoding.UTF8
+                                                                                                      .GetBytes(
+                                                                                                                Environment.GetEnvironmentVariable("TOKEN")
+                                                                                                               )),
                                                                  RequireExpirationTime = true,
-                                                                 ClockSkew             = TimeSpan.Zero
+                                                                 ClockSkew             = TimeSpan.FromHours(3)
                                                              };
             
 

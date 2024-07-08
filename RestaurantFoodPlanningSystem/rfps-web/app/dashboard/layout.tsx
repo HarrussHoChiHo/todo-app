@@ -14,8 +14,8 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
         if (!token) {
             router.push("/login");
         }
-    });
-
+    }, []);
+    
     return (<div><HeaderComponent/>{children}<FooterComponent /></div>);
 }
 
