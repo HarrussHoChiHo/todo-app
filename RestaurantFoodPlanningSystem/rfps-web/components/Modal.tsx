@@ -1,24 +1,50 @@
+import {Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure} from "@nextui-org/react";
 import React from "react";
 
 interface ModalProps {
-    isOpen: boolean;
+    isOpen: boolean; 
+    onOpen: () => void; 
+    onOpenChange: () => void;
     onClose: () => void;
     children: React.ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({isOpen, onClose, children}) => {
-    if (!isOpen) return null;
+const Modals = ({
+                    isOpen,
+                    onOpenChange,
+                    onClose,
+                    children
+                }: ModalProps) => {
     
+    if (!isOpen) return null;
+
     return (
-      <div className={"fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"}>
-          <div className={"bg-white p-6 rounded-lg"}>
-              {children}
-              <button onClick={onClose} className={"mt-4 bg-blue-500 text-white px-4 py-2 rounded"}>
-                  Close
-              </button>
-          </div>
-          
-      </div>  
+        <Modal isOpen={isOpen}
+               onOpenChange={onOpenChange}
+               onClose={onClose}
+        >
+            <ModalContent>
+                {(
+                    <>
+                        <ModalHeader className="flex flex-col gap-1">Edit</ModalHeader>
+                        <ModalBody>
+                            {children}
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="danger"
+                                    variant="light"
+                                    onPress={onClose}>
+                                Close
+                            </Button>
+                            <Button color="primary"
+                                    onPress={onClose}>
+                                Action
+                            </Button>
+                        </ModalFooter>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
     )
 }
 

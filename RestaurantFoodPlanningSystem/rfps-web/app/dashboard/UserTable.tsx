@@ -8,6 +8,7 @@ import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import Modal from "../../components/Modal";
 import RoleDto from "../../lib/models/RoleDto";
 import userDto from "../../lib/models/UserDto";
+import { useDisclosure } from "@nextui-org/react";
 
 export default function UserTable() {
     const httpServices                  = new HttpServices();
@@ -30,9 +31,8 @@ export default function UserTable() {
                                                                 userName: ""
                                                             });
 
-    const closeModal = () => setIsModalOpen(false);
-
-
+    const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+    
     useEffect(() => {
         async function fetchData() {
             let server_res = await (await httpServices.callAPI("/User", null, "GET", token)).json();
@@ -142,8 +142,10 @@ export default function UserTable() {
                     ))
                 }
             </div>
-            <Modal isOpen={isModalOpen}
-                   onClose={closeModal}>
+            <Modal isOpen={isOpen}
+                   onClose={onClose}
+                   onOpenChange={onOpenChange}
+            >
                 <label htmlFor={"userName"}>UserName</label>
                 <input id={"userName"}
                        value={editObj.userName}

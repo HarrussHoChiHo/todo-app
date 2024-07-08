@@ -15,21 +15,29 @@ public class TokenValidationController(
     /// <summary>
     /// Token Validation
     /// </summary>
-    /// <param name="token">The existing token</param>
+    /// <param name="tokenQueryDto">The existing token</param>
     /// <returns name="ActionResult">Http Response with Result object</returns>
     [AllowAnonymous]
     [HttpPost]
-    public async Task<ActionResult<Result<string>>> DeleteUser(Token token)
+    public async Task<ActionResult<Result<DbOperationResult<TokenResultDto>>>> DeleteUser(TokenQueryDto tokenQueryDto)
     {
         try
         {
-            if (tokenService.ValidateToken(token.token))
+            DbOperationResult<TokenResultDto> result = new DbOperationResult<TokenResultDto>();
+            TokenResultDto                    dto    = new TokenResultDto();
+            if (tokenService.ValidateToken(tokenQueryDto.token))
             {
-                return HandlerResult(Result<string>.Success("Authorized"));
+                dto.valid        = true;
+                result.resultDto = dto;
+                result.amount    = 1;
+                return HandlerResult(Result<DbOperationResult<TokenResultDto>>.Success(result));
             }
             else
             {
-                return HandlerResult(Result<string>.Success("Unauthorized")); 
+                dto.valid        = false;
+                result.resultDto = dto;
+                result.amount    = 1;
+                return HandlerResult(Result<DbOperationResult<TokenResultDto>>.Success(result)); 
             }
         }
         catch (Exception e)

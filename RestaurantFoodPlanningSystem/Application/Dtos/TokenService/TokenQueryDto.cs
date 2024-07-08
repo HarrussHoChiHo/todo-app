@@ -1,6 +1,6 @@
 ﻿namespace Application.Dtos.TokenService;
 
-public class Token
+public class TokenQueryDto
 {
     public string token { get; set; }
 }

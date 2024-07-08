@@ -1,39 +1,47 @@
 'use client'
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {NextPage} from "next";
 import HttpServices from "../../lib/HttpServices";
 import {redirect, useRouter} from "next/navigation";
 import LoginQueryDto from "../../lib/models/LoginQueryDto";
 import {useAuth} from "../AuthContext";
+import UserDto from "../../lib/models/UserDto";
 
 const LoginComponent: NextPage = () => {
-    const router                  = useRouter();
+    const router = useRouter();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [hidden, setHidden]     = useState(true);
-    const api                     = new HttpServices();
-    const {token,login} = useAuth();
-    
+    const [hidden, setHidden] = useState(true);
+    const api = new HttpServices();
+    const {
+              token,
+              login
+          } = useAuth();
+
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
         api.callAPI("/User/login", new LoginQueryDto(username, password), "POST").then(r => {
             if (r.status === 200) {
                 r.json().then(res => {
+                    console.log((res as LoginDto<UserDto>));
                     login(res.value.token);
                     router.push("/dashboard");
                 });
-                
+
             } else {
                 setHidden(true);
             }
         });
     }
+
+    useEffect(() => {
+        if (token) {
+            router.push("/dashboard");
+        }
+    }, [router, token]);
     
-    if (token){
-        router.push("/dashboard");
-    }
-    
+
     return (<div className={"flex flex-col justify-center items-center h-screen"}>
         <div className={"w-1/4 flex flex-col justify-center items-center"}>
             <h2 className={"text-center mb-4 w-full"}>Login</h2>

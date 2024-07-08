@@ -16,7 +16,7 @@
       
     
   rfps-db:
-    image: amd64/postgres:latest
+    image: arm64v8/postgres:latest
     container_name: rfps-db
     ports:
       - "5432:5432"

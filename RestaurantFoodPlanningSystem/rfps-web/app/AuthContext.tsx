@@ -1,6 +1,7 @@
 'use client'
 import React, {createContext, useState, useEffect, ReactNode} from "react";
 import HttpServices from "../lib/HttpServices";
+import TokenDto from "../lib/models/TokenDto";
 
 interface AuthContextType {
     token: string | null;
@@ -24,14 +25,16 @@ export function AuthProvider({children}: AuthProviderProps) {
         (async () => {
             setLoading(true);
             if (storedToken){
-                let server_res = await (await httpServices.callAPI("/TokenValidation", {token: storedToken}, "POST")).json();
-                if (server_res.value === "Authorized") {
+                let server_res = await (await httpServices.callAPI("/TokenValidation", {token: storedToken}, "POST")).json() as BasicDto<TokenDto>;
+                if (server_res.value.resultDto.valid) {
                     setToken(storedToken);
                     setLoading(false);
                 } else {
                     localStorage.removeItem("token");
                     setLoading(false);
                 }
+            } else {
+                setLoading(false);
             }
         })();
     },[]);
