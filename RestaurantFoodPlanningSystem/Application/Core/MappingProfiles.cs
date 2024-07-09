@@ -35,18 +35,29 @@ namespace Application.Core
             CreateMap<UserBasicDto, User>()
                 .ForMember(
                            user => user.UserName,
-                           userDto => userDto.MapFrom(o => o.Name))
+                           userDto => userDto.MapFrom(o => o.UserName))
                 .ForMember(
                            user => user.PasswordHash,
                            userDto => userDto.MapFrom(o => o.Password));
 
+            CreateMap<UserQueryDto, UserFullDto>()
+                .ForMember(
+                           fullDto => fullDto.Id,
+                           queryDto => queryDto.MapFrom(o => o.Id))
+                .ForMember(
+                           fullDto => fullDto.UserName,
+                           queryDto => queryDto.MapFrom(o => o.UserName))
+                .ForMember(
+                           fullDto => fullDto.Password,
+                           queryDto => queryDto.MapFrom(o => o.Password));
+            
             CreateMap<UserFullDto, User>()
                 .ForMember(
                            user => user.Id,
                            fullDto => fullDto.MapFrom(o => o.Id))
                 .ForMember(
                            user => user.UserName,
-                           userDto => userDto.MapFrom(o => o.Name))
+                           userDto => userDto.MapFrom(o => o.UserName))
                 .ForMember(
                            user => user.PasswordHash,
                            userDto => userDto.MapFrom(o => o.Password));
@@ -57,7 +68,9 @@ namespace Application.Core
                            result => result.MapFrom(o => o.UserName))
                 .ForMember(
                            user => user.Id,
-                           result => result.MapFrom(o => o.Id));
+                           result => result.MapFrom(o => o.Id))
+                .ForMember( user => user.Password,
+                            result => result.MapFrom(o => o.PasswordHash));
         }
 
         private void RoleMapper()

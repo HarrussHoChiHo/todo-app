@@ -20,6 +20,10 @@ namespace Application.BusinessLogic.UserLogic
 
             User user = _mapper.Map<User>(basicDto);
 
+            user.SecurityStamp = Guid
+                                 .NewGuid()
+                                 .ToString();
+
             IdentityResult createResult = await userManager.CreateAsync(user);
 
             if (!createResult.Succeeded)
@@ -36,21 +40,48 @@ namespace Application.BusinessLogic.UserLogic
             return result;
         }
 
-        public async Task<DbOperationResult<UserResultDto>> Update(UserFullDto fullDto)
+        public async Task<DbOperationResult<UserResultDto>> Update(UserQueryDto queryDto)
         {
             DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
 
-            User user = _mapper.Map<User>(fullDto);
+            //User user = _mapper.Map<User>(_mapper.Map<UserFullDto>(queryDto));
 
-            IdentityResult updateUserResult = await userManager.UpdateAsync(user);
+            User user = await userManager.FindByIdAsync(queryDto.Id.ToString());
+
+            user = _mapper.Map(_mapper.Map<UserFullDto>(queryDto), user);
+
+            IdentityResult updateUserResult = await userManager.UpdateSecurityStampAsync(user);
+            if (updateUserResult.Succeeded)
+            {
+                updateUserResult = await userManager.UpdateAsync(user);
+            }
+            else
+            {
+                throw new Exception(updateUserResult.ToString());
+            }
+
+            if (queryDto.Role != null)
+            {
+                foreach (string newRole in queryDto.Role)
+                {
+                    if (!await userManager.IsInRoleAsync(
+                                                         user,
+                                                         newRole))
+                    {
+                        await userManager.AddToRoleAsync(
+                                                         user,
+                                                         newRole);
+                    }
+                }
+            }
 
             if (!updateUserResult.Succeeded)
             {
                 throw new Exception(updateUserResult.ToString());
             }
-
-            result.resultDto = _mapper.Map<UserResultDto>(user);
-
+            
+            result.resultDto      = _mapper.Map<UserResultDto>(user);
+            result.amount         = 1;
             result.resultDto.Role = await userManager.GetRolesAsync(user);
 
             return result;
@@ -62,12 +93,16 @@ namespace Application.BusinessLogic.UserLogic
 
             User? user = _context.Users.Find(id);
 
-            result.resultDto = _mapper.Map<UserResultDto>(user);
-
-            result.resultDto.Role = await userManager.GetRolesAsync(user);
-
             if (user != null)
             {
+                user.SecurityStamp = Guid
+                                     .NewGuid()
+                                     .ToString();
+
+                result.resultDto = _mapper.Map<UserResultDto>(user);
+
+                result.resultDto.Role = await userManager.GetRolesAsync(user);
+
                 result.amount = 1;
             }
 
@@ -77,9 +112,16 @@ namespace Application.BusinessLogic.UserLogic
         public async Task<UserResultDto> Validate(UserBasicDto basicDto)
         {
             User? user = _context.Users.FirstOrDefault(
-                                                       x => x.UserName == basicDto.Name
+                                                       x => x.UserName == basicDto.UserName
                                                          && x.PasswordHash
                                                          == basicDto.Password);
+
+            if (user != null)
+            {
+                user.SecurityStamp = Guid
+                                     .NewGuid()
+                                     .ToString();
+            }
 
             UserResultDto dto = _mapper.Map<UserResultDto>(user);
 
@@ -116,6 +158,10 @@ namespace Application.BusinessLogic.UserLogic
             User user = _context
                         .Users.First(user => user.Id == id);
 
+            user.SecurityStamp = Guid
+                                 .NewGuid()
+                                 .ToString();
+
             _context.Users.Remove(user);
 
             result.amount = await _context.SaveChangesAsync();
@@ -132,6 +178,10 @@ namespace Application.BusinessLogic.UserLogic
         {
             User user = await userManager.FindByIdAsync(userId.ToString());
 
+            user.SecurityStamp = Guid
+                                 .NewGuid()
+                                 .ToString();
+
             return await userManager.SetAuthenticationTokenAsync(
                                                                  user,
                                                                  loginProvider,
@@ -147,9 +197,13 @@ namespace Application.BusinessLogic.UserLogic
 
             User user = await userManager.FindByIdAsync(userId.ToString());
 
+            user.SecurityStamp = Guid
+                                 .NewGuid()
+                                 .ToString();
+
             IdentityResult addRoleResult = await userManager.AddToRoleAsync(
-                                                                      user,
-                                                                      roleName);
+                                                                            user,
+                                                                            roleName);
 
             if (!addRoleResult.Succeeded)
             {
@@ -168,12 +222,15 @@ namespace Application.BusinessLogic.UserLogic
         {
             DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
 
-
             User user = await userManager.FindByIdAsync(userId.ToString());
 
+            user.SecurityStamp = Guid
+                                 .NewGuid()
+                                 .ToString();
+
             IdentityResult removeRoleResult = await userManager.RemoveFromRoleAsync(
-                                                                            user,
-                                                                            roleName);
+                                                                                    user,
+                                                                                    roleName);
 
             if (!removeRoleResult.Succeeded)
             {
@@ -185,6 +242,6 @@ namespace Application.BusinessLogic.UserLogic
             result.amount         = 1;
 
             return result;
-        } 
+        }
     }
 }

@@ -165,6 +165,29 @@ public class UserController(
         }
     }
 
+    [Authorize("ManagerOnly")]
+    [HttpPost("update")]
+    public async Task<ActionResult<Result<DbOperationResult<UserResultDto>>>> UpdateUser(UserQueryDto queryDto)
+    {
+        try
+        {
+            DbOperationResult<UserResultDto> response = await user.Update(queryDto);
+
+            if (response.amount > 0)
+            {
+                return HandlerResult(Result<DbOperationResult<UserResultDto>>.Success(response));
+            }
+
+            logger.LogDebug($"Update Failed: {JsonConvert.SerializeObject(response)}");
+            return HandlerResult(Result<string>.Failure("Update Failed."));
+        }
+        catch (Exception e)
+        {
+            logger.LogError(JsonConvert.SerializeObject(e));
+            return HandlerResult(Result<string>.Failure(e.Message));
+        }
+    }
+    
     /// <summary>
     /// Assign User to a Role
     /// </summary>

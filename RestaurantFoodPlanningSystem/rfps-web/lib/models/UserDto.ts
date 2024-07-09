@@ -1,5 +1,3 @@
-import {id} from "postcss-selector-parser";
-
 interface IUserDto {
     userName: string,
     password: string,
@@ -17,8 +15,8 @@ class UserDto implements IUserDto {
     constructor(username: string, password: string, id: number, role: string[]) {
         this.userName = username;
         this.password = password;
-        this.role     = role;
-        this.id       = id;
+        this.role = role;
+        this.id   = id;
     }
 }
 
