@@ -33,7 +33,7 @@ export default function HeaderComponent() {
                   </Link>
               </NavbarItem>
               <NavbarItem isActive={activeItem === "order"}>
-                  <Link href={"/dashboard/order"} color={"foreground"}>
+                  <Link href={"/dashboard/menu"} color={"foreground"}>
                       Order Management
                   </Link>
               </NavbarItem>
