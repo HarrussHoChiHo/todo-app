@@ -20,6 +20,11 @@ body {
 
 }
 
+.gird-style {
+  border-style: solid;
+  border-width: 1px;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

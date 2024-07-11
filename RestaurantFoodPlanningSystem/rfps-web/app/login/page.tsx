@@ -21,7 +21,7 @@ const LoginComponent: NextPage = () => {
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        api.callAPI("/User/login", new LoginQueryDto(username, password), "POST").then(r => {
+        api.callAPI("/user/login", new LoginQueryDto(username, password), "POST").then(r => {
             if (r.status === 200) {
                 r.json().then(res => {
                     console.log((res as LoginDto<UserDto>));

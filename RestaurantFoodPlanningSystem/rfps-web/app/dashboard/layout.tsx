@@ -12,7 +12,6 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
 
     useEffect(() => {
         if (!token) {
-            console.log("router push")
             router.push("/login");
         }
     }, []);

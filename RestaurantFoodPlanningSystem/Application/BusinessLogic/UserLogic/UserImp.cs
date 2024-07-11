@@ -48,38 +48,59 @@ namespace Application.BusinessLogic.UserLogic
 
             User user = await userManager.FindByIdAsync(queryDto.Id.ToString());
 
-            user = _mapper.Map(_mapper.Map<UserFullDto>(queryDto), user);
+            user = _mapper.Map(
+                               _mapper.Map<UserFullDto>(queryDto),
+                               user);
 
             IdentityResult updateUserResult = await userManager.UpdateSecurityStampAsync(user);
-            if (updateUserResult.Succeeded)
+
+            if (!updateUserResult.Succeeded)
             {
-                updateUserResult = await userManager.UpdateAsync(user);
+                throw new Exception(updateUserResult.ToString());
             }
-            else
+
+            updateUserResult = await userManager.UpdateAsync(user);
+
+            if (!updateUserResult.Succeeded)
             {
                 throw new Exception(updateUserResult.ToString());
             }
 
             if (queryDto.Role != null)
             {
-                foreach (string newRole in queryDto.Role)
+                IList<string> existingRoles = await userManager.GetRolesAsync(user);
+
+                List<string> rolesToAdd = queryDto
+                                          .Role.Except(existingRoles)
+                                          .ToList();
+
+                List<string> rolesToRemove = existingRoles
+                                             .Except(queryDto.Role)
+                                             .ToList();
+
+                foreach (string role in rolesToRemove)
                 {
-                    if (!await userManager.IsInRoleAsync(
-                                                         user,
-                                                         newRole))
+                    updateUserResult = await userManager.RemoveFromRoleAsync(
+                                                                             user,
+                                                                             role);
+                    if (!updateUserResult.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(
-                                                         user,
-                                                         newRole);
+                        throw new Exception(updateUserResult.ToString());
+                    }
+                }
+
+                foreach (string role in rolesToAdd)
+                {
+                    updateUserResult = await userManager.AddToRoleAsync(
+                                                                        user,
+                                                                        role);
+                    if (!updateUserResult.Succeeded)
+                    {
+                        throw new Exception(updateUserResult.ToString());
                     }
                 }
             }
 
-            if (!updateUserResult.Succeeded)
-            {
-                throw new Exception(updateUserResult.ToString());
-            }
-            
             result.resultDto      = _mapper.Map<UserResultDto>(user);
             result.amount         = 1;
             result.resultDto.Role = await userManager.GetRolesAsync(user);

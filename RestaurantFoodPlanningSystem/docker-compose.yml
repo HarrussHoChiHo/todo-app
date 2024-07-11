@@ -16,19 +16,18 @@
       
     
   rfps-db:
-    image: arm64v8/postgres:latest
+    image: amd64/postgres:latest
     container_name: rfps-db
     ports:
-      - "5432:5432"
+      - "5433:5432"
     env_file: db.env
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       interval: 10s
       timeout: 5s
       retries: 3
     volumes:
-      - rfps-db:/var/lib/postgresql/data
+      - rfpsdb:/var/lib/postgresql/data
 
 volumes:
-  rfps-db:
-    driver: local
+  rfpsdb:

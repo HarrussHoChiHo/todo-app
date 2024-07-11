@@ -1,23 +1,20 @@
+"use client"
 import React, {Fragment, useEffect, useState} from "react";
-import HttpServices from "../../lib/HttpServices";
-import UserDto from "../../lib/models/UserDto";
-import {useAuth} from "../AuthContext";
+import HttpServices from "../../../lib/HttpServices";
+import UserDto from "../../../lib/models/UserDto";
+import {useAuth} from "../../AuthContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
-import RoleDto from "../../lib/models/RoleDto";
+import RoleDto from "../../../lib/models/RoleDto";
 import {
     Input,
     Select, SelectItem,
     useDisclosure
 } from "@nextui-org/react";
-import Modals from "../../components/CustomModal";
-import {Options} from "sucrase/dist/types/Options-gen-types";
-import {Item} from "@react-stately/collections";
-import {number} from "prop-types";
-import {copyObject} from "@nextui-org/shared-utils";
+import Modals from "../../../components/CustomModal";
 
-export default function UserTable() {
+export default function Page() {
     const httpServices          = new HttpServices();
     const {token}               = useAuth();
     const [jsonObj, setJsonObj] = useState<IHttpResponse<UserDto>>({
@@ -46,7 +43,7 @@ export default function UserTable() {
 
     useEffect(() => {
         (async function fetchData() {
-            let server_res = await (await httpServices.callAPI("/User", null, "GET", token)).json();
+            let server_res = await (await httpServices.callAPI("/user", null, "GET", token)).json();
             setJsonObj(server_res as IHttpResponse<UserDto>);
             if (server_res.value.resultDto) {
                 setHeaders(Object.keys(server_res.value.resultDto[0]));
@@ -132,9 +129,9 @@ export default function UserTable() {
 
     const confirmEdition = () => {
         (async () => {
-            let server_res = await (await httpServices.callAPI("/User/update", editObj, "POST", token)).json() as BasicDto<UserDto>;
+            let server_res = await (await httpServices.callAPI("/user/update", editObj, "POST", token)).json() as BasicDto<UserDto>;
             if (server_res.isSuccess) {
-                let server_res = await (await httpServices.callAPI("/User", null, "GET", token)).json();
+                let server_res = await (await httpServices.callAPI("/user", null, "GET", token)).json();
                 setJsonObj(server_res as IHttpResponse<UserDto>);
             } else {
                 throw new Error(JSON.stringify(server_res));
@@ -145,48 +142,48 @@ export default function UserTable() {
 
     return (
         <>
-            <div className={"flex flex-col justify-center items-center w-6/12 ml-auto mr-auto"}>
+            <div className={"flex flex-col justify-center items-center w-6/12 ml-auto mr-auto pt-8 pb-8"}>
                 <div className={"grid grid-cols-6"}>
                     {
                         headers.map((header, index) => (
                             <Fragment key={header}>
-                                <div className={"font-extrabold"}>
+                                <div className={"font-extrabold gird-style text-center"}>
                                     {header}
                                 </div>
                             </Fragment>
                         ))
                     }
                     <Fragment key={"header_delete"}>
-                        <div className={"font-extrabold"}>
+                        <div className={"font-extrabold gird-style text-center"}>
                             Delete
                         </div>
                     </Fragment>
                     <Fragment key={"header_edit"}>
-                        <div className={"font-extrabold"}>
+                        <div className={"font-extrabold gird-style text-center"}>
                             Edit
                         </div>
                     </Fragment>
                     {
                         jsonObj.value.resultDto.map((userDto, index) => (
                             <Fragment key={userDto.id}>
-                                <div className={"p-4"}>
+                                <div className={"p-4 gird-style text-center"}>
                                     {userDto.id}
                                 </div>
-                                <div className={"p-4"}>
+                                <div className={"p-4 gird-style text-center"}>
                                     {userDto.userName}
                                 </div>
-                                <div className={"p-4"}>
+                                <div className={"p-4 gird-style text-center"}>
                                     {userDto.password}
                                 </div>
-                                <div className={"p-4"}>
-                                    {userDto.role.join(",")}
+                                <div className={"p-4 gird-style text-center"}>
+                                    {userDto.role.join(", ")}
                                 </div>
-                                <div className={"p-4"}>
+                                <div className={"p-4 gird-style text-center"}>
                                     <button onClick={() => handleDelete(userDto.id)}><FontAwesomeIcon icon={faTrash}
                                                                                                       id={userDto.id.toString()}/>
                                     </button>
                                 </div>
-                                <div className={"p-4"}>
+                                <div className={"p-4 gird-style text-center"}>
                                     <button onClick={() => handleEdit(userDto.id)}>
                                         <FontAwesomeIcon icon={faPenToSquare}/>
                                     </button>
