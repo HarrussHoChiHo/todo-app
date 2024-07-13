@@ -30,7 +30,7 @@ public class DataManagementController(
     IMenuItemFoodItem                 menuItemFoodItem,
     IOrder                            order,
     IOrderItem                        orderItem,
-    ILogger<DataManagementController> logger) : BaseApiController
+    ILogger<DataManagementController> logger) : BaseApiController(logger)
 {
     #region Unit
 

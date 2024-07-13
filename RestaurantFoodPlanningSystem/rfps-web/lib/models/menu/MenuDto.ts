@@ -1,21 +1,22 @@
 import {id} from "postcss-selector-parser";
+import MenuItemDto from "./MenuItemDto";
 
 interface IMenuDto {
     id: number;
     date: Date;
-    menuItem_Id: number;
+    menuItem: MenuItemDto;
 }
 
 class MenuDto implements IMenuDto {
     date: Date;
     id: number;
-    menuItem_Id: number;
+    menuItem: MenuItemDto;
     
     
-    constructor(date: Date, id: number, menuItem_Id: number) {
-        this.date        = date;
+    constructor(date: Date, id: number, menuItem: MenuItemDto) {
+        this.date        = new Date(date);
         this.id          = id;
-        this.menuItem_Id = menuItem_Id;
+        this.menuItem = menuItem;
     }
 }
 

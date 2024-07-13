@@ -7,11 +7,11 @@ namespace RestaurantFoodPlanningSystem.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BaseApiController: ControllerBase
+public class BaseApiController(ILogger logger): ControllerBase
 {
     protected ActionResult HandlerResult<T>(Result<T> result)
     {
-        Console.WriteLine(JsonConvert.SerializeObject(result));
+        logger.LogDebug(JsonConvert.SerializeObject(result));
         if (result == null)
         {
             return NotFound(result);

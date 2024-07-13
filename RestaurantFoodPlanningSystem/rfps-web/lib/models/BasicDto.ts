@@ -1,6 +1,6 @@
 interface IBasicResultDto<T> {
     amount: number;
-    resultDto: T | [T];
+    resultDto: [T];
 }
 
 interface IBasicDto<T>{

@@ -169,7 +169,10 @@ namespace Application.Core
                            menuDto => menuDto.MapFrom(o => o.MenuItem_Id))
                 .ForMember(
                            menu => menu.Date,
-                           menuDto => menuDto.MapFrom(o => o.Date));
+                           menuDto => menuDto.MapFrom(o => o.Date))
+                .ForMember(
+                           menu => menu.Id,
+                           menuDto => menuDto.MapFrom(o => o.Id));
 
             CreateMap<Menu, MenuResultDto>()
                 .ForMember(
@@ -179,8 +182,8 @@ namespace Application.Core
                            menu => menu.Date,
                            menuDto => menuDto.MapFrom(o => o.Date))
                 .ForMember(
-                           menu => menu.MenuItem_Id,
-                           menuDto => menuDto.MapFrom(o => o.MenuItem_Id));
+                           menu => menu.MenuItem,
+                           menuDto => menuDto.MapFrom(o => o.MenuItem));
         }
 
         private void MenuItemMapper()

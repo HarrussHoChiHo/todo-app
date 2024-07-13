@@ -16,7 +16,7 @@ public class UserController(
     IUser                   user,
     IRole                   role,
     TokenService            tokenService,
-    ILogger<UserController> logger) : BaseApiController
+    ILogger<UserController> logger) : BaseApiController(logger)
 {
     /// <summary>
     /// Send login information to validate

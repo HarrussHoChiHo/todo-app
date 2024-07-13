@@ -10,11 +10,18 @@ using RestaurantFoodPlanningSystem.Extensions;
 
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
-var builder          = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder
+    .Services.AddControllers()
+    .AddNewtonsoftJson(
+                       options =>
+                       {
+                           options.SerializerSettings.ReferenceLoopHandling =
+                               Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                       });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
@@ -73,12 +80,19 @@ builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
-builder.Services.AddCors(options =>
+builder.Services.AddCors(
+                         options =>
                          {
-                             options.AddPolicy(name: "CORS",
-                                               policy  =>
+                             options.AddPolicy(
+                                               name: "CORS",
+                                               policy =>
                                                {
-                                                   policy.WithOrigins(builder.Configuration.GetSection("AllowedHosts").Value).AllowAnyHeader().AllowAnyMethod();
+                                                   policy
+                                                       .WithOrigins(
+                                                                    builder.Configuration.GetSection("AllowedHosts")
+                                                                           .Value)
+                                                       .AllowAnyHeader()
+                                                       .AllowAnyMethod();
                                                });
                              //Console.WriteLine(builder.Configuration.GetSection("AllowedHosts").Value);
                          });
@@ -95,10 +109,10 @@ using (var scope = app.Services.CreateScope())
     {
         await using var context = services.GetRequiredService<RFPSDbContext>();
         context.Database.Migrate();
-        
+
         var optionsBuilder = new DbContextOptionsBuilder<RFPSDbContext>();
         optionsBuilder.UseNpgsql(connectionString);
-        
+
         /* await using (var dbContext = new RFPSDbContext(optionsBuilder.Options))
          {
              var migrationService = new MigrationService(
@@ -107,17 +121,15 @@ using (var scope = app.Services.CreateScope())
              await migrationService.Migration(
                                         null,
                                         null,
-                                        true); 
+                                        true);
         }*/
-        
+
         await using var createSeedDatacontext = services.GetRequiredService<RFPSDbContext>();
         await SeedData.CreateSeedData(
                                       services.GetRequiredService<RoleManager<Role>>(),
                                       services.GetRequiredService<UserManager<User>>(),
                                       createSeedDatacontext,
                                       services.GetRequiredService<ILogger<SeedData>>());
-
-        
     }
     catch (Exception e)
     {

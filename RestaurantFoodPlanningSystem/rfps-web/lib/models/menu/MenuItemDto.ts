@@ -1,18 +1,15 @@
 interface IMenuItemDto {
-    menuItem_Id: number;
-    foodItem_id: number;
-    consumption: number;
+    id: number;
+    name: string;
 }
 
 class MenuItemDto implements IMenuItemDto {
-    menuItem_Id: number;
-    foodItem_id: number;
-    consumption: number;
+    id: number;
+    name: string;
     
-    constructor(menuItem_Id: number, foodItem_id: number, consumption: number) {
-        this.menuItem_Id = menuItem_Id;
-        this.foodItem_id = foodItem_id;
-        this.consumption = consumption;
+    constructor(menuItem_Id: number, name: string) {
+        this.id = menuItem_Id;
+        this.name = name;
     }
 }
 

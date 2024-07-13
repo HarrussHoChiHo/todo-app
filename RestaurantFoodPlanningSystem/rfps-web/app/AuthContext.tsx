@@ -26,7 +26,7 @@ export function AuthProvider({children}: AuthProviderProps) {
             setLoading(true);
             if (storedToken){
                 let server_res = await (await httpServices.callAPI("/TokenValidation", {token: storedToken}, "POST")).json() as BasicDto<TokenDto>;
-                if (server_res.value.resultDto.valid) {
+                if ((server_res.value.resultDto as TokenDto[]).pop()?.valid) {
                     setToken(storedToken);
                     setLoading(false);
                 } else {

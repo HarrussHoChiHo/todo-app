@@ -7,13 +7,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import RoleDto from "../../../lib/models/RoleDto";
-import {
-    Input,
-    Select, SelectItem,
-    useDisclosure
-} from "@nextui-org/react";
+import {Input, Select, SelectItem, useDisclosure} from "@nextui-org/react";
 import Modals from "../../../components/CustomModal";
-import {element} from "prop-types";
 
 export default function Page() {
     const httpServices          = new HttpServices();
@@ -236,9 +231,9 @@ export default function Page() {
                         >
                             {
                                 roles.map(value =>
-                                              <SelectItem key={value.name}>
+                                    <SelectItem key={value.name} value={value.name}>
                                                   {value.name}
-                                              </SelectItem>
+                                    </SelectItem>
                                 )
                             }
                         </Select>

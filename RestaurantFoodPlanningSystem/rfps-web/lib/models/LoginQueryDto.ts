@@ -1,16 +1,16 @@
 interface ILoginQueryDto{
-    name: string,
-    password: string
+    UserName: string,
+    Password: string
 }
 
 
 class LoginQueryDto implements ILoginQueryDto {
-    password: string;
-    name: string;
+    Password: string;
+    UserName: string;
     
     constructor(username: string,  password: string) {
-        this.name     = username;
-        this.password = password;
+        this.UserName = username;
+        this.Password = password;
     }
 }
 

@@ -9,7 +9,7 @@ namespace RestaurantFoodPlanningSystem.Controllers;
 
 public class RoleController(
     IRole                   role,
-    ILogger<UserController> logger) : BaseApiController
+    ILogger<UserController> logger) : BaseApiController(logger)
 {
     
     /// <summary>

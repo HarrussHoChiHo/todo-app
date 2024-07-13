@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from "react";
 import {NextPage} from "next";
 import HttpServices from "../../lib/HttpServices";
-import {redirect, useRouter} from "next/navigation";
+import {useRouter} from "next/navigation";
 import LoginQueryDto from "../../lib/models/LoginQueryDto";
 import {useAuth} from "../AuthContext";
 import UserDto from "../../lib/models/UserDto";

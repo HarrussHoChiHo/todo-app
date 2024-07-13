@@ -3,6 +3,9 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
 using EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+
 
 namespace Application.BusinessLogic.MenuItemLogic
 {
@@ -52,6 +55,19 @@ namespace Application.BusinessLogic.MenuItemLogic
         {
             DbOperationResult<MenuItemResultDto> result = new DbOperationResult<MenuItemResultDto>();
 
+            List<MenuItem> menuItems = _context
+                                       .MenuItem.Where(
+                                                       x =>
+                                                           (x.Id             == menuItemQuery.Id
+                                                         || menuItemQuery.Id == null)
+                                                        || (x.Name             == menuItemQuery.Name
+                                                         || menuItemQuery.Name == null)
+                                                      )
+                                       .Include(x => x.Menus)
+                                       .Include(x => x.OrderItems)
+                                       .Include(x => x.MenuItemFoodItems)
+                                       .ToList();
+            
             result.resultDto = _context
                                .MenuItem.Where(
                                                x =>

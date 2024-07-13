@@ -13,7 +13,7 @@ namespace RestaurantFoodPlanningSystem.Controllers;
 public class OrderController(
     IOrder                   order,
     IOrderItem               orderItem,
-    ILogger<OrderController> logger) : BaseApiController
+    ILogger<OrderController> logger) : BaseApiController(logger)
 {
     
     /// <summary>

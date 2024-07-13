@@ -1,9 +1,11 @@
 ﻿using System.Text.Json;
 using Application.Dtos.Menu;
+using Application.Dtos.MenuItem;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
 using EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.BusinessLogic.MenuLogic
 {
@@ -63,6 +65,7 @@ namespace Application.BusinessLogic.MenuLogic
                                                     && (menu.MenuItem_Id      == menuQuery.MenuItem_Id
                                                      || menuQuery.MenuItem_Id == null)
                                               )
+                                   .Include(menu => menu.MenuItem)
                                    .ProjectTo<MenuResultDto>(_mapper.ConfigurationProvider)
                                    .ToList();
             }
@@ -74,13 +77,13 @@ namespace Application.BusinessLogic.MenuLogic
                                                     && (menu.MenuItem_Id      == menuQuery.MenuItem_Id
                                                      || menuQuery.MenuItem_Id == null)
                                               )
+                                   .Include(menu => menu.MenuItem)
                                    .ProjectTo<MenuResultDto>(_mapper.ConfigurationProvider)
                                    .ToList();
             }
 
-
             result.amount = result.resultDto.Count;
-
+            
             return result;
         }
 
