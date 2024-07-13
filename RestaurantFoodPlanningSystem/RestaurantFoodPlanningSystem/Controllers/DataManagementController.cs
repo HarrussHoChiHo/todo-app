@@ -101,9 +101,9 @@ public class DataManagementController(
     {
         try
         {
-            DbOperationResult<List<UnitResultDto>> response = await unit.Read(queryDto);
+            DbOperationResult<UnitResultDto> response = await unit.Read(queryDto);
 
-            return HandlerResult(Result<DbOperationResult<List<UnitResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<UnitResultDto>>.Success(response));
         }
         catch (Exception e)
         {
@@ -207,13 +207,13 @@ public class DataManagementController(
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("type/read")]
-    public async Task<ActionResult<Result<DbOperationResult<List<TypeResultDto>>>>> ReadType(TypeQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<TypeResultDto>>>> ReadType(TypeQueryDto queryDto)
     {
         try
         {
-            DbOperationResult<List<TypeResultDto>> response = await type.Read(queryDto);
+            DbOperationResult<TypeResultDto> response = await type.Read(queryDto);
 
-            return HandlerResult(Result<DbOperationResult<List<TypeResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<TypeResultDto>>.Success(response));
         }
         catch (Exception e)
         {
@@ -319,14 +319,14 @@ public class DataManagementController(
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("food-item/read")]
-    public async Task<ActionResult<Result<DbOperationResult<List<FoodItemResultDto>>>>> ReadFoodItem(
+    public async Task<ActionResult<Result<DbOperationResult<FoodItemResultDto>>>> ReadFoodItem(
         FoodItemQueryDto queryDto)
     {
         try
         {
-            DbOperationResult<List<FoodItemResultDto>> response = await foodItem.Read(queryDto);
+            DbOperationResult<FoodItemResultDto> response = await foodItem.Read(queryDto);
 
-            return HandlerResult(Result<DbOperationResult<List<FoodItemResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<FoodItemResultDto>>.Success(response));
         }
         catch (Exception e)
         {
@@ -432,14 +432,14 @@ public class DataManagementController(
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("menu-item/read")]
-    public async Task<ActionResult<Result<DbOperationResult<List<MenuItemResultDto>>>>> ReadMenuItem(
+    public async Task<ActionResult<Result<DbOperationResult<MenuItemResultDto>>>> ReadMenuItem(
         MenuItemQueryDto queryDto)
     {
         try
         {
-            DbOperationResult<List<MenuItemResultDto>> response = await menuItem.Read(queryDto);
+            DbOperationResult<MenuItemResultDto> response = await menuItem.Read(queryDto);
 
-            return HandlerResult(Result<DbOperationResult<List<MenuItemResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<MenuItemResultDto>>.Success(response));
         }
         catch (Exception e)
         {
@@ -543,13 +543,13 @@ public class DataManagementController(
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("menu/read")]
-    public async Task<ActionResult<Result<DbOperationResult<List<MenuResultDto>>>>> ReadMenu(MenuQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<MenuResultDto>>>> ReadMenu(MenuQueryDto queryDto)
     {
         try
         {
-            DbOperationResult<List<MenuResultDto>> response = await menu.Read(queryDto);
+            DbOperationResult<MenuResultDto> response = await menu.Read(queryDto);
 
-            return HandlerResult(Result<DbOperationResult<List<MenuResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<MenuResultDto>>.Success(response));
         }
         catch (Exception e)
         {
@@ -655,14 +655,14 @@ public class DataManagementController(
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("menu-item-food-item/read")]
-    public async Task<ActionResult<Result<DbOperationResult<List<MenuItemFoodItemResultDto>>>>> ReadMenuItemFoodItem(
+    public async Task<ActionResult<Result<DbOperationResult<MenuItemFoodItemResultDto>>>> ReadMenuItemFoodItem(
         MenuItemFoodItemQueryDto queryDto)
     {
         try
         {
-            DbOperationResult<List<MenuItemFoodItemResultDto>> response = await menuItemFoodItem.Read(queryDto);
+            DbOperationResult<MenuItemFoodItemResultDto> response = await menuItemFoodItem.Read(queryDto);
 
-            return HandlerResult(Result<DbOperationResult<List<MenuItemFoodItemResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<MenuItemFoodItemResultDto>>.Success(response));
         }
         catch (Exception e)
         {
@@ -678,14 +678,14 @@ public class DataManagementController(
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpDelete("menu-item-food-item")]
-    public async Task<ActionResult<Result<DbOperationResult<List<MenuItemFoodItemResultDto>>>>> DeleteMenuItemFoodItem(
+    public async Task<ActionResult<Result<DbOperationResult<MenuItemFoodItemResultDto>>>> DeleteMenuItemFoodItem(
         MenuItemFoodItemQueryDto queryDto)
     {
         try
         {
-            DbOperationResult<List<MenuItemFoodItemResultDto>> response = await menuItemFoodItem.Delete(queryDto);
+            DbOperationResult<MenuItemFoodItemResultDto> response = await menuItemFoodItem.Delete(queryDto);
 
-            return HandlerResult(Result<DbOperationResult<List<MenuItemFoodItemResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<MenuItemFoodItemResultDto>>.Success(response));
         }
         catch (Exception e)
         {
@@ -765,9 +765,9 @@ public class DataManagementController(
     {
         try
         {
-            DbOperationResult<List<OrderResultDto>> response = await order.Read(queryDto);
+            DbOperationResult<OrderResultDto> response = await order.Read(queryDto);
 
-            return HandlerResult(Result<DbOperationResult<List<OrderResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<OrderResultDto>>.Success(response));
         }
         catch (Exception e)
         {
@@ -865,13 +865,13 @@ public class DataManagementController(
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("order-item/read")]
-    public async Task<ActionResult<DbOperationResult<List<OrderItemResultDto>>>> ReadOrder(OrderItemQueryDto queryDto)
+    public async Task<ActionResult<DbOperationResult<OrderItemResultDto>>> ReadOrder(OrderItemQueryDto queryDto)
     {
         try
         {
-            DbOperationResult<List<OrderItemResultDto>> response = await orderItem.Read(queryDto);
+            DbOperationResult<OrderItemResultDto> response = await orderItem.Read(queryDto);
 
-            return HandlerResult(Result<DbOperationResult<List<OrderItemResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<OrderItemResultDto>>.Success(response));
         }
         catch (Exception e)
         {
@@ -879,7 +879,7 @@ public class DataManagementController(
             return HandlerResult(Result<string>.Failure(e.Message));
         }
     }
-    
+
     /// <summary>
     /// Delete a record in table "OrderItem"
     /// </summary>

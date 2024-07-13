@@ -13,7 +13,7 @@ namespace Application.BusinessLogic.UserLogic
 
         public Task<UserResultDto> Validate(UserBasicDto basicDto);
 
-        public Task<DbOperationResult<List<UserResultDto>>> Read();
+        public Task<DbOperationResult<UserResultDto>> Read();
 
         public Task<DbOperationResult<UserResultDto>> Delete(int id);
 

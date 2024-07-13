@@ -1,3 +1,4 @@
+import {object} from "prop-types";
 
 class HttpServices {
     private api_host: string | undefined;
@@ -6,7 +7,7 @@ class HttpServices {
         this.api_host = process.env.API_HOST;
     }
 
-    async callAPI(route: string, data: object | null, method: "POST" | "GET" | "DELETE", token: string | null = null) {
+    async callAPI(route: string, data: object | null | undefined, method: "POST" | "GET" | "DELETE", token: string | null = null) {
         let headers = new Headers();
         headers.append("Access-Control-Allow-Origin", process.env.LocalHost ?? "");
         headers.append("Content-Type", "text/json");
@@ -16,7 +17,7 @@ class HttpServices {
         }
         
         let options: RequestInit;
-        if (method !== "GET"){
+        if (method !== "GET" && data){
            options = {
                 body: JSON.stringify(data),
                 headers: headers,

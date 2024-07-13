@@ -22,7 +22,10 @@ namespace Application.BusinessLogic.UnitLogic
 
             result.amount = await _context.SaveChangesAsync();
 
-            result.resultDto = _mapper.Map<UnitResultDto>(unit);
+            result.resultDto = new List<UnitResultDto>()
+                               {
+                                   mapper.Map<UnitResultDto>(unit)
+                               };
 
             return result;
         }
@@ -37,14 +40,17 @@ namespace Application.BusinessLogic.UnitLogic
 
             result.amount = await _context.SaveChangesAsync();
 
-            result.resultDto = _mapper.Map<UnitResultDto>(unit);
+            result.resultDto = new List<UnitResultDto>()
+                               {
+                                   mapper.Map<UnitResultDto>(unit)
+                               };
 
             return result;
         }
 
-        public async Task<DbOperationResult<List<UnitResultDto>>> Read(UnitQueryDto unitQuery)
+        public async Task<DbOperationResult<UnitResultDto>> Read(UnitQueryDto unitQuery)
         {
-            DbOperationResult<List<UnitResultDto>> result = new DbOperationResult<List<UnitResultDto>>();
+            DbOperationResult<UnitResultDto> result = new DbOperationResult<UnitResultDto>();
             
             result.resultDto = _context
                                .Unit.Where(
@@ -67,7 +73,10 @@ namespace Application.BusinessLogic.UnitLogic
 
             result.amount = await _context.SaveChangesAsync();
 
-            result.resultDto = _mapper.Map<UnitResultDto>(unit);
+            result.resultDto = new List<UnitResultDto>()
+                               {
+                                   mapper.Map<UnitResultDto>(unit)
+                               };
 
             return result;
         }

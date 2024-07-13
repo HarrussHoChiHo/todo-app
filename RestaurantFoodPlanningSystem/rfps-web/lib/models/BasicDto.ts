@@ -1,20 +1,20 @@
 interface IBasicResultDto<T> {
     amount: number;
-    resultDto: T;
+    resultDto: T | [T];
 }
 
 interface IBasicDto<T>{
     isSuccess: boolean;
     error: string;
-    value: IBasicResultDto<T> | IBasicResultDto<T>[];
+    value: IBasicResultDto<T>;
 }
 
 class BasicDto<T> implements IBasicDto<T> {
     isSuccess: boolean;
     error: string;
-    value: IBasicResultDto<T> | IBasicResultDto<T>[];
+    value: IBasicResultDto<T>;
     
-    constructor(isSuccess: boolean, error: string, value: IBasicResultDto<T> | IBasicResultDto<T>[]) {
+    constructor(isSuccess: boolean, error: string, value: IBasicResultDto<T>) {
         this.isSuccess = isSuccess;
         this.error = error;
         this.value = value;

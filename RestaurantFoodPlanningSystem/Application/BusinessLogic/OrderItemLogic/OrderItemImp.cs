@@ -20,7 +20,10 @@ namespace Application.BusinessLogic.OrderItemLogic
             _context.OrderItem.Add(orderItem);
             
             result.amount    = await _context.SaveChangesAsync();
-            result.resultDto = _mapper.Map<OrderItemResultDto>(orderItem);
+            result.resultDto = new List<OrderItemResultDto>()
+                               {
+                                   _mapper.Map<OrderItemResultDto>(orderItem)
+                               };
             
             return result;
         }
@@ -33,14 +36,17 @@ namespace Application.BusinessLogic.OrderItemLogic
             _context.OrderItem.Update(orderItem);
             
             result.amount    = await _context.SaveChangesAsync();
-            result.resultDto = _mapper.Map<OrderItemResultDto>(orderItem);
+            result.resultDto = new List<OrderItemResultDto>()
+                               {
+                                   _mapper.Map<OrderItemResultDto>(orderItem)
+                               };
 
             return result;
         }
 
-        public async Task<DbOperationResult<List<OrderItemResultDto>>> Read(OrderItemQueryDto orderItemQuery)
+        public async Task<DbOperationResult<OrderItemResultDto>> Read(OrderItemQueryDto orderItemQuery)
         {
-            DbOperationResult<List<OrderItemResultDto>> result = new DbOperationResult<List<OrderItemResultDto>>();
+            DbOperationResult<OrderItemResultDto> result = new DbOperationResult<OrderItemResultDto>();
 
             List<OrderItemResultDto> orderItemResultDtos = _context
                                                            .OrderItem.Where(
@@ -70,7 +76,10 @@ namespace Application.BusinessLogic.OrderItemLogic
 
             result.amount = await _context.SaveChangesAsync();
 
-            result.resultDto = _mapper.Map<OrderItemResultDto>(orderItem);
+            result.resultDto = new List<OrderItemResultDto>()
+                               {
+                                   _mapper.Map<OrderItemResultDto>(orderItem)
+                               };
 
             return result;
         }

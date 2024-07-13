@@ -26,7 +26,10 @@ public class RoleImp(
         }
 
         result.amount    = 1;
-        result.resultDto = mapper.Map<RoleResultDto>(role);
+        result.resultDto = new List<RoleResultDto>()
+                           {
+                               mapper.Map<RoleResultDto>(role)
+                           };
 
         return result;
     }
@@ -55,14 +58,17 @@ public class RoleImp(
         }
 
         result.amount    = 1;
-        result.resultDto = mapper.Map<RoleResultDto>(role);
+        result.resultDto = new List<RoleResultDto>()
+                           {
+                               mapper.Map<RoleResultDto>(role)
+                           };
 
         return result;
     }
 
-    public async Task<DbOperationResult<List<RoleResultDto>>> Read(RoleQueryDto fullDto)
+    public async Task<DbOperationResult<RoleResultDto>> Read(RoleQueryDto fullDto)
     {
-        DbOperationResult<List<RoleResultDto>> result = new DbOperationResult<List<RoleResultDto>>();
+        DbOperationResult<RoleResultDto> result = new DbOperationResult<RoleResultDto>();
 
         if (fullDto.CreatedDate != null)
         {
@@ -111,7 +117,10 @@ public class RoleImp(
             throw new Exception(deleteResult.ToString());
         }
 
-        result.resultDto = mapper.Map<RoleResultDto>(role);
+        result.resultDto = new List<RoleResultDto>()
+                           {
+                               mapper.Map<RoleResultDto>(role)
+                           };
         result.amount    = 1;
 
         return result;

@@ -31,13 +31,16 @@ public class UserController(
         {
             UserResDto<UserResultDto> response = new UserResDto<UserResultDto>();
 
-            response.resultDto = await user.Validate(basicDto);
+            response.resultDto = new List<UserResultDto>()
+                                 {
+                                     await user.Validate(basicDto)
+                                 };
 
             if (response.resultDto != null)
             {
-                response.Token = tokenService.CreateToken(response.resultDto);
+                response.Token = tokenService.CreateToken(response.resultDto.First());
                 IdentityResult identityResult = await user.SaveToken(
-                                                                     response.resultDto.Id,
+                                                                     response.resultDto.First().Id,
                                                                      "Local",
                                                                      "AccessToken",
                                                                      response.Token);
@@ -122,13 +125,13 @@ public class UserController(
     /// <returns name="ActionResult">Http Response with list of objects "UserResultDto"</returns>
     [Authorize("ManagerOnly")]
     [HttpGet]
-    public async Task<ActionResult<Result<DbOperationResult<List<UserResultDto>>>>> GetAllUser()
+    public async Task<ActionResult<Result<DbOperationResult<UserResultDto>>>> GetAllUser()
     {
         try
         {
-            DbOperationResult<List<UserResultDto>> response = await user.Read();
+            DbOperationResult<UserResultDto> response = await user.Read();
 
-            return HandlerResult(Result<DbOperationResult<List<UserResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<UserResultDto>>.Success(response));
         }
         catch (Exception e)
         {
@@ -202,7 +205,7 @@ public class UserController(
         try
         {
             DbOperationResult<UserResultDto> response = new DbOperationResult<UserResultDto>();
-            DbOperationResult<List<RoleResultDto>> roleResult = await role.Read(
+            DbOperationResult<RoleResultDto> roleResult = await role.Read(
                                                                                 new RoleQueryDto()
                                                                                 {
                                                                                     Id = roleId
@@ -242,7 +245,7 @@ public class UserController(
         try
         {
             DbOperationResult<UserResultDto> response = new DbOperationResult<UserResultDto>();
-            DbOperationResult<List<RoleResultDto>> roleResult = await role.Read(
+            DbOperationResult<RoleResultDto> roleResult = await role.Read(
                                                                                 new RoleQueryDto()
                                                                                 {
                                                                                     Id = roleId

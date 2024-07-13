@@ -10,7 +10,8 @@ class MenuDto implements IMenuDto {
     date: Date;
     id: number;
     menuItem_Id: number;
-
+    
+    
     constructor(date: Date, id: number, menuItem_Id: number) {
         this.date        = date;
         this.id          = id;

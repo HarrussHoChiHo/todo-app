@@ -21,8 +21,11 @@ namespace Application.BusinessLogic.MenuItemLogic
 
             _context.MenuItem.Add(menuItem);
 
-            result.amount    = await _context.SaveChangesAsync();
-            result.resultDto = _mapper.Map<MenuItemResultDto>(menuItem);
+            result.amount = await _context.SaveChangesAsync();
+            result.resultDto = new List<MenuItemResultDto>()
+                               {
+                                   _mapper.Map<MenuItemResultDto>(menuItem)
+                               };
 
             return result;
         }
@@ -37,15 +40,18 @@ namespace Application.BusinessLogic.MenuItemLogic
 
             result.amount = await _context.SaveChangesAsync();
 
-            result.resultDto = _mapper.Map<MenuItemResultDto>(menuItem);
+            result.resultDto = new List<MenuItemResultDto>()
+                               {
+                                   _mapper.Map<MenuItemResultDto>(menuItem)
+                               };
 
             return result;
         }
 
-        public async Task<DbOperationResult<List<MenuItemResultDto>>> Read(MenuItemQueryDto menuItemQuery)
+        public async Task<DbOperationResult<MenuItemResultDto>> Read(MenuItemQueryDto menuItemQuery)
         {
-            DbOperationResult<List<MenuItemResultDto>> result = new DbOperationResult<List<MenuItemResultDto>>();
-            
+            DbOperationResult<MenuItemResultDto> result = new DbOperationResult<MenuItemResultDto>();
+
             result.resultDto = _context
                                .MenuItem.Where(
                                                x =>
@@ -64,12 +70,15 @@ namespace Application.BusinessLogic.MenuItemLogic
         {
             DbOperationResult<MenuItemResultDto> result   = new DbOperationResult<MenuItemResultDto>();
             MenuItem                             menuItem = await _context.MenuItem.FindAsync(id);
-            
+
             _context.MenuItem.Remove(menuItem);
-            
+
             result.amount = await _context.SaveChangesAsync();
 
-            result.resultDto = _mapper.Map<MenuItemResultDto>(menuItem);
+            result.resultDto = new List<MenuItemResultDto>()
+                               {
+                                   _mapper.Map<MenuItemResultDto>(menuItem)
+                               };
 
             return result;
         }

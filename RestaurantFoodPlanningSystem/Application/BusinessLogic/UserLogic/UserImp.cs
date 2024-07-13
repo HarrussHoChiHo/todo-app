@@ -33,10 +33,13 @@ namespace Application.BusinessLogic.UserLogic
 
             result.amount = 1;
 
-            result.resultDto = _mapper.Map<UserResultDto>(user);
+            result.resultDto = new List<UserResultDto>()
+                               {
+                                   _mapper.Map<UserResultDto>(user)
+                               };
 
-            result.resultDto.Role = await userManager.GetRolesAsync(user);
-
+            result.resultDto.First().Role = await userManager.GetRolesAsync(user);
+            
             return result;
         }
 
@@ -101,9 +104,12 @@ namespace Application.BusinessLogic.UserLogic
                 }
             }
 
-            result.resultDto      = _mapper.Map<UserResultDto>(user);
+            result.resultDto      = new List<UserResultDto>()
+                                    {
+                                        _mapper.Map<UserResultDto>(user)
+                                    };
             result.amount         = 1;
-            result.resultDto.Role = await userManager.GetRolesAsync(user);
+            result.resultDto.First().Role = await userManager.GetRolesAsync(user);
 
             return result;
         }
@@ -120,9 +126,12 @@ namespace Application.BusinessLogic.UserLogic
                                      .NewGuid()
                                      .ToString();
 
-                result.resultDto = _mapper.Map<UserResultDto>(user);
+                result.resultDto = new List<UserResultDto>()
+                                   {
+                                       _mapper.Map<UserResultDto>(user)
+                                   };
 
-                result.resultDto.Role = await userManager.GetRolesAsync(user);
+                result.resultDto.First().Role = await userManager.GetRolesAsync(user);
 
                 result.amount = 1;
             }
@@ -151,9 +160,9 @@ namespace Application.BusinessLogic.UserLogic
             return dto;
         }
 
-        public async Task<DbOperationResult<List<UserResultDto>>> Read()
+        public async Task<DbOperationResult<UserResultDto>> Read()
         {
-            DbOperationResult<List<UserResultDto>> result = new DbOperationResult<List<UserResultDto>>();
+            DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
             List<User> users = userManager
                                .Users
                                .ToList();
@@ -161,6 +170,7 @@ namespace Application.BusinessLogic.UserLogic
             result.resultDto = new List<UserResultDto>();
 
             UserResultDto dto;
+            
             users.ForEach(
                           user =>
                           {
@@ -169,6 +179,7 @@ namespace Application.BusinessLogic.UserLogic
                                                     .Result;
                               result.resultDto.Add(dto);
                           });
+            
             return result;
         }
 
@@ -187,7 +198,10 @@ namespace Application.BusinessLogic.UserLogic
 
             result.amount = await _context.SaveChangesAsync();
 
-            result.resultDto = _mapper.Map<UserResultDto>(user);
+            result.resultDto = new List<UserResultDto>()
+                               {
+                                   _mapper.Map<UserResultDto>(user)
+                               };
 
             return result;
         }
@@ -231,8 +245,11 @@ namespace Application.BusinessLogic.UserLogic
                 throw new Exception(addRoleResult.ToString());
             }
 
-            result.resultDto      = _mapper.Map<UserResultDto>(user);
-            result.resultDto.Role = await userManager.GetRolesAsync(user);
+            result.resultDto      = new List<UserResultDto>()
+                                    {
+                                        _mapper.Map<UserResultDto>(user)
+                                    };
+            result.resultDto.First().Role = await userManager.GetRolesAsync(user);
             result.amount         = 1;
 
             return result;
@@ -258,8 +275,11 @@ namespace Application.BusinessLogic.UserLogic
                 throw new Exception(removeRoleResult.ToString());
             }
 
-            result.resultDto      = _mapper.Map<UserResultDto>(user);
-            result.resultDto.Role = await userManager.GetRolesAsync(user);
+            result.resultDto      = new List<UserResultDto>()
+                                    {
+                                        _mapper.Map<UserResultDto>(user)
+                                    };
+            result.resultDto.First().Role = await userManager.GetRolesAsync(user);
             result.amount         = 1;
 
             return result;

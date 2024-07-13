@@ -21,8 +21,11 @@ namespace Application.BusinessLogic.MenuItemFoodItemLogic
 
             _context.MenuItemFoodItem.Add(menuItemFoodItem);
 
-            result.amount    = await _context.SaveChangesAsync();
-            result.resultDto = _mapper.Map<MenuItemFoodItemResultDto>(menuItemFoodItem);
+            result.amount = await _context.SaveChangesAsync();
+            result.resultDto = new List<MenuItemFoodItemResultDto>()
+                               {
+                                   _mapper.Map<MenuItemFoodItemResultDto>(menuItemFoodItem)
+                               };
 
             return result;
         }
@@ -35,17 +38,20 @@ namespace Application.BusinessLogic.MenuItemFoodItemLogic
 
             _context.MenuItemFoodItem.Update(menuItemFoodItem);
 
-            result.amount    = await _context.SaveChangesAsync();
-            result.resultDto = _mapper.Map<MenuItemFoodItemResultDto>(menuItemFoodItem);
+            result.amount = await _context.SaveChangesAsync();
+            result.resultDto = new List<MenuItemFoodItemResultDto>()
+                               {
+                                   _mapper.Map<MenuItemFoodItemResultDto>(menuItemFoodItem)
+                               };
 
             return result;
         }
 
-        public async Task<DbOperationResult<List<MenuItemFoodItemResultDto>>> Read(
+        public async Task<DbOperationResult<MenuItemFoodItemResultDto>> Read(
             MenuItemFoodItemQueryDto menuIteFoodItemQuery)
         {
-            DbOperationResult<List<MenuItemFoodItemResultDto>> result =
-                new DbOperationResult<List<MenuItemFoodItemResultDto>>();
+            DbOperationResult<MenuItemFoodItemResultDto> result =
+                new DbOperationResult<MenuItemFoodItemResultDto>();
 
             result.resultDto = _context
                                .MenuItemFoodItem.Where(
@@ -63,11 +69,11 @@ namespace Application.BusinessLogic.MenuItemFoodItemLogic
             return result;
         }
 
-        public async Task<DbOperationResult<List<MenuItemFoodItemResultDto>>> Delete(
+        public async Task<DbOperationResult<MenuItemFoodItemResultDto>> Delete(
             MenuItemFoodItemQueryDto menuIteFoodItemQuery)
         {
-            DbOperationResult<List<MenuItemFoodItemResultDto>> result =
-                new DbOperationResult<List<MenuItemFoodItemResultDto>>();
+            DbOperationResult<MenuItemFoodItemResultDto> result =
+                new DbOperationResult<MenuItemFoodItemResultDto>();
 
             List<MenuItemFoodItem> items = _context
                                            .MenuItemFoodItem.Where(

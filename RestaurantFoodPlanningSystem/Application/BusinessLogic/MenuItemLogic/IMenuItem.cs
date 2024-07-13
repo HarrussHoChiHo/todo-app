@@ -8,7 +8,7 @@ namespace Application.BusinessLogic.MenuItemLogic
 
         public Task<DbOperationResult<MenuItemResultDto>> Update(MenuItemQueryDto menuItemQuery);
 
-        public Task<DbOperationResult<List<MenuItemResultDto>>> Read(MenuItemQueryDto menuItemQuery);
+        public Task<DbOperationResult<MenuItemResultDto>> Read(MenuItemQueryDto menuItemQuery);
 
         public Task<DbOperationResult<MenuItemResultDto>> Delete(int id);
     }

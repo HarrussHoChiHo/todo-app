@@ -10,7 +10,7 @@ namespace Application.BusinessLogic.OrderLogic
 
         public Task<DbOperationResult<OrderResultDto>> Update(OrderQueryDto orderQuery);
 
-        public Task<DbOperationResult<List<OrderResultDto>>> Read(OrderQueryDto orderQuery);
+        public Task<DbOperationResult<OrderResultDto>> Read(OrderQueryDto orderQuery);
 
         public Task<DbOperationResult<OrderResultDto>> Delete(int id);
     }

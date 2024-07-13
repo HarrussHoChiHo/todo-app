@@ -8,7 +8,7 @@ namespace Application.BusinessLogic.OrderItemLogic
 
         public Task<DbOperationResult<OrderItemResultDto>> Update(OrderItemQueryDto orderItemQuery);
 
-        public Task<DbOperationResult<List<OrderItemResultDto>>> Read(OrderItemQueryDto orderItemQuery);
+        public Task<DbOperationResult<OrderItemResultDto>> Read(OrderItemQueryDto orderItemQuery);
 
         public Task<DbOperationResult<OrderItemResultDto>> Delete(int id);
     }

@@ -8,8 +8,8 @@ namespace Application.BusinessLogic.MenuItemFoodItemLogic
 
         public Task<DbOperationResult<MenuItemFoodItemResultDto>> Update(MenuItemFoodItemQueryDto menuIteFoodItemQuery);
 
-        public Task<DbOperationResult<List<MenuItemFoodItemResultDto>>> Read(MenuItemFoodItemQueryDto menuItemFoodItemQueryDto);
+        public Task<DbOperationResult<MenuItemFoodItemResultDto>> Read(MenuItemFoodItemQueryDto menuItemFoodItemQueryDto);
 
-        public Task<DbOperationResult<List<MenuItemFoodItemResultDto>>> Delete(MenuItemFoodItemQueryDto queryDto);
+        public Task<DbOperationResult<MenuItemFoodItemResultDto>> Delete(MenuItemFoodItemQueryDto queryDto);
     }
 }

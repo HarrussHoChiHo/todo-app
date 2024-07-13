@@ -9,7 +9,7 @@ namespace Application.BusinessLogic.FoodItemLogic
 
         public Task<DbOperationResult<FoodItemResultDto>> Update(FoodItemQueryDto foodItemQuery);
 
-        public Task<DbOperationResult<List<FoodItemResultDto>>> Read(FoodItemQueryDto foodItemQuery);
+        public Task<DbOperationResult<FoodItemResultDto>> Read(FoodItemQueryDto foodItemQuery);
 
         public Task<DbOperationResult<FoodItemResultDto>> Delete(int id);
     }

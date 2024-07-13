@@ -79,9 +79,9 @@ public class RoleController(
     {
         try
         {
-            DbOperationResult<List<RoleResultDto>> response = await role.Read(queryDto);
+            DbOperationResult<RoleResultDto> response = await role.Read(queryDto);
 
-            return HandlerResult(Result<DbOperationResult<List<RoleResultDto>>>.Success(response));
+            return HandlerResult(Result<DbOperationResult<RoleResultDto>>.Success(response));
         }
         catch (Exception e)
         {

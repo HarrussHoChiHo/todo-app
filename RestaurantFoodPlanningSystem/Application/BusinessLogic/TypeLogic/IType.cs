@@ -9,7 +9,7 @@ namespace Application.BusinessLogic.TypeLogic
 
         public Task<DbOperationResult<TypeResultDto>> Update(TypeQueryDto typeQuery);
 
-        public Task<DbOperationResult<List<TypeResultDto>>> Read(TypeQueryDto typeQuery);
+        public Task<DbOperationResult<TypeResultDto>> Read(TypeQueryDto typeQuery);
 
         public Task<DbOperationResult<TypeResultDto>> Delete(int id);
     }

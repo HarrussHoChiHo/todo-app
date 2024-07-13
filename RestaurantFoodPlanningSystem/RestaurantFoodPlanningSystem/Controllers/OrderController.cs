@@ -36,7 +36,7 @@ public class OrderController(
             response.orderItemResDtos = queryDto.orderItems.ConvertAll(
                                                                        item =>
                                                                        {
-                                                                           item.OrderId = orderInsertion.resultDto.Id;
+                                                                           item.OrderId = orderInsertion.resultDto.First().Id;
                                                                            return orderItem.Insert(item)
                                                                                            .Result;
                                                                        });

@@ -13,16 +13,22 @@ import {
     useDisclosure
 } from "@nextui-org/react";
 import Modals from "../../../components/CustomModal";
+import {element} from "prop-types";
 
 export default function Page() {
     const httpServices          = new HttpServices();
     const {token}               = useAuth();
-    const [jsonObj, setJsonObj] = useState<IHttpResponse<UserDto>>({
+    const [jsonObj, setJsonObj] = useState<BasicDto<UserDto>>({
                                                                        error    : "",
                                                                        isSuccess: false,
                                                                        value    : {
                                                                            amount   : 0,
-                                                                           resultDto: []
+                                                                           resultDto: [{
+                                                                               id      : 0,
+                                                                               password: "",
+                                                                               userName: "",
+                                                                               role    : []
+                                                                           }]
                                                                        }
                                                                    });
     const [roles, setRoles]     = useState<RoleDto[]>([]);
@@ -44,7 +50,7 @@ export default function Page() {
     useEffect(() => {
         (async function fetchData() {
             let server_res = await (await httpServices.callAPI("/user", null, "GET", token)).json();
-            setJsonObj(server_res as IHttpResponse<UserDto>);
+            setJsonObj(server_res as BasicDto<UserDto>);
             if (server_res.value.resultDto) {
                 setHeaders(Object.keys(server_res.value.resultDto[0]));
             }
@@ -53,14 +59,26 @@ export default function Page() {
 
     const handleDelete = (id: number) => {
         (async () => {
-            let server_res = await (await httpServices.callAPI(`/User/${id}`, null, "DELETE", token)).json();
-            setJsonObj(server_res as IHttpResponse<UserDto>);
+            let server_res = await (await httpServices.callAPI(`/User/${id}`, null, "DELETE", token)).json() as BasicDto<UserDto>;
+            if (server_res.isSuccess){
+                let updatedList = await (await httpServices.callAPI("/user", null, "GET", token)).json() as BasicDto<UserDto>;
+                if (updatedList.isSuccess){
+                    setJsonObj(updatedList);
+                } else {
+                    throw new Error("Failed to retrieve updated list");
+                }
+            } else {
+                throw new Error("Failed to delete user");
+            }
         })();
     }
 
     const handleEdit = (id: number) => {
-        const [targetedObj] = jsonObj.value.resultDto.filter(dto => dto.id === id);
-        setEditObj(targetedObj);
+        let targetedObj;
+        if (!(jsonObj.value.resultDto instanceof UserDto)) {
+            [targetedObj] = jsonObj.value.resultDto.filter((dto: { id: number; }) => dto.id === id);
+            setEditObj(targetedObj);
+        }
         (async () => {
             let roles_res = await (await httpServices.callAPI(`/Role/read`, {
                 name       : null,
@@ -132,7 +150,7 @@ export default function Page() {
             let server_res = await (await httpServices.callAPI("/user/update", editObj, "POST", token)).json() as BasicDto<UserDto>;
             if (server_res.isSuccess) {
                 let server_res = await (await httpServices.callAPI("/user", null, "GET", token)).json();
-                setJsonObj(server_res as IHttpResponse<UserDto>);
+                setJsonObj(server_res as BasicDto<UserDto>);
             } else {
                 throw new Error(JSON.stringify(server_res));
             }
@@ -142,56 +160,54 @@ export default function Page() {
 
     return (
         <>
-            <div className={"flex flex-col justify-center items-center w-6/12 ml-auto mr-auto pt-8 pb-8"}>
-                <div className={"grid grid-cols-6"}>
-                    {
-                        headers.map((header, index) => (
-                            <Fragment key={header}>
-                                <div className={"font-extrabold gird-style text-center"}>
-                                    {header}
-                                </div>
-                            </Fragment>
-                        ))
-                    }
-                    <Fragment key={"header_delete"}>
-                        <div className={"font-extrabold gird-style text-center"}>
-                            Delete
-                        </div>
-                    </Fragment>
-                    <Fragment key={"header_edit"}>
-                        <div className={"font-extrabold gird-style text-center"}>
-                            Edit
-                        </div>
-                    </Fragment>
-                    {
-                        jsonObj.value.resultDto.map((userDto, index) => (
-                            <Fragment key={userDto.id}>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {userDto.id}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {userDto.userName}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {userDto.password}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {userDto.role.join(", ")}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    <button onClick={() => handleDelete(userDto.id)}><FontAwesomeIcon icon={faTrash}
-                                                                                                      id={userDto.id.toString()}/>
-                                    </button>
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    <button onClick={() => handleEdit(userDto.id)}>
-                                        <FontAwesomeIcon icon={faPenToSquare}/>
-                                    </button>
-                                </div>
-                            </Fragment>
-                        ))
-                    }
-                </div>
+            <div className={"grid grid-cols-6"}>
+                {
+                    headers.map((header, index) => (
+                        <Fragment key={header}>
+                            <div className={"font-extrabold gird-style text-center"}>
+                                {header}
+                            </div>
+                        </Fragment>
+                    ))
+                }
+                <Fragment key={"header_delete"}>
+                    <div className={"font-extrabold gird-style text-center"}>
+                        Delete
+                    </div>
+                </Fragment>
+                <Fragment key={"header_edit"}>
+                    <div className={"font-extrabold gird-style text-center"}>
+                        Edit
+                    </div>
+                </Fragment>
+                {
+                    (jsonObj.value.resultDto as UserDto[]).map((userDto, index) => (
+                        <Fragment key={userDto.id}>
+                            <div className={"p-4 gird-style text-center"}>
+                                {userDto.id}
+                            </div>
+                            <div className={"p-4 gird-style text-center"}>
+                                {userDto.userName}
+                            </div>
+                            <div className={"p-4 gird-style text-center"}>
+                                {userDto.password}
+                            </div>
+                            <div className={"p-4 gird-style text-center"}>
+                                {userDto.role.join(", ")}
+                            </div>
+                            <div className={"p-4 gird-style text-center"}>
+                                <button onClick={() => handleDelete(userDto.id)}><FontAwesomeIcon icon={faTrash}
+                                                                                                  id={userDto.id.toString()}/>
+                                </button>
+                            </div>
+                            <div className={"p-4 gird-style text-center"}>
+                                <button onClick={() => handleEdit(userDto.id)}>
+                                    <FontAwesomeIcon icon={faPenToSquare}/>
+                                </button>
+                            </div>
+                        </Fragment>
+                    ))
+                }
             </div>
             <Modals isOpen={isOpen}
                     onOpenChange={onOpenChange}

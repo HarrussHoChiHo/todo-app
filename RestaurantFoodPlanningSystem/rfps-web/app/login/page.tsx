@@ -37,7 +37,7 @@ const LoginComponent: NextPage = () => {
 
     useEffect(() => {
         if (token) {
-            router.push("/dashboard");
+            router.push("/dashboard/user");
         }
     }, [router, token]);
     

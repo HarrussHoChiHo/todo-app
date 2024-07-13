@@ -1,6 +1,5 @@
 using Application;
 using Application.Dtos.TokenService;
-using Application.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -10,7 +9,7 @@ namespace RestaurantFoodPlanningSystem.Controllers;
 
 public class TokenValidationController(
     ILogger<TokenValidationController> logger,
-    TokenService tokenService) : BaseApiController
+    TokenService                       tokenService) : BaseApiController
 {
     /// <summary>
     /// Token Validation
@@ -27,17 +26,23 @@ public class TokenValidationController(
             TokenResultDto                    dto    = new TokenResultDto();
             if (tokenService.ValidateToken(tokenQueryDto.token))
             {
-                dto.valid        = true;
-                result.resultDto = dto;
-                result.amount    = 1;
+                dto.valid = true;
+                result.resultDto = new List<TokenResultDto>()
+                                   {
+                                       dto
+                                   };
+                result.amount = 1;
                 return HandlerResult(Result<DbOperationResult<TokenResultDto>>.Success(result));
             }
             else
             {
                 dto.valid        = false;
-                result.resultDto = dto;
+                result.resultDto = new List<TokenResultDto>()
+                                   {
+                                       dto
+                                   };
                 result.amount    = 1;
-                return HandlerResult(Result<DbOperationResult<TokenResultDto>>.Success(result)); 
+                return HandlerResult(Result<DbOperationResult<TokenResultDto>>.Success(result));
             }
         }
         catch (Exception e)

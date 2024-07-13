@@ -18,13 +18,16 @@ namespace Application.BusinessLogic.OrderLogic
         {
             DbOperationResult<OrderResultDto> result = new DbOperationResult<OrderResultDto>();
             Order                             order  = _mapper.Map<Order>(orderQuery);
-            
+
             _context.Order.Add(order);
-        
+
             result.amount = await _context.SaveChangesAsync();
-        
-            result.resultDto = _mapper.Map<OrderResultDto>(order);
-        
+
+            result.resultDto = new List<OrderResultDto>()
+                               {
+                                   _mapper.Map<OrderResultDto>(order)
+                               };
+
             return result;
         }
 
@@ -32,18 +35,21 @@ namespace Application.BusinessLogic.OrderLogic
         {
             DbOperationResult<OrderResultDto> result = new DbOperationResult<OrderResultDto>();
             Order                             order  = _mapper.Map<Order>(orderQuery);
-        
+
             _context.Order.Update(order);
 
-            result.amount    = await _context.SaveChangesAsync();
-            result.resultDto = _mapper.Map<OrderResultDto>(order);
-        
+            result.amount = await _context.SaveChangesAsync();
+            result.resultDto = new List<OrderResultDto>()
+                               {
+                                   _mapper.Map<OrderResultDto>(order)
+                               };
+
             return result;
         }
 
-        public async Task<DbOperationResult<List<OrderResultDto>>> Read(OrderQueryDto orderQuery)
+        public async Task<DbOperationResult<OrderResultDto>> Read(OrderQueryDto orderQuery)
         {
-            DbOperationResult<List<OrderResultDto>> result = new DbOperationResult<List<OrderResultDto>>();
+            DbOperationResult<OrderResultDto> result = new DbOperationResult<OrderResultDto>();
 
             List<OrderResultDto> orderResultDtos = _context
                                                    .Order.Where(
@@ -69,8 +75,11 @@ namespace Application.BusinessLogic.OrderLogic
             _context.Order.Remove(order);
 
             result.amount = await _context.SaveChangesAsync();
-        
-            result.resultDto = _mapper.Map<OrderResultDto>(order);
+
+            result.resultDto = new List<OrderResultDto>()
+                               {
+                                   _mapper.Map<OrderResultDto>(order)
+                               };
 
             return result;
         }

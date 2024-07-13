@@ -22,7 +22,10 @@ namespace Application.BusinessLogic.TypeLogic
 
             result.amount = await _context.SaveChangesAsync();
 
-            result.resultDto = _mapper.Map<TypeResultDto>(type);
+            result.resultDto = new List<TypeResultDto>()
+                               {
+                                   _mapper.Map<TypeResultDto>(type)
+                               };
 
             return result;
         }
@@ -37,14 +40,17 @@ namespace Application.BusinessLogic.TypeLogic
 
             result.amount = await _context.SaveChangesAsync();
 
-            result.resultDto = _mapper.Map<TypeResultDto>(type);
+            result.resultDto = new List<TypeResultDto>()
+                               {
+                                   _mapper.Map<TypeResultDto>(type)
+                               };
 
             return result;
         }
 
-        public async Task<DbOperationResult<List<TypeResultDto>>> Read(TypeQueryDto typeQuery)
+        public async Task<DbOperationResult<TypeResultDto>> Read(TypeQueryDto typeQuery)
         {
-            DbOperationResult<List<TypeResultDto>> result = new DbOperationResult<List<TypeResultDto>>();
+            DbOperationResult<TypeResultDto> result = new DbOperationResult<TypeResultDto>();
 
             result.resultDto = _context
                                .Type.Where(
@@ -67,7 +73,10 @@ namespace Application.BusinessLogic.TypeLogic
 
             result.amount = await _context.SaveChangesAsync();
 
-            result.resultDto = _mapper.Map<TypeResultDto>(type);
+            result.resultDto = new List<TypeResultDto>()
+                               {
+                                   _mapper.Map<TypeResultDto>(type)
+                               };
 
             return result;
         }

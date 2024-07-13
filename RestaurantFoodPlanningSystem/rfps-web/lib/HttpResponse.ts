@@ -1,6 +1,6 @@
 interface IResultSet<T> {
     amount: number;
-    resultDto: [T] | [];
+    resultDto: T[] | [] | T;
 }
 
 interface IHttpResponse<T> {

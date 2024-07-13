@@ -8,7 +8,7 @@ namespace Application.BusinessLogic.UnitLogic
 
         public Task<DbOperationResult<UnitResultDto>> Update(UnitQueryDto unitQuery);
 
-        public Task<DbOperationResult<List<UnitResultDto>>> Read(UnitQueryDto unitQuery);
+        public Task<DbOperationResult<UnitResultDto>> Read(UnitQueryDto unitQuery);
 
         public Task<DbOperationResult<UnitResultDto>> Delete(int id);
     }

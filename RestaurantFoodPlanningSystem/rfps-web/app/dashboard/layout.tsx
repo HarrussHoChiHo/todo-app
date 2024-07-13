@@ -16,7 +16,7 @@ const DashboardLayout = ({children}: { children: React.ReactNode }) => {
         }
     }, []);
     
-    return (<div><HeaderComponent/>{children}<FooterComponent /></div>);
+    return (<div><HeaderComponent/><div className={"flex flex-col justify-center items-center w-6/12 ml-auto mr-auto pt-8 pb-8"}>{children}</div><FooterComponent /></div>);
 }
 
 export default DashboardLayout;

@@ -22,8 +22,11 @@ namespace Application.BusinessLogic.MenuLogic
 
             _context.Menu.Add(menu);
 
-            result.amount    = await _context.SaveChangesAsync();
-            result.resultDto = _mapper.Map<MenuResultDto>(result);
+            result.amount = await _context.SaveChangesAsync();
+            result.resultDto = new List<MenuResultDto>()
+                               {
+                                   _mapper.Map<MenuResultDto>(result)
+                               };
 
             return result;
         }
@@ -36,15 +39,18 @@ namespace Application.BusinessLogic.MenuLogic
 
             _context.Menu.Update(menu);
 
-            result.amount    = await _context.SaveChangesAsync();
-            result.resultDto = _mapper.Map<MenuResultDto>(result);
+            result.amount = await _context.SaveChangesAsync();
+            result.resultDto = new List<MenuResultDto>()
+                               {
+                                   _mapper.Map<MenuResultDto>(result)
+                               };
 
             return result;
         }
 
-        public async Task<DbOperationResult<List<MenuResultDto>>> Read(MenuQueryDto menuQuery)
+        public async Task<DbOperationResult<MenuResultDto>> Read(MenuQueryDto menuQuery)
         {
-            DbOperationResult<List<MenuResultDto>> result = new DbOperationResult<List<MenuResultDto>>();
+            DbOperationResult<MenuResultDto> result = new DbOperationResult<MenuResultDto>();
             if (menuQuery.Date != null)
             {
                 result.resultDto = _context
@@ -87,8 +93,11 @@ namespace Application.BusinessLogic.MenuLogic
 
             _context.Menu.Remove(menu);
 
-            result.amount    = await _context.SaveChangesAsync();
-            result.resultDto = _mapper.Map<MenuResultDto>(menu);
+            result.amount = await _context.SaveChangesAsync();
+            result.resultDto = new List<MenuResultDto>()
+                               {
+                                   _mapper.Map<MenuResultDto>(menu)
+                               };
 
             return result;
         }
