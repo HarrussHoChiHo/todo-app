@@ -40,12 +40,14 @@ namespace Application.BusinessLogic.MenuLogic
             Menu menu = _mapper.Map<Menu>(menuQuery);
 
             _context.Menu.Update(menu);
-
+            
             result.amount = await _context.SaveChangesAsync();
-            result.resultDto = new List<MenuResultDto>()
-                               {
-                                   _mapper.Map<MenuResultDto>(result)
-                               };
+
+            result.resultDto = _context
+                               .Menu.Where(x => x.Id.Equals(menu.Id))
+                               .Include(x => x.MenuItem)
+                               .ProjectTo<MenuResultDto>(_mapper.ConfigurationProvider)
+                               .ToList();
 
             return result;
         }
@@ -66,6 +68,7 @@ namespace Application.BusinessLogic.MenuLogic
                                                      || menuQuery.MenuItem_Id == null)
                                               )
                                    .Include(menu => menu.MenuItem)
+                                   .OrderBy(menu => menu.Date)
                                    .ProjectTo<MenuResultDto>(_mapper.ConfigurationProvider)
                                    .ToList();
             }
@@ -78,6 +81,7 @@ namespace Application.BusinessLogic.MenuLogic
                                                      || menuQuery.MenuItem_Id == null)
                                               )
                                    .Include(menu => menu.MenuItem)
+                                   .OrderBy(menu => menu.Date)
                                    .ProjectTo<MenuResultDto>(_mapper.ConfigurationProvider)
                                    .ToList();
             }

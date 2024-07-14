@@ -66,15 +66,15 @@ public class UserController(
     /// <summary>
     /// Send user information to do registration
     /// </summary>
-    /// <param name="basicDto">The object containing username and password.</param>
+    /// <param name="queryDto">The object containing username and password.</param>
     /// <returns name="ActionResult">Http Response with object "UserResultDto"</returns>
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<ActionResult<Result<DbOperationResult<UserResultDto>>>> Register(UserBasicDto basicDto)
+    public async Task<ActionResult<Result<DbOperationResult<UserResultDto>>>> Register(UserQueryDto queryDto)
     {
         try
         {
-            DbOperationResult<UserResultDto> response = await user.Insert(basicDto);
+            DbOperationResult<UserResultDto> response = await user.Insert(queryDto);
 
             if (response.amount > 0)
             {

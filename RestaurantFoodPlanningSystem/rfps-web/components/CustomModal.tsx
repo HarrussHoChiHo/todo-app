@@ -6,6 +6,7 @@ interface ModalProps {
     onOpenChange: () => void;
     onCancel: () => void;
     onConfirm: () => void;
+    header: string;
     children: React.ReactNode;
 }
 
@@ -14,6 +15,7 @@ export default function Modals({
                                    onOpenChange,
                                    onCancel,
                                    onConfirm,
+                                   header,
                                    children
                                }: ModalProps) {
 
@@ -25,7 +27,7 @@ export default function Modals({
             <ModalContent>
                 {
                     <>
-                        <ModalHeader className="flex flex-col gap-1">Edit</ModalHeader>
+                        <ModalHeader className="flex flex-col gap-1">{header}</ModalHeader>
                         <ModalBody>
                             {children}
                         </ModalBody>

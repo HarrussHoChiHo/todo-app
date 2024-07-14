@@ -14,11 +14,11 @@ namespace Application.BusinessLogic.UserLogic
                      context,
                      mapper), IUser
     {
-        public async Task<DbOperationResult<UserResultDto>> Insert(UserBasicDto basicDto)
+        public async Task<DbOperationResult<UserResultDto>> Insert(UserQueryDto queryDto)
         {
             DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
 
-            User user = _mapper.Map<User>(basicDto);
+            User user = _mapper.Map<User>(queryDto);
 
             user.SecurityStamp = Guid
                                  .NewGuid()
@@ -31,15 +31,31 @@ namespace Application.BusinessLogic.UserLogic
                 throw new Exception(createResult.ToString());
             }
 
+            if (queryDto.Role != null)
+            {
+                foreach (string role in queryDto.Role)
+                {
+                    if (!await userManager.IsInRoleAsync(
+                                                         user,
+                                                         role))
+                    {
+                        await userManager.AddToRoleAsync(
+                                                         user,
+                                                         role);
+                    }
+                }
+            }
+
             result.amount = 1;
 
             result.resultDto = new List<UserResultDto>()
                                {
-                                   _mapper.Map<UserResultDto>(user)
+                                   _mapper.Map<UserResultDto>(await userManager.FindByIdAsync(user.Id.ToString()))
                                };
 
-            result.resultDto.First().Role = await userManager.GetRolesAsync(user);
-            
+            result.resultDto.First()
+                  .Role = await userManager.GetRolesAsync(user);
+
             return result;
         }
 
@@ -104,12 +120,13 @@ namespace Application.BusinessLogic.UserLogic
                 }
             }
 
-            result.resultDto      = new List<UserResultDto>()
-                                    {
-                                        _mapper.Map<UserResultDto>(user)
-                                    };
-            result.amount         = 1;
-            result.resultDto.First().Role = await userManager.GetRolesAsync(user);
+            result.resultDto = new List<UserResultDto>()
+                               {
+                                   _mapper.Map<UserResultDto>(user)
+                               };
+            result.amount = 1;
+            result.resultDto.First()
+                  .Role = await userManager.GetRolesAsync(user);
 
             return result;
         }
@@ -131,7 +148,8 @@ namespace Application.BusinessLogic.UserLogic
                                        _mapper.Map<UserResultDto>(user)
                                    };
 
-                result.resultDto.First().Role = await userManager.GetRolesAsync(user);
+                result.resultDto.First()
+                      .Role = await userManager.GetRolesAsync(user);
 
                 result.amount = 1;
             }
@@ -170,7 +188,7 @@ namespace Application.BusinessLogic.UserLogic
             result.resultDto = new List<UserResultDto>();
 
             UserResultDto dto;
-            
+
             users.ForEach(
                           user =>
                           {
@@ -179,7 +197,7 @@ namespace Application.BusinessLogic.UserLogic
                                                     .Result;
                               result.resultDto.Add(dto);
                           });
-            
+
             return result;
         }
 
@@ -245,12 +263,13 @@ namespace Application.BusinessLogic.UserLogic
                 throw new Exception(addRoleResult.ToString());
             }
 
-            result.resultDto      = new List<UserResultDto>()
-                                    {
-                                        _mapper.Map<UserResultDto>(user)
-                                    };
-            result.resultDto.First().Role = await userManager.GetRolesAsync(user);
-            result.amount         = 1;
+            result.resultDto = new List<UserResultDto>()
+                               {
+                                   _mapper.Map<UserResultDto>(user)
+                               };
+            result.resultDto.First()
+                  .Role = await userManager.GetRolesAsync(user);
+            result.amount = 1;
 
             return result;
         }
@@ -275,12 +294,13 @@ namespace Application.BusinessLogic.UserLogic
                 throw new Exception(removeRoleResult.ToString());
             }
 
-            result.resultDto      = new List<UserResultDto>()
-                                    {
-                                        _mapper.Map<UserResultDto>(user)
-                                    };
-            result.resultDto.First().Role = await userManager.GetRolesAsync(user);
-            result.amount         = 1;
+            result.resultDto = new List<UserResultDto>()
+                               {
+                                   _mapper.Map<UserResultDto>(user)
+                               };
+            result.resultDto.First()
+                  .Role = await userManager.GetRolesAsync(user);
+            result.amount = 1;
 
             return result;
         }

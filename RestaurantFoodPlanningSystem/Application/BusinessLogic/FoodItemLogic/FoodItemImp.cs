@@ -3,6 +3,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
 using EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.BusinessLogic.FoodItemLogic
 {
@@ -59,6 +60,8 @@ namespace Application.BusinessLogic.FoodItemLogic
                                                          || foodItemQuery.Type_Id == null)
                                                         && (foodItem.Unit_Id      == foodItemQuery.Unit_Id
                                                          || foodItemQuery.Unit_Id == null))
+                               .Include(x => x.Type)
+                               .Include(x => x.Unit)
                                .ProjectTo<FoodItemResultDto>(_mapper.ConfigurationProvider)
                                .ToList();
 

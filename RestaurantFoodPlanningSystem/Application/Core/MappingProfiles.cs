@@ -259,11 +259,11 @@ namespace Application.Core
                            foodItem => foodItem.Quantity,
                            foodItemDto => foodItemDto.MapFrom(o => o.Quantity))
                 .ForMember(
-                           foodItem => foodItem.Type_Id,
-                           foodItemDto => foodItemDto.MapFrom(o => o.Type_Id))
+                           foodItem => foodItem.Type,
+                           foodItemDto => foodItemDto.MapFrom(o => o.Type))
                 .ForMember(
-                           foodItem => foodItem.Unit_Id,
-                           foodItemDto => foodItemDto.MapFrom(o => o.Unit_Id));
+                           foodItem => foodItem.Unit,
+                           foodItemDto => foodItemDto.MapFrom(o => o.Unit));
         }
 
         private void OrderMapper()

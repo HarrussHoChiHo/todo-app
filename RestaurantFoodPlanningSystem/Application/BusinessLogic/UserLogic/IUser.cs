@@ -5,7 +5,7 @@ namespace Application.BusinessLogic.UserLogic
 {
     public interface IUser
     {
-        public Task<DbOperationResult<UserResultDto>> Insert(UserBasicDto basicDto);
+        public Task<DbOperationResult<UserResultDto>> Insert(UserQueryDto queryDto);
 
         public Task<DbOperationResult<UserResultDto>> Update(UserQueryDto queryDto);
 

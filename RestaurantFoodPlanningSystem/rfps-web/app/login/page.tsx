@@ -6,7 +6,7 @@ import HttpServices from "../../lib/HttpServices";
 import {useRouter} from "next/navigation";
 import LoginQueryDto from "../../lib/models/LoginQueryDto";
 import {useAuth} from "../AuthContext";
-import UserDto from "../../lib/models/UserDto";
+import UserDto from "../../lib/models/user/UserDto";
 
 const LoginComponent: NextPage = () => {
     const router = useRouter();
