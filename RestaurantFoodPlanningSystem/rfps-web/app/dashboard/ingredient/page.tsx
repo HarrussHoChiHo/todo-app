@@ -16,7 +16,10 @@ import Modals from "../../../components/CustomModal";
 
 export default function IngredientComponent() {
     const httpServices = new HttpServices();
-    const {token} = useAuth();
+    const {
+        token,
+        user
+    } = useAuth();
     const [ingredient, setIngredient] = useState<BasicDto<IngredientDto>>({
         error: "",
         isSuccess: false,
@@ -167,7 +170,7 @@ export default function IngredientComponent() {
                     unit_Id: null,
                     type_Id: null
                 });
-                if (retrieveIngredientRes.isSuccess){
+                if (retrieveIngredientRes.isSuccess) {
                     setIngredient(retrieveIngredientRes);
                 } else {
                     throw new Error(JSON.stringify(retrieveIngredientRes));
@@ -195,7 +198,7 @@ export default function IngredientComponent() {
                     unit_Id: null,
                     type_Id: null
                 });
-                if (retrieveIngredientRes.isSuccess){
+                if (retrieveIngredientRes.isSuccess) {
                     setIngredient(retrieveIngredientRes);
                 } else {
                     throw new Error(JSON.stringify(retrieveIngredientRes));
@@ -434,13 +437,18 @@ export default function IngredientComponent() {
 
     return (
         <>
-            <div className={"w-full flex flex-row justify-end p-2"}>
-                <Button variant={"ghost"}
-                        startContent={<FontAwesomeIcon icon={faFolderPlus}/>}
-                        className={"w-3/12"}
-                        onClick={handleCreate}
-                />
-            </div>
+            {
+                user?.role.includes("Manager")
+                ? (<div className={"w-full flex flex-row justify-end p-2"}>
+                    <Button variant={"ghost"}
+                            startContent={<FontAwesomeIcon icon={faFolderPlus}/>}
+                            className={"w-3/12"}
+                            onClick={handleCreate}
+                    />
+                </div>)
+                : (<></>)
+            }
+
             <div className={"grid grid-cols-7 w-full"}>
                 {
                     headers.map((header) => (
@@ -479,26 +487,42 @@ export default function IngredientComponent() {
                             <div className={"p-4 gird-style text-center"}>
                                 {ingredDto.type.name}
                             </div>
-                            <div className={"p-4 gird-style text-center"}>
-                                <button onClick={() => handleDelete(ingredDto.id)}>
-                                    <FontAwesomeIcon icon={faTrash}
-                                                     id={ingredDto.id.toString()}/>
-                                </button>
-                            </div>
-                            <div className={"p-4 gird-style text-center"}>
-                                <button onClick={() => handleEdit(ingredDto.id)}>
-                                    <FontAwesomeIcon icon={faPenToSquare}/>
-                                </button>
-                            </div>
+                            {
+                                user?.role.includes("Manager")
+                                ? (
+                                    <>
+                                        <div className={"p-4 gird-style text-center"}>
+                                            <button onClick={() => handleDelete(ingredDto.id)}>
+                                                <FontAwesomeIcon icon={faTrash}
+                                                                 id={ingredDto.id.toString()}/>
+                                            </button>
+                                        </div>
+                                        <div className={"p-4 gird-style text-center"}>
+                                            <button onClick={() => handleEdit(ingredDto.id)}>
+                                                <FontAwesomeIcon icon={faPenToSquare}/>
+                                            </button>
+                                        </div>
+                                    </>
+                                )
+                                : (
+                                    <></>
+                                )
+                            }
                         </Fragment>
                     ))
                 }
             </div>
             <Modals isOpen={isOpen}
                     onOpenChange={onOpenChange}
-                    onCancel={() => editModal ? cancelEdition() : cancelCreation()}
-                    onConfirm={() => editModal ? confirmEdition() : confirmCreation()}
-                    header={editModal ? "Edit" : "Create"}
+                    onCancel={() => editModal
+                                    ? cancelEdition()
+                                    : cancelCreation()}
+                    onConfirm={() => editModal
+                                     ? confirmEdition()
+                                     : confirmCreation()}
+                    header={editModal
+                            ? "Edit"
+                            : "Create"}
             >
                 {
                     renderContent()

@@ -287,35 +287,37 @@ public class SeedData
 
         if (!context.OrderItem.Any() && context.Order.Any())
         {
-            List<OrderItem> orderItems =
-            [
-                new OrderItem()
-                {
-                    OrderId    = 1,
-                    MenuItemId = 1
-                },
-                new OrderItem()
-                {
-                    OrderId    = 1,
-                    MenuItemId = 2
-                },
-                new OrderItem()
-                {
-                    OrderId    = 1,
-                    MenuItemId = 2
-                },
-                new OrderItem()
-                {
-                    OrderId    = 2,
-                    MenuItemId = 1
-                },
-                new OrderItem()
-                {
-                    OrderId    = 2,
-                    MenuItemId = 3
-                }
-            ];
+            List<OrderItem> orderItems = new List<OrderItem>();
+
+            List<int> orderIds = context
+                                 .Order
+                                 .Select(x => x.Id)
+                                 .ToList();
+
+            List<int> menuItemIds = context
+                                    .MenuItem
+                                    .Select(x => x.Id)
+                                    .ToList();
             
+            
+            foreach (int id in orderIds)
+            {
+               int items = Random.Shared.Next(
+                                   1,
+                                   4);
+
+               for (int i = 0; i < items; i++)
+               {
+                   orderItems.Add(
+                                  new OrderItem()
+                                  {
+                                      OrderId    = id,
+                                      MenuItemId = menuItemIds[Random.Shared.Next(0,3)]
+                                  });
+               }
+            }
+            
+
             context.OrderItem.AddRange(orderItems);
             logger.LogDebug($"Order insertion result: {await context.SaveChangesAsync()}");
         }

@@ -2,10 +2,12 @@
 import React, {createContext, useState, useEffect, ReactNode} from "react";
 import HttpServices from "../lib/HttpServices";
 import TokenDto from "../lib/models/TokenDto";
+import UserDto from "../lib/models/user/UserDto";
 
 interface AuthContextType {
     token: string | null;
-    login: (token: string) => void;
+    user: UserDto | null;
+    login: (token: string, user: UserDto) => void;
     logout: () => void;
 }
 
@@ -17,16 +19,17 @@ interface AuthProviderProps {
 
 export function AuthProvider({children}: AuthProviderProps) {
     const [token, setToken] = useState<string | null>(null);
+    const [user, setUser] = useState<UserDto | null>(null);
     const httpServices = new HttpServices();
     const [loading, setLoading] = useState(true);
-    
+
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
         (async () => {
             setLoading(true);
-            if (storedToken){
+            if (storedToken) {
                 let server_res = await (await httpServices.callAPI("/TokenValidation", {token: storedToken}, "POST")).json() as BasicDto<TokenDto>;
-                if ((server_res.value.resultDto as TokenDto[]).pop()?.valid) {
+                if (server_res.value.resultDto.pop()?.valid) {
                     setToken(storedToken);
                     setLoading(false);
                 } else {
@@ -37,20 +40,23 @@ export function AuthProvider({children}: AuthProviderProps) {
                 setLoading(false);
             }
         })();
-    },[]);
+    }, []);
 
-    const login = (newToken: string) => {
+    const login = (newToken: string, user: UserDto) => {
         setToken(newToken);
+        setUser(user);
         localStorage.setItem("token", newToken);
     }
 
     const logout = () => {
         setToken(null);
+        setUser(null);
         localStorage.removeItem("token");
     }
 
     const value = {
         token,
+        user,
         login,
         logout
     }
@@ -64,11 +70,11 @@ export function AuthProvider({children}: AuthProviderProps) {
 
 export function useAuth(): AuthContextType {
     const context = React.useContext(AuthContext);
-    
-    if (context === undefined){
+
+    if (context === undefined) {
         throw new Error('useAuth must be used within an AuthProvider');
     }
-    
+
     return context;
 }
 

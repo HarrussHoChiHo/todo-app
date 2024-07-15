@@ -1,9 +1,8 @@
 "use client"
 
-import {Navbar, NavbarContent, NavbarItem} from "@nextui-org/react";
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem} from "@nextui-org/react";
 import Link from "next/link";
 import {useEffect, useState} from "react";
-import {router} from "next/client";
 import {usePathname} from "next/navigation";
 
 export default function HeaderComponent() {
@@ -16,7 +15,10 @@ export default function HeaderComponent() {
     
     return (
       <Navbar position={"static"} isBordered={true}>
-          <NavbarContent className={"hidden sm:flex gap-4"} justify={"center"}>
+          <NavbarBrand>
+              
+          </NavbarBrand>
+          <NavbarContent className={"flex gap-4"} justify={"center"}>
               <NavbarItem isActive={activeItem === "user"}>
                   <Link href={"/dashboard/user"} color={"foreground"}>
                       User Management
@@ -40,6 +42,16 @@ export default function HeaderComponent() {
               <NavbarItem isActive={activeItem === "order"}>
                   <Link href={"/dashboard/order"} color={"foreground"}>
                       Order Management
+                  </Link>
+              </NavbarItem>
+              <NavbarItem isActive={activeItem === "unit"}>
+                  <Link href={"/dashboard/unit"} color={"foreground"}>
+                      Unit Management
+                  </Link>
+              </NavbarItem>
+              <NavbarItem isActive={activeItem === "type"}>
+                  <Link href={"/dashboard/type"} color={"foreground"}>
+                      Type Management
                   </Link>
               </NavbarItem>
           </NavbarContent>
