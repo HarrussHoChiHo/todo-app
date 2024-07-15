@@ -7,13 +7,12 @@ import IngredientDto from "../../../lib/models/ingredient/IngredientDto";
 import IngredientQueryDto from "../../../lib/models/ingredient/IngredientQueryDto";
 import TypeDto from "../../../lib/models/type/TypeDto";
 import UnitDto from "../../../lib/models/unit/UnitDto";
-import {element} from "prop-types";
-import {Button, useDisclosure} from "@nextui-org/react";
+import {Button, Input, Select, SelectItem, useDisclosure} from "@nextui-org/react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
-import UserDto from "../../../lib/models/user/UserDto";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
+import Modals from "../../../components/CustomModal";
 
 export default function IngredientComponent() {
     const httpServices = new HttpServices();
@@ -57,13 +56,16 @@ export default function IngredientComponent() {
         onClose,
         onOpenChange
     } = useDisclosure();
+    const [editModal, setEditModal] = useState(true);
     const [headers, setHeaders] = useState<string[]>([]);
     const [types, setTypes] = useState<TypeDto[]>([]);
     const [units, setUnits] = useState<UnitDto[]>([]);
 
-    const foodItemAPI: string = "/food-item";
-    const typeAPI: string = "/type";
-    const unitAPI: string = "/unit";
+    let newName: string, newQuantity: number, newUnit: number, newType: number;
+
+    const foodItemAPI: string = "/DataManagement/food-item";
+    const typeAPI: string = "/DataManagement/type";
+    const unitAPI: string = "/DataManagement/unit";
 
     const retrieveIngredient = async (ingredientQueryDto: IngredientQueryDto) => {
         let server_res = await (await httpServices.callAPI(`${foodItemAPI}/read`, ingredientQueryDto, "POST", token)).json();
@@ -102,7 +104,8 @@ export default function IngredientComponent() {
     }
 
     const handleCreate = () => {
-
+        setEditModal(false);
+        onOpen();
     }
 
     const handleDelete = (id: number) => {
@@ -130,14 +133,267 @@ export default function IngredientComponent() {
 
     const handleEdit = (id: number) => {
         (async () => {
-            let server_res = await retrieveIngredient({id: id, type_Id: null,  quantity: null,  unit_Id: null, name: null});
-            
-            if (server_res){
+            setEditModal(true);
+            let server_res = await retrieveIngredient({
+                id: id,
+                type_Id: null,
+                quantity: null,
+                unit_Id: null,
+                name: null
+            });
+
+            if (server_res) {
                 setEditObj(server_res.value.resultDto[0]);
             } else {
                 throw new Error("Failed to retrieve object for delete");
             }
         })().finally(() => onOpen());
+    }
+
+    const confirmEdition = () => {
+        (async () => {
+            let server_res = await updateIngredient({
+                id: editObj.id,
+                name: editObj.name,
+                quantity: editObj.quantity,
+                type_Id: editObj.type.id,
+                unit_Id: editObj.unit.id
+            });
+            if (server_res.isSuccess) {
+                let retrieveIngredientRes = await retrieveIngredient({
+                    id: null,
+                    name: null,
+                    quantity: null,
+                    unit_Id: null,
+                    type_Id: null
+                });
+                if (retrieveIngredientRes.isSuccess){
+                    setIngredient(retrieveIngredientRes);
+                } else {
+                    throw new Error(JSON.stringify(retrieveIngredientRes));
+                }
+            } else {
+                throw new Error(JSON.stringify(server_res));
+            }
+        })().finally(() => onClose());
+    }
+
+    const confirmCreation = () => {
+        (async () => {
+            let server_res = await createIngredient({
+                id: null,
+                name: newName,
+                type_Id: newType,
+                unit_Id: newUnit,
+                quantity: newQuantity
+            });
+            if (server_res.isSuccess) {
+                let retrieveIngredientRes = await retrieveIngredient({
+                    id: null,
+                    name: null,
+                    quantity: null,
+                    unit_Id: null,
+                    type_Id: null
+                });
+                if (retrieveIngredientRes.isSuccess){
+                    setIngredient(retrieveIngredientRes);
+                } else {
+                    throw new Error(JSON.stringify(retrieveIngredientRes));
+                }
+            } else {
+                throw new Error(JSON.stringify(server_res));
+            }
+        })().finally(() => onClose());
+    }
+
+    const cancelEdition = () => {
+        onClose();
+    }
+
+    const cancelCreation = () => {
+        onClose();
+    }
+
+    const updateName = (name: string) => {
+        const {
+            id,
+            quantity,
+            unit,
+            type
+        } = editObj;
+
+        setEditObj({
+            id: id,
+            name: name,
+            unit: unit,
+            type: type,
+            quantity: quantity
+        });
+    }
+
+    const updateQuantity = (quantity: number) => {
+        const {
+            id,
+            name,
+            unit,
+            type
+        } = editObj;
+
+        setEditObj({
+            id: id,
+            name: name,
+            unit: unit,
+            type: type,
+            quantity: quantity
+        });
+    }
+
+    const updateUnit = (unit: string[]) => {
+        const {
+            id,
+            name,
+            quantity,
+            type
+        } = editObj;
+        const newUnitId: number = parseInt(unit[0]);
+        const [newUnit] = units.filter(iunit => iunit.id === newUnitId);
+        setEditObj({
+            id: id,
+            name: name,
+            unit: newUnit,
+            type: type,
+            quantity: quantity
+        });
+    }
+
+    const updateType = (type: string[]) => {
+        const {
+            id,
+            name,
+            quantity,
+            unit
+        } = editObj;
+        const newTypeId: number = parseInt(type[0]);
+        const [newType] = types.filter(itype => itype.id === newTypeId);
+        setEditObj({
+            id: id,
+            name: name,
+            quantity: quantity,
+            unit: unit,
+            type: newType
+        });
+    }
+
+    const createNewName = (name: string) => {
+        newName = name;
+    }
+
+    const createNewQuantity = (quantity: number) => {
+        newQuantity = quantity;
+    }
+
+    const createNewUnit = (unit: string[]) => {
+        newUnit = parseInt(unit[0]);
+    }
+
+    const createNewType = (type: string[]) => {
+        newType = parseInt(type[0]);
+    }
+
+    const renderContent = () => {
+        if (editModal) {
+            return (
+                <>
+                    <Input label={"Name"}
+                           type={"text"}
+                           defaultValue={editObj.name}
+                           isRequired={true}
+                           onChange={(event) => updateName(event.target.value)}
+                    />
+                    <Input label={"Quantity"}
+                           type={"number"}
+                           min={0}
+                           defaultValue={editObj.quantity.toString()}
+                           isRequired={true}
+                           onChange={(event) => updateQuantity(parseInt(event.target.value))}
+                    />
+                    <Select
+                        label={"Units"}
+                        selectionMode={"single"}
+                        selectedKeys={editObj.unit.id.toString()}
+                        isRequired={true}
+                        onSelectionChange={(selection) => updateUnit(Array.from(selection, opt => opt.toString()))}
+                    >
+                        {
+                            units.map(value =>
+                                <SelectItem key={value.id} value={value.id}>
+                                    {value.name}
+                                </SelectItem>
+                            )
+                        }
+                    </Select>
+                    <Select
+                        label={"Type"}
+                        selectionMode={"single"}
+                        selectedKeys={editObj.type.id.toString()}
+                        isRequired={true}
+                        onSelectionChange={(selection) => updateType(Array.from(selection, opt => opt.toString()))}
+                    >
+                        {
+                            types.map(value =>
+                                <SelectItem key={value.id} value={value.id}>
+                                    {value.name}
+                                </SelectItem>
+                            )
+                        }
+                    </Select>
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <Input label={"Name"}
+                           type={"text"}
+                           isRequired={true}
+                           onChange={(event) => createNewName(event.target.value)}
+                    />
+                    <Input label={"Quantity"}
+                           type={"number"}
+                           min={0}
+                           isRequired={true}
+                           onChange={(event) => createNewQuantity(parseInt(event.target.value))}
+                    />
+                    <Select
+                        label={"Units"}
+                        selectionMode={"single"}
+                        isRequired={true}
+                        onSelectionChange={(selection) => createNewUnit(Array.from(selection, opt => opt.toString()))}
+                    >
+                        {
+                            units.map(value =>
+                                <SelectItem key={value.id} value={value.name}>
+                                    {value.name}
+                                </SelectItem>
+                            )
+                        }
+                    </Select>
+                    <Select
+                        label={"Type"}
+                        selectionMode={"single"}
+                        isRequired={true}
+                        onSelectionChange={(selection) => createNewType(Array.from(selection, opt => opt.toString()))}
+                    >
+                        {
+                            types.map(value =>
+                                <SelectItem key={value.id} value={value.name}>
+                                    {value.name}
+                                </SelectItem>
+                            )
+                        }
+                    </Select>
+                </>
+            )
+        }
     }
 
     useEffect(() => {
@@ -185,9 +441,9 @@ export default function IngredientComponent() {
                         onClick={handleCreate}
                 />
             </div>
-            <div className={"grid grid-cols-6 w-full"}>
+            <div className={"grid grid-cols-7 w-full"}>
                 {
-                    headers.map((header, index) => (
+                    headers.map((header) => (
                         <Fragment key={header}>
                             <div className={"font-extrabold gird-style text-center"}>
                                 {header}
@@ -215,13 +471,13 @@ export default function IngredientComponent() {
                                 {ingredDto.name}
                             </div>
                             <div className={"p-4 gird-style text-center"}>
-                                {ingredDto.type.name}
-                            </div>
-                            <div className={"p-4 gird-style text-center"}>
                                 {ingredDto.quantity}
                             </div>
                             <div className={"p-4 gird-style text-center"}>
                                 {ingredDto.unit.name}
+                            </div>
+                            <div className={"p-4 gird-style text-center"}>
+                                {ingredDto.type.name}
                             </div>
                             <div className={"p-4 gird-style text-center"}>
                                 <button onClick={() => handleDelete(ingredDto.id)}>
@@ -238,6 +494,16 @@ export default function IngredientComponent() {
                     ))
                 }
             </div>
+            <Modals isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                    onCancel={() => editModal ? cancelEdition() : cancelCreation()}
+                    onConfirm={() => editModal ? confirmEdition() : confirmCreation()}
+                    header={editModal ? "Edit" : "Create"}
+            >
+                {
+                    renderContent()
+                }
+            </Modals>
         </>
     );
 }

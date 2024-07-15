@@ -3,6 +3,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
 using EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
 
@@ -57,6 +58,7 @@ namespace Application.BusinessLogic.OrderLogic
                                                                     (order.Id == orderQuery.Id || orderQuery.Id == null)
                                                                  && (order.IsCanceled      == orderQuery.IsCanceled
                                                                   || orderQuery.IsCanceled == null))
+                                                   .Include(order => order.OrderItems)
                                                    .ProjectTo<OrderResultDto>(_mapper.ConfigurationProvider)
                                                    .ToList();
 

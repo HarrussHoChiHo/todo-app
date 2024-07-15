@@ -733,7 +733,7 @@ public class DataManagementController(
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("order/update")]
-    public async Task<ActionResult<DbOperationResult<OrderResultDto>>> UpdateOrder(OrderQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<OrderResultDto>>>> UpdateOrder(OrderQueryDto queryDto)
     {
         try
         {
@@ -761,7 +761,7 @@ public class DataManagementController(
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("order/read")]
-    public async Task<IActionResult> ReadOrder(OrderQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<OrderResultDto>>>> ReadOrder(OrderQueryDto queryDto)
     {
         try
         {
@@ -783,7 +783,7 @@ public class DataManagementController(
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpDelete("order/{id}")]
-    public async Task<IActionResult> DeleteOrder(int id)
+    public async Task<ActionResult<Result<DbOperationResult<OrderResultDto>>>> DeleteOrder(int id)
     {
         try
         {

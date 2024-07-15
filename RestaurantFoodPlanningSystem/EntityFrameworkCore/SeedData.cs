@@ -192,11 +192,11 @@ public class SeedData
                     Name = "Steamed Chicken"
                 }
             ];
-            
+
             context.MenuItem.AddRange(menuItems);
             logger.LogDebug($"MenuItem insertion result: {await context.SaveChangesAsync()}");
         }
-        
+
         if (!context.Menu.Any() && context.MenuItem.Any())
         {
             List<Menu> menus =
@@ -219,7 +219,7 @@ public class SeedData
                     Date        = DateTime.Parse("2024-06-22")
                 }
             ];
-            
+
             context.Menu.AddRange(menus);
             logger.LogDebug($"Menu insertion result: {await context.SaveChangesAsync()}");
         }
@@ -263,9 +263,61 @@ public class SeedData
                     Consumption = 2
                 }
             ];
-            
+
             context.MenuItemFoodItem.AddRange(menuItemFoodItems);
             logger.LogDebug($"MenuItemFoodItem insertion result: {await context.SaveChangesAsync()}");
+        }
+
+        if (!context.Order.Any() && context.MenuItem.Any())
+        {
+            List<Order> order =
+            [
+                new Order()
+                {
+                    IsCanceled = false,
+                },
+                new Order()
+                {
+                    IsCanceled = true,
+                }
+            ];
+            context.Order.AddRange(order);
+            logger.LogDebug($"Order insertion result: {await context.SaveChangesAsync()}");
+        }
+
+        if (!context.OrderItem.Any() && context.Order.Any())
+        {
+            List<OrderItem> orderItems =
+            [
+                new OrderItem()
+                {
+                    OrderId    = 1,
+                    MenuItemId = 1
+                },
+                new OrderItem()
+                {
+                    OrderId    = 1,
+                    MenuItemId = 2
+                },
+                new OrderItem()
+                {
+                    OrderId    = 1,
+                    MenuItemId = 2
+                },
+                new OrderItem()
+                {
+                    OrderId    = 2,
+                    MenuItemId = 1
+                },
+                new OrderItem()
+                {
+                    OrderId    = 2,
+                    MenuItemId = 3
+                }
+            ];
+            
+            context.OrderItem.AddRange(orderItems);
+            logger.LogDebug($"Order insertion result: {await context.SaveChangesAsync()}");
         }
     }
 }

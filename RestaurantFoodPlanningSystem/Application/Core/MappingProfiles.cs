@@ -50,7 +50,7 @@ namespace Application.Core
                 .ForMember(
                            fullDto => fullDto.Password,
                            queryDto => queryDto.MapFrom(o => o.Password));
-            
+
             CreateMap<UserFullDto, User>()
                 .ForMember(
                            user => user.Id,
@@ -69,8 +69,9 @@ namespace Application.Core
                 .ForMember(
                            user => user.Id,
                            result => result.MapFrom(o => o.Id))
-                .ForMember( user => user.Password,
-                            result => result.MapFrom(o => o.PasswordHash));
+                .ForMember(
+                           user => user.Password,
+                           result => result.MapFrom(o => o.PasswordHash));
         }
 
         private void RoleMapper()
@@ -282,7 +283,10 @@ namespace Application.Core
                            order => order.MapFrom(o => o.Id))
                 .ForMember(
                            resultDto => resultDto.IsCanceled,
-                           order => order.MapFrom(o => o.IsCanceled));
+                           order => order.MapFrom(o => o.IsCanceled))
+                .ForMember(
+                           resultDto => resultDto.OrderItems,
+                           order => order.MapFrom(o => o.OrderItems));
         }
 
         private void OrderItemMapper()
@@ -306,8 +310,8 @@ namespace Application.Core
                            resultDto => resultDto.OrderId,
                            order => order.MapFrom(o => o.OrderId))
                 .ForMember(
-                           resultDto => resultDto.MenuItemId,
-                           order => order.MapFrom(o => o.MenuItemId));
+                           resultDto => resultDto.MenuItem,
+                           order => order.MapFrom(o => o.MenuItem));
         }
     }
 }
