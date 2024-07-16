@@ -7,16 +7,16 @@ import HeaderComponent from "../../components/Header";
 import FooterComponent from "../../components/Footer";
 
 const DashboardLayout = ({children}: { children: React.ReactNode }) => {
-    const {token, logout} = useAuth();
+    const {token, logout, user} = useAuth();
     const router          = useRouter();
 
     useEffect(() => {
-        if (!token) {
+        if (!token || !user) {
             router.push("/login");
         }
     }, []);
     
-    return (<div><HeaderComponent/><div className={"flex flex-col justify-center items-center w-6/12 ml-auto mr-auto pt-8 pb-8"}>{children}</div><FooterComponent /></div>);
+    return (<div><HeaderComponent /><div className={"flex flex-col justify-center items-center w-6/12 ml-auto mr-auto pt-8 pb-8"}>{children}</div><FooterComponent /></div>);
 }
 
 export default DashboardLayout;

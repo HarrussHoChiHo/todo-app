@@ -10,11 +10,7 @@ import RoleDto from "../../../lib/models/RoleDto";
 import {Button, Input, Select, SelectItem, useDisclosure} from "@nextui-org/react";
 import Modals from "../../../components/CustomModal";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
-import {element} from "prop-types";
-import * as http from "node:http";
-import {Password} from "@nextui-org/shared-icons";
 import UserQueryDto from "../../../lib/models/user/UserQueryDto";
-import userQueryDto from "../../../lib/models/user/UserQueryDto";
 
 export default function Page() {
     const httpServices = new HttpServices();

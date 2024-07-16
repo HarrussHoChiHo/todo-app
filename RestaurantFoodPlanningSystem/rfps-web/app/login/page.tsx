@@ -16,6 +16,7 @@ const LoginComponent: NextPage = () => {
     const api = new HttpServices();
     const {
               token,
+        user,
               login
           } = useAuth();
 
@@ -29,14 +30,16 @@ const LoginComponent: NextPage = () => {
                 });
 
             } else {
-                setHidden(true);
+                setHidden(false);
             }
         });
     }
 
     useEffect(() => {
-        if (token) {
+        if (token && user && user.role.includes("Manager")) {
             router.push("/dashboard/user");
+        } else if (token && user && !user.role.includes("Manager")) {
+            router.push("/dashboard/menu");
         }
     }, [router, token]);
     

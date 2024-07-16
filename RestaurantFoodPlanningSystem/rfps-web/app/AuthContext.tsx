@@ -3,10 +3,11 @@ import React, {createContext, useState, useEffect, ReactNode} from "react";
 import HttpServices from "../lib/HttpServices";
 import TokenDto from "../lib/models/TokenDto";
 import UserDto from "../lib/models/user/UserDto";
+import UserInfo from "../lib/models/user/UserInfo";
 
 interface AuthContextType {
     token: string | null;
-    user: UserDto | null;
+    user: UserInfo | null;
     login: (token: string, user: UserDto) => void;
     logout: () => void;
 }
@@ -19,21 +20,24 @@ interface AuthProviderProps {
 
 export function AuthProvider({children}: AuthProviderProps) {
     const [token, setToken] = useState<string | null>(null);
-    const [user, setUser] = useState<UserDto | null>(null);
+    const [user, setUser] = useState<UserInfo | null>(null);
     const httpServices = new HttpServices();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
+        const storedUser = localStorage.getItem("user");
         (async () => {
             setLoading(true);
-            if (storedToken) {
+            if (storedToken && storedUser) {
                 let server_res = await (await httpServices.callAPI("/TokenValidation", {token: storedToken}, "POST")).json() as BasicDto<TokenDto>;
                 if (server_res.value.resultDto.pop()?.valid) {
                     setToken(storedToken);
+                    setUser(JSON.parse(storedUser));
                     setLoading(false);
                 } else {
                     localStorage.removeItem("token");
+                    localStorage.removeItem("user");
                     setLoading(false);
                 }
             } else {
@@ -45,13 +49,17 @@ export function AuthProvider({children}: AuthProviderProps) {
     const login = (newToken: string, user: UserDto) => {
         setToken(newToken);
         setUser(user);
+        const {userName, role} = user;
+        const userInfo = new UserInfo(userName, role);
         localStorage.setItem("token", newToken);
+        localStorage.setItem("user", JSON.stringify(userInfo));
     }
 
     const logout = () => {
         setToken(null);
         setUser(null);
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
     }
 
     const value = {
