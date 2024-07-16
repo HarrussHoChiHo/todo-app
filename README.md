@@ -1,4 +1,15 @@
-# Steps for setting up the project
+> This project uses .Net Core as backend and PostgreSQL as database. We build these two components on Docker because it is easy to run on different platforms. Therefore, both backend application and database will run on local network.
+> All the credential setting are set up, for example, access password for database, JWT encrypt key, etc. We will keep them in related setting files for conveniency of starting applications.
+> In the launching stage, backend application starts after the database gets ready and inserts default data into database.
+
+# Steps for setting up the project (Frontend - React)
+Assuming the current directory is /RestaurantFoodPlanningSystem
+1. Nevigate to /rfps-web
+2. Run `npm install` in command prompt to install all necessary packages
+3. Run `npm run dev` in command prompt to start the web application
+4. Visit the website on http://localhost:3000
+
+# Steps for setting up the project (Backend - .NetCore & PostgreSQL)
 Assuming the current directory is /RestaurantFoodPlanningSystem
 1. Place docker-compose.yml in folder RestaurantFoodPlanningSystem
 2. Place appsettings.json and appsettings.Development.json in folder /RestaurantFoodPlanningSystem/RestaurantFoodPlanningSystem
