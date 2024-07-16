@@ -17,7 +17,7 @@ export default function HeaderComponent() {
         user,
         logout
     } = useAuth();
-    
+
     useEffect(() => {
         setActiveItem(pathName.split("/").pop() ?? "");
     }, [pathName]);
@@ -30,7 +30,7 @@ export default function HeaderComponent() {
     const handlePlaceOrder = (e: PressEvent) => {
         router.push("/order");
     }
-    
+
     if (!pathName.split("/").includes("dashboard")) {
         return (
             <Navbar position={"static"}
@@ -49,7 +49,7 @@ export default function HeaderComponent() {
                     </Button>
                 </NavbarBrand>
                 <NavbarContent className={"flex gap-4"} justify={"center"}>
-                    <NavbarItem 
+                    <NavbarItem
                     >
                         <Link href={user?.role.includes("Manager") ? "/dashboard/user" : "dashboard/menu"}
                               color={"foreground"}>
@@ -84,46 +84,45 @@ export default function HeaderComponent() {
                         Place Order
                     </Button>
                 </NavbarBrand>
-                
-                <NavbarContent className={"flex gap-4"} justify={"center"}>
-                    <NavbarItem  isActive={activeItem === "user"}
+                <NavbarContent className={"flex"} justify={"center"}>
+                    <NavbarItem isActive={activeItem === "user"}
                                 hidden={!user?.role.includes("Manager")}>
                         <Link href={"/dashboard/user"} color={"foreground"}>
                             User Management
                         </Link>
                     </NavbarItem>
-                    <Divider orientation="vertical" />
-                    <NavbarItem  isActive={activeItem === "menu"}>
+                    <Divider orientation="vertical"/>
+                    <NavbarItem isActive={activeItem === "menu"}>
                         <Link href={"/dashboard/menu"} color={"foreground"}>
                             Menu Management
                         </Link>
                     </NavbarItem>
-                    <Divider orientation="vertical" />
-                    <NavbarItem  isActive={activeItem === "menu-item"}>
+                    <Divider orientation="vertical"/>
+                    <NavbarItem isActive={activeItem === "menu-item"}>
                         <Link href={"/dashboard/menu-item"} color={"foreground"}>
                             Menu Item Management
                         </Link>
                     </NavbarItem>
-                    <Divider orientation="vertical" />
-                    <NavbarItem  isActive={activeItem === "ingredient"}>
+                    <Divider orientation="vertical"/>
+                    <NavbarItem isActive={activeItem === "ingredient"}>
                         <Link href={"/dashboard/ingredient"} color={"foreground"}>
                             Ingredient Management
                         </Link>
                     </NavbarItem>
-                    <Divider orientation="vertical" />
-                    <NavbarItem  isActive={activeItem === "order"}>
+                    <Divider orientation="vertical"/>
+                    <NavbarItem isActive={activeItem === "order"}>
                         <Link href={"/dashboard/order"} color={"foreground"}>
                             Order Management
                         </Link>
                     </NavbarItem>
-                    <Divider orientation="vertical" />
-                    <NavbarItem  isActive={activeItem === "unit"}>
+                    <Divider orientation="vertical"/>
+                    <NavbarItem isActive={activeItem === "unit"}>
                         <Link href={"/dashboard/unit"} color={"foreground"}>
                             Unit Management
                         </Link>
                     </NavbarItem>
-                    <Divider orientation="vertical" />
-                    <NavbarItem  isActive={activeItem === "type"}>
+                    <Divider orientation="vertical"/>
+                    <NavbarItem isActive={activeItem === "type"}>
                         <Link href={"/dashboard/type"} color={"foreground"}>
                             Type Management
                         </Link>

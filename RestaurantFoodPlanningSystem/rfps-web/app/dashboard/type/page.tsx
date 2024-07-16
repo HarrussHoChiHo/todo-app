@@ -5,7 +5,6 @@ import React, {Fragment, useEffect, useState} from "react";
 import UnitDto from "../../../lib/models/unit/UnitDto";
 import {Button, Input, useDisclosure} from "@nextui-org/react";
 import TypeDto from "../../../lib/models/type/TypeDto";
-import UnitQueryDto from "../../../lib/models/unit/UnitQueryDto";
 import TypeQueryDto from "../../../lib/models/type/TypeQueryDto";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
