@@ -6,10 +6,14 @@
 > In the launching stage, backend application will start after the database gets ready and will insert default data into database.
 >
 > Default Account for access system
-> Username: Harus password: harus Role: Manager
-> Username: Kathy password: kathy Role: Manager
-> Username: HarusStaff password: harus_staff Role: Staff
-> Username: KathyStaff password: kathy_staff Role: Staff
+> 
+> `Username: Harus Password: harus Role: Manager`
+>
+> `Username: Kathy Password: kathy Role: Manager`
+>
+> `Username: HarusStaff Password: harus_staff Role: Staff`
+>
+> `Username: KathyStaff Password: kathy_staff Role: Staff`
 
 # Steps for setting up the project (Frontend - React)
 Assuming the current directory is /RestaurantFoodPlanningSystem
