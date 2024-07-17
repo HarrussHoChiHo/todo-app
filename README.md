@@ -14,6 +14,8 @@
 > `Username: HarusStaff Password: harus_staff Role: Staff`
 >
 > `Username: KathyStaff Password: kathy_staff Role: Staff`
+>
+> Those default data can be found in file RestaurantFoodPlanningSystem/EntityFrameworkCore/SeedData.cs
 
 # Steps for setting up the project (Frontend - React)
 Assuming the current directory is /RestaurantFoodPlanningSystem
