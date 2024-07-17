@@ -4,6 +4,12 @@
 > We will keep the credential in related setting files, for example, access password for database, JWT encrypt key, so we can simplify the steps to launch applications.
 > 
 > In the launching stage, backend application will start after the database gets ready and will insert default data into database.
+>
+> Default Account for access system
+> Username: Harus password: harus Role: Manager
+> Username: Kathy password: kathy Role: Manager
+> Username: HarusStaff password: harus_staff Role: Staff
+> Username: KathyStaff password: kathy_staff Role: Staff
 
 # Steps for setting up the project (Frontend - React)
 Assuming the current directory is /RestaurantFoodPlanningSystem
