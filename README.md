@@ -25,6 +25,11 @@ Assuming the current directory is /RestaurantFoodPlanningSystem
 4. Visit the website on http://localhost:3000
 
 # Steps for setting up the project (Backend - .NetCore & PostgreSQL)
+> [!NOTE]
+> Before running this project, please delete the images, volumes, and containers, which are built from this project.
+> 
+> Since this project would build database with latest PostgreSQL image, the volumes referenced by older version of PostgreSQL image will not be compatible.
+
 Assuming the current directory is /RestaurantFoodPlanningSystem
 1. Place docker-compose.yml in folder RestaurantFoodPlanningSystem
 2. Place appsettings.json and appsettings.Development.json in folder /RestaurantFoodPlanningSystem/RestaurantFoodPlanningSystem
