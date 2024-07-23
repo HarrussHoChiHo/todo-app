@@ -6,6 +6,7 @@ interface ModalProps {
     onOpenChange: () => void;
     onCancel: () => void;
     onConfirm: () => void;
+    hideCloseButton: boolean;
     header: string;
     children: React.ReactNode;
 }
@@ -15,6 +16,7 @@ export default function Modals({
                                    onOpenChange,
                                    onCancel,
                                    onConfirm,
+                                   hideCloseButton,
                                    header,
                                    children
                                }: ModalProps) {
@@ -23,6 +25,7 @@ export default function Modals({
     return (
         <Modal isOpen={isOpen}
                onOpenChange={onOpenChange}
+               hideCloseButton={hideCloseButton}
         >
             <ModalContent>
                 {

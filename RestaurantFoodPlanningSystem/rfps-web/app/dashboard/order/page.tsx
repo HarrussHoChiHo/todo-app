@@ -258,6 +258,7 @@ export default function OrderComponent() {
                     onCancel={cancelEdition}
                     onConfirm={confirmEdition}
                     header={"Edit"}
+                    hideCloseButton={false}
             >
                 {
                     renderContent()
