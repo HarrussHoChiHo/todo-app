@@ -11,32 +11,34 @@ import {Button, Input, Select, SelectItem, useDisclosure} from "@nextui-org/reac
 import Modals from "../../../components/CustomModal";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import UserQueryDto from "../../../lib/models/user/UserQueryDto";
+import {toast} from "react-toastify";
 
 export default function Page() {
     const httpServices = new HttpServices();
     const {token} = useAuth();
     const [jsonObj, setJsonObj] = useState<BasicDto<UserDto>>({
-        error: "",
+        error    : "",
         isSuccess: false,
-        value: {
-            amount: 0,
+        value    : {
+            amount   : 0,
             resultDto: [{
-                id: 0,
+                id      : 0,
                 password: "",
                 userName: "",
-                role: []
+                role    : []
             }]
         }
     });
     const [roles, setRoles] = useState<RoleDto[]>([]);
     const [headers, setHeaders] = useState<string[]>([]);
     const [editObj, setEditObj] = useState<UserDto>({
-        id: 0,
+        id      : 0,
         password: "",
-        role: [],
+        role    : [],
         userName: ""
     });
     const [editModal, setEditModal] = useState(true);
+
     let newName: string, newPassword: string, newRoles: string[];
     const {
         isOpen,
@@ -51,28 +53,41 @@ export default function Page() {
     useEffect(() => {
         (async function fetchData() {
             let server_res = await retrieveAllUser();
-            setJsonObj(server_res);
-            if (server_res.value.resultDto) {
-                setHeaders(Object.keys(server_res.value.resultDto[0]));
+            if (server_res!.value.resultDto) {
+                setJsonObj(server_res!);
+                setHeaders(Object.keys(server_res!.value.resultDto[0]));
             }
-           let role_res = await retrieveAllRoles();
-            setRoles(role_res.value.resultDto);
+            let role_res = await retrieveAllRoles();
+            setRoles(role_res!.value.resultDto);
         })();
     }, []);
 
+    const showToast = (message: string) => {
+        toast(message);
+    }
+
     const handleDelete = (id: number) => {
         (async () => {
-            let server_res = await (await httpServices.callAPI(`/User/${id}`, null, "DELETE", token)).json() as BasicDto<UserDto>;
-            if (server_res.isSuccess) {
-                let updatedList = await (await httpServices.callAPI("/user", null, "GET", token)).json() as BasicDto<UserDto>;
-                if (updatedList.isSuccess) {
-                    setJsonObj(updatedList);
+            try {
+                let server_res = await (await httpServices.callAPI(`/User/${id}`, null, "DELETE", token)).json() as BasicDto<UserDto>;
+                if (server_res.isSuccess) {
+                    let updatedList = await (await httpServices.callAPI("/user", null, "GET", token)).json() as BasicDto<UserDto>;
+                    if (updatedList.isSuccess) {
+                        setJsonObj(updatedList);
+                    } else {
+                        throw new Error("Failed to retrieve updated list");
+                    }
                 } else {
-                    throw new Error("Failed to retrieve updated list");
+                    throw new Error("Failed to delete user");
                 }
-            } else {
-                throw new Error("Failed to delete user");
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed")
+                }
             }
+
         })();
     }
 
@@ -80,78 +95,136 @@ export default function Page() {
         setEditModal(true);
         let targetedObj;
         if (jsonObj.value.resultDto) {
-            [targetedObj] = jsonObj.value.resultDto.filter((dto: { id: number; }) => dto.id === id);
+            [targetedObj] = jsonObj.value.resultDto.filter((dto: {
+                id: number;
+            }) => dto.id === id);
             setEditObj(targetedObj);
         }
-       onOpen();
+        onOpen();
     }
 
     const createUser = async (userQueryDto: UserQueryDto) => {
-        let server_response = await (await httpServices.callAPI(`${userAPI}/register`, userQueryDto, "POST", token)).json();
-        return server_response as BasicDto<UserDto>;
+        try {
+            let server_response = await (await httpServices.callAPI(`${userAPI}/register`, userQueryDto, "POST", token)).json();
+            return server_response as BasicDto<UserDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const retrieveAllUser = async () => {
-        let server_response = await (await httpServices.callAPI(`${userAPI}/`, null, "GET", token)).json();
-        return server_response as BasicDto<UserDto>;
+        try {
+            let server_response = await (await httpServices.callAPI(`${userAPI}/`, null, "GET", token)).json();
+            return server_response as BasicDto<UserDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const retrieveAllRoles = async () => {
-        let server_response = await (await httpServices.callAPI(`${roleAPI}/read`, {
-            name: null,
-            description: null,
-            id: null,
-            createdDate: null
-        }, "POST", token)).json();
-        return server_response as BasicDto<RoleDto>;
+        try {
+            let server_response = await (await httpServices.callAPI(`${roleAPI}/read`, {
+                name       : null,
+                description: null,
+                id         : null,
+                createdDate: null
+            }, "POST", token)).json();
+            return server_response as BasicDto<RoleDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
-    
+
     const updateUser = async () => {
-        let server_response = await (await httpServices.callAPI("/user/update", editObj, "POST", token)).json();
-        return server_response as BasicDto<UserDto>;
+        try {
+            let server_response = await (await httpServices.callAPI("/user/update", editObj, "POST", token)).json();
+            return server_response as BasicDto<UserDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const updateUserName = (updatedUserName: string) => {
-        let {
-            id,
-            role,
-            password
-        } = editObj;
-        setEditObj({
-            id: id,
-            userName: updatedUserName,
-            role: role,
-            password: password
-        });
+        try {
+            let {
+                id,
+                role,
+                password
+            } = editObj;
+            setEditObj({
+                id      : id,
+                userName: updatedUserName,
+                role    : role,
+                password: password
+            });
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const updatePassword = (updatedPassword: string) => {
-        let {
-            id,
-            role,
-            userName
-        } = editObj;
+        try {
+            let {
+                id,
+                role,
+                userName
+            } = editObj;
 
-        setEditObj({
-            id: id,
-            userName: userName,
-            role: role,
-            password: updatedPassword
-        });
+            setEditObj({
+                id      : id,
+                userName: userName,
+                role    : role,
+                password: updatedPassword
+            });
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const updateRole = (updatedRole: string[]) => {
-        let {
-            id,
-            userName,
-            password
-        } = editObj;
-        setEditObj({
-            id: id,
-            userName: userName,
-            password: password,
-            role: updatedRole
-        });
+        try {
+            let {
+                id,
+                userName,
+                password
+            } = editObj;
+            setEditObj({
+                id      : id,
+                userName: userName,
+                password: password,
+                role    : updatedRole
+            });
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const createNewName = (name: string) => {
@@ -173,9 +246,9 @@ export default function Page() {
 
     const cancelEdition = () => {
         setEditObj({
-            id: 0,
+            id      : 0,
             password: "",
-            role: [],
+            role    : [],
             userName: ""
         });
         onClose();
@@ -183,29 +256,46 @@ export default function Page() {
 
     const confirmEdition = () => {
         (async () => {
-            let server_res = await updateUser();
-            if (server_res.isSuccess) {
-                let server_res = await retrieveAllUser();
-                setJsonObj(server_res);
-            } else {
-                throw new Error(JSON.stringify(server_res));
+            try {
+                let server_res = await updateUser();
+                if (server_res!.isSuccess) {
+                    let server_res = await retrieveAllUser();
+                    setJsonObj(server_res!);
+                } else {
+                    throw new Error(JSON.stringify(server_res));
+                }
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed")
+                }
+
             }
         })().finally(() => onClose());
     }
 
     const confirmCreation = () => {
         (async () => {
-            let server_response = await createUser({
-                id: null,
-                userName: newName,
-                password: newPassword,
-                role: newRoles
-            });
-            if (server_response.isSuccess) {
-                let retrieveUpdatedUserResponse = await retrieveAllUser();
-                setJsonObj(retrieveUpdatedUserResponse);
-            } else {
-                throw new Error("Failed to create user");
+            try {
+                let server_response = await createUser({
+                    id      : null,
+                    userName: newName,
+                    password: newPassword,
+                    role    : newRoles
+                });
+                if (server_response!.isSuccess) {
+                    let retrieveUpdatedUserResponse = await retrieveAllUser();
+                    setJsonObj(retrieveUpdatedUserResponse!);
+                } else {
+                    throw new Error("Failed to create user");
+                }
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed")
+                }
             }
         })().finally(() => onClose());
     }
@@ -341,6 +431,7 @@ export default function Page() {
                     onCancel={() => editModal ? cancelEdition() : cancelCreation()}
                     onConfirm={() => editModal ? confirmEdition() : confirmCreation()}
                     header={editModal ? "Edit" : "Create"}
+                    hideCloseButton={false}
             >
                 {
                     renderContent()

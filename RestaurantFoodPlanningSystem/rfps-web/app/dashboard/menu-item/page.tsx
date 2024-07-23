@@ -271,6 +271,7 @@ export default function MenuItemComponent() {
                     onCancel={() => editModal ? cancelEdition() : cancelCreation()}
                     onConfirm={() => editModal ? confirmEdition() : confirmCreation()}
                     header={editModal ? "Edit" : "Create"}
+                    hideCloseButton={false}
             >
                 {
                     renderContent()

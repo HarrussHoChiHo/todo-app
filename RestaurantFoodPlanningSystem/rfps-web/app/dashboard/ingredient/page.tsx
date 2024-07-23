@@ -13,6 +13,7 @@ import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import Modals from "../../../components/CustomModal";
+import { toast } from "react-toastify";
 
 export default function IngredientComponent() {
     const httpServices = new HttpServices();
@@ -70,40 +71,92 @@ export default function IngredientComponent() {
     const typeAPI: string = "/DataManagement/type";
     const unitAPI: string = "/DataManagement/unit";
 
+    const showToast = (message: string) => {
+        toast(message);
+    }
+    
     const retrieveIngredient = async (ingredientQueryDto: IngredientQueryDto) => {
-        let server_res = await (await httpServices.callAPI(`${foodItemAPI}/read`, ingredientQueryDto, "POST", token)).json();
-        return server_res as BasicDto<IngredientDto>;
+        try {
+            let server_res = await (await httpServices.callAPI(`${foodItemAPI}/read`, ingredientQueryDto, "POST", token)).json();
+            return server_res as BasicDto<IngredientDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const updateIngredient = async (ingredientQueryDto: IngredientQueryDto) => {
-        let server_res = await (await httpServices.callAPI(`${foodItemAPI}/update`, ingredientQueryDto, "POST", token)).json();
-        return server_res as BasicDto<IngredientDto>;
+        try {
+            let server_res = await (await httpServices.callAPI(`${foodItemAPI}/update`, ingredientQueryDto, "POST", token)).json();
+            return server_res as BasicDto<IngredientDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const deleteIngredient = async (id: number) => {
-        let server_res = await (await httpServices.callAPI(`${foodItemAPI}/${id}`, null, "DELETE", token)).json();
-        return server_res as BasicDto<IngredientDto>;
+        try {
+            let server_res = await (await httpServices.callAPI(`${foodItemAPI}/${id}`, null, "DELETE", token)).json();
+            return server_res as BasicDto<IngredientDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const createIngredient = async (ingredientQueryDto: IngredientQueryDto) => {
-        let server_res = await (await httpServices.callAPI(`${foodItemAPI}/creation`, ingredientQueryDto, "POST", token)).json();
-        return server_res as BasicDto<IngredientDto>;
+        try {
+            let server_res = await (await httpServices.callAPI(`${foodItemAPI}/creation`, ingredientQueryDto, "POST", token)).json();
+            return server_res as BasicDto<IngredientDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const retrieveType = async () => {
-        let server_res = await (await httpServices.callAPI(`${typeAPI}/read`, {
-            id: null,
-            name: null
-        }, "POST", token)).json();
-        return server_res as BasicDto<IngredientDto>;
+        try {
+            let server_res = await (await httpServices.callAPI(`${typeAPI}/read`, {
+                id: null,
+                name: null
+            }, "POST", token)).json();
+            return server_res as BasicDto<IngredientDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const retrieveUnit = async () => {
-        let server_res = await (await httpServices.callAPI(`${unitAPI}/read`, {
-            id: null,
-            name: null
-        }, "POST", token)).json();
-        return server_res as BasicDto<IngredientDto>;
+        try {
+            let server_res = await (await httpServices.callAPI(`${unitAPI}/read`, {
+                id: null,
+                name: null
+            }, "POST", token)).json();
+            return server_res as BasicDto<IngredientDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const handleCreate = () => {
@@ -114,7 +167,7 @@ export default function IngredientComponent() {
     const handleDelete = (id: number) => {
         (async () => {
             let server_res = await deleteIngredient(id);
-            if (server_res.isSuccess) {
+            if (server_res!.isSuccess) {
                 let retrieveUpdatedIngredient = await retrieveIngredient({
                     id: null,
                     name: null,
@@ -123,8 +176,8 @@ export default function IngredientComponent() {
                     quantity: null
                 });
 
-                if (retrieveUpdatedIngredient.isSuccess) {
-                    setIngredient(retrieveUpdatedIngredient);
+                if (retrieveUpdatedIngredient!.isSuccess) {
+                    setIngredient(retrieveUpdatedIngredient!);
                 } else {
                     throw new Error("Failed to retrieve ingredient after delete");
                 }
@@ -162,7 +215,7 @@ export default function IngredientComponent() {
                 type_Id: editObj.type.id,
                 unit_Id: editObj.unit.id
             });
-            if (server_res.isSuccess) {
+            if (server_res!.isSuccess) {
                 let retrieveIngredientRes = await retrieveIngredient({
                     id: null,
                     name: null,
@@ -170,8 +223,8 @@ export default function IngredientComponent() {
                     unit_Id: null,
                     type_Id: null
                 });
-                if (retrieveIngredientRes.isSuccess) {
-                    setIngredient(retrieveIngredientRes);
+                if (retrieveIngredientRes!.isSuccess) {
+                    setIngredient(retrieveIngredientRes!);
                 } else {
                     throw new Error(JSON.stringify(retrieveIngredientRes));
                 }
@@ -190,7 +243,7 @@ export default function IngredientComponent() {
                 unit_Id: newUnit,
                 quantity: newQuantity
             });
-            if (server_res.isSuccess) {
+            if (server_res!.isSuccess) {
                 let retrieveIngredientRes = await retrieveIngredient({
                     id: null,
                     name: null,
@@ -198,8 +251,8 @@ export default function IngredientComponent() {
                     unit_Id: null,
                     type_Id: null
                 });
-                if (retrieveIngredientRes.isSuccess) {
-                    setIngredient(retrieveIngredientRes);
+                if (retrieveIngredientRes!.isSuccess) {
+                    setIngredient(retrieveIngredientRes!);
                 } else {
                     throw new Error(JSON.stringify(retrieveIngredientRes));
                 }
@@ -409,21 +462,21 @@ export default function IngredientComponent() {
                 quantity: null
             });
 
-            if (server_res.isSuccess) {
-                setIngredient(server_res);
-                setHeaders(Object.keys(server_res.value.resultDto[0]))
+            if (server_res!.isSuccess) {
+                setIngredient(server_res!);
+                setHeaders(Object.keys(server_res!.value.resultDto[0]))
                 let typeRetrieve = await retrieveType();
 
-                if (typeRetrieve.isSuccess) {
-                    setTypes(typeRetrieve.value.resultDto);
+                if (typeRetrieve!.isSuccess) {
+                    setTypes(typeRetrieve!.value.resultDto);
                 } else {
                     throw new Error("Failed to retrieve type");
                 }
 
                 let unitRetrieve = await retrieveUnit();
 
-                if (unitRetrieve.isSuccess) {
-                    setUnits(unitRetrieve.value.resultDto);
+                if (unitRetrieve!.isSuccess) {
+                    setUnits(unitRetrieve!.value.resultDto);
                 } else {
                     throw new Error("Failed to retrieve unit");
                 }
@@ -523,11 +576,13 @@ export default function IngredientComponent() {
                     header={editModal
                             ? "Edit"
                             : "Create"}
+                    hideCloseButton={false}
             >
                 {
                     renderContent()
                 }
             </Modals>
+            
         </>
     );
 }

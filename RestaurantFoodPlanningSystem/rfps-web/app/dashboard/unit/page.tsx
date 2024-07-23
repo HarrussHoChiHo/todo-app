@@ -253,6 +253,7 @@ export default function UnitComponent() {
                     onCancel={closeModal}
                     onConfirm={() => editModal ? confirmEdition() : confirmCreation()}
                     header={editModal ? "Edit" : "Create"}
+                    hideCloseButton={false}
             >
                 {
                     renderContent()
