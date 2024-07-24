@@ -1,7 +1,7 @@
 "use client"
 import React, {Fragment, useEffect, useState} from "react";
 import MenuItemDto from "../../../lib/models/menu/MenuItemDto";
-import {Button, Input, useDisclosure} from "@nextui-org/react";
+import {Button, Input, Spinner, useDisclosure} from "@nextui-org/react";
 import HttpServices from "../../../lib/HttpServices";
 import {useAuth} from "../../AuthContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -9,22 +9,9 @@ import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import Modals from "../../../components/CustomModal";
+import {toast} from "react-toastify";
 
 export default function MenuItemComponent() {
-
-    useEffect(() => {
-        (async () => {
-            let server_res = await retrieveMenuItem(menuItemQueryDto);
-
-            if (server_res.isSuccess) {
-                setMenuItem(server_res);
-                setHeaders(Object.keys((server_res.value.resultDto as MenuItemDto[])[0]));
-            } else {
-                console.log(server_res);
-            }
-        })();
-    }, []);
-
     const [menuItem, setMenuItem] = useState<BasicDto<MenuItemDto>>(
         {
             error: "",
@@ -37,11 +24,6 @@ export default function MenuItemComponent() {
                 }]
             }
         });
-    const [menuItemQueryDto, setMenuItemQueryDto] = useState<MenuItemQueryDto>(
-        {
-            id: null,
-            name: null
-        });
     const httpServices = new HttpServices();
     const {token} = useAuth();
     const [headers, setHeaders] = useState<string[]>([]);
@@ -52,69 +34,172 @@ export default function MenuItemComponent() {
         }
     );
     const [editModal, setEditModal] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const {
         isOpen,
         onOpen,
         onClose,
         onOpenChange
     } = useDisclosure();
+
     const menuItemAPI: string = "/DataManagement/menu-item";
     let newName: string;
 
+    useEffect(() => {
+        (async () => {
+            try {
+                let server_res = await retrieveMenuItem({id: null, name: null});
+
+                if (!server_res) {
+                    showToast("Failed to retrieve menu item.");
+                    return;
+                }
+
+                if (!server_res.isSuccess) {
+                    showToast(`Fail - ${server_res.error}`);
+                    return;
+                }
+
+                setMenuItem(server_res!);
+                setHeaders(Object.keys((server_res!.value.resultDto as MenuItemDto[])[0]));
+                setIsLoading(false);
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed");
+                }
+            }
+        })();
+    }, []);
+
+    const showToast = (message: string) => {
+        toast(message);
+    }
+    
     const createMenuItem = async function () {
-        let response = await (await httpServices.callAPI(`${menuItemAPI}/creation`, {
-            id: null,
-            name: newName
-        }, "POST", token)).json();
-        return response as BasicDto<MenuItemDto>;
+        try {
+            let response = await (await httpServices.callAPI(`${menuItemAPI}/creation`, {
+                id  : null,
+                name: newName
+            }, "POST", token)).json();
+            return response as BasicDto<MenuItemDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const retrieveMenuItem = async function (menuItemQuery: MenuItemQueryDto) {
-        let response = await (await httpServices.callAPI(`${menuItemAPI}/read`, menuItemQuery, "POST", token)).json();
-        return response as BasicDto<MenuItemDto>;
+        try {
+            let response = await (await httpServices.callAPI(`${menuItemAPI}/read`, menuItemQuery, "POST", token)).json();
+            return response as BasicDto<MenuItemDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const updateMenuItem = async function (menuItemQuery: MenuItemQueryDto) {
-        let response = await (await httpServices.callAPI(`${menuItemAPI}/update`, menuItemQuery, "POST", token)).json();
-        return response as BasicDto<MenuItemDto>;
+        try {
+            let response = await (await httpServices.callAPI(`${menuItemAPI}/update`, menuItemQuery, "POST", token)).json();
+            return response as BasicDto<MenuItemDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const deleteMenuItem = async function (id: number) {
-        let response = await (await httpServices.callAPI(`${menuItemAPI}/${id}`, {}, "DELETE", token)).json();
-        return response as BasicDto<MenuItemDto>;
+        try {
+            let response = await (await httpServices.callAPI(`${menuItemAPI}/${id}`, {}, "DELETE", token)).json();
+            return response as BasicDto<MenuItemDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const handleEdit = (id: number) => {
         setEditModal(true);
         (async () => {
-            let server_res = await retrieveMenuItem({
-                id: id,
-                name: null
-            });
-            if (server_res.isSuccess) {
-                let existingMenuItem: MenuItemDto | undefined = (server_res.value.resultDto as MenuItemDto[]).pop();
-                if (existingMenuItem) {
-                    setEditObj(existingMenuItem);
-                } else {
-                    throw new Error("Existing menu is null.");
+            try {
+                let server_res = await retrieveMenuItem({
+                    id  : id,
+                    name: null
+                });
+                if (!server_res) {
+                    showToast("Failed to retrieve menu item.");
+                    return;
                 }
-            } else {
-                throw new Error("failed to retrieve menu with id");
+                if (!server_res.isSuccess) {
+                    showToast("failed to retrieve menu with id");
+                    return;
+                }
+
+                let existingMenuItem: MenuItemDto | undefined = (server_res.value.resultDto as MenuItemDto[]).pop();
+
+                if (!existingMenuItem) {
+                    showToast("Existing menu is null.");
+                    return;
+                }
+                setEditObj(existingMenuItem);
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed")
+                }
             }
         })().finally(() => onOpen());
     }
 
     const handleDelete = (id: number) => {
         (async () => {
-            let server_res = await deleteMenuItem(id);
-            if (server_res.isSuccess) {
+            try {
+                let server_res = await deleteMenuItem(id);
+                if (!server_res) {
+                    showToast("Failed to delete menu item.");
+                    return;
+                }
+                if (!server_res.isSuccess) {
+                    showToast(`Fail - ${server_res.error}`);
+                    return;
+                }
                 let updatedList = await retrieveMenuItem({
                     id: null,
                     name: null
                 });
+
+                if (!updatedList) {
+                    showToast("Failed to retrieve menu item.");
+                    return;
+                }
+
+                if (!updatedList.isSuccess) {
+                    showToast(`Fail - ${updatedList.error}`);
+                    return;
+                }
+                
                 setMenuItem(updatedList);
-            } else {
-                throw new Error("Failed to delete menu");
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed")
+                }
             }
         })();
     }
@@ -144,22 +229,43 @@ export default function MenuItemComponent() {
         const {id} = editObj;
 
         (async () => {
-            let server_response = await updateMenuItem({
-                id: id,
-                name: newName
-            });
-            if (server_response.isSuccess) {
+            try {
+                let server_res = await updateMenuItem({
+                    id  : id,
+                    name: newName
+                });
+
+                if (!server_res) {
+                    showToast("Update menu failed");
+                    return;
+                }
+
+                if (!server_res.isSuccess) {
+                    showToast(`Fail - ${server_res.error}`);
+                    return;
+                }
+                
                 let menuReadResponse = await retrieveMenuItem({
                     id: null,
                     name: null
                 });
-                if (menuReadResponse.isSuccess) {
-                    setMenuItem(menuReadResponse);
-                } else {
-                    throw new Error("Retrieve updated menu failed");
+
+                if (!menuReadResponse) {
+                    showToast("Retrieve updated menu failed");
+                    return;
                 }
-            } else {
-                throw new Error("Update menu failed");
+
+                if (!menuReadResponse.isSuccess) {
+                    showToast(`Fail - ${menuReadResponse.error}`);
+                    return;
+                }
+                setMenuItem(menuReadResponse);
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed")
+                }
             }
         })().finally(() => onClose());
     }
@@ -170,19 +276,41 @@ export default function MenuItemComponent() {
 
     const confirmCreation = () => {
         (async () => {
-            let server_res = await createMenuItem();
-            if (server_res.isSuccess) {
+            try {
+                let server_res = await createMenuItem();
+
+                if (!server_res) {
+                    showToast("Failed to create menu item.");
+                    return;
+                }
+
+                if (!server_res.isSuccess) {
+                    showToast(`Fail - ${server_res.error}`);
+                    return;
+                }
+                
                 let updatedMenuItemResponse = await retrieveMenuItem({
                     id: null,
                     name: null
                 });
 
-                if (updatedMenuItemResponse.isSuccess) {
-                    setMenuItem(updatedMenuItemResponse);
-                } else {
-                    throw new Error("Failed to create new menu item");
+                if (!updatedMenuItemResponse) {
+                    showToast("Failed to retrieved created menu item.");
+                    return;
                 }
 
+                if (!updatedMenuItemResponse.isSuccess) {
+                    showToast("Failed to create new menu item");
+                    return;
+                }
+
+                setMenuItem(updatedMenuItemResponse);
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed")
+                }
             }
         })().finally(() => onClose());
     }
@@ -211,6 +339,10 @@ export default function MenuItemComponent() {
             )
         }
     }
+
+    if (isLoading) {
+        return <Spinner/>;
+    }
     
     return (
         <>
@@ -223,7 +355,7 @@ export default function MenuItemComponent() {
             </div>
             <div className={"grid grid-cols-4 w-full"}>
                 {
-                    headers.map((header, index) => (
+                    headers.map((header) => (
                         <Fragment key={header}>
                             <div className={"font-extrabold gird-style text-center"}>
                                 {header}
@@ -242,7 +374,7 @@ export default function MenuItemComponent() {
                     </div>
                 </Fragment>
                 {
-                    (menuItem.value.resultDto as MenuItemDto[]).map((menuItemDto, index) => {
+                    (menuItem.value.resultDto as MenuItemDto[]).map((menuItemDto) => {
                         return (
                             <Fragment key={`${menuItemDto.name}${menuItemDto.id}`}>
                                 <div className={"p-4 gird-style text-center"}>

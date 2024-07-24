@@ -3,7 +3,7 @@ import HttpServices from "../../../lib/HttpServices";
 import {useAuth} from "../../AuthContext";
 import React, {Fragment, useEffect, useState} from "react";
 import UnitDto from "../../../lib/models/unit/UnitDto";
-import {Button, Input, useDisclosure} from "@nextui-org/react";
+import {Button, Input, Spinner, useDisclosure} from "@nextui-org/react";
 import TypeDto from "../../../lib/models/type/TypeDto";
 import TypeQueryDto from "../../../lib/models/type/TypeQueryDto";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -11,6 +11,7 @@ import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import Modals from "../../../components/CustomModal";
+import {toast} from "react-toastify";
 
 export default function TypeComponent() {
     const httpServices = new HttpServices();
@@ -33,6 +34,7 @@ export default function TypeComponent() {
         name: ""
     });
     const [editModal, setEditModal] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const {
         isOpen,
         onOpen,
@@ -41,54 +43,129 @@ export default function TypeComponent() {
     } = useDisclosure();
     let newName: string;
 
+    const showToast = (message: string) => {
+        toast(message);
+    }
+    
     const retrieveType = async (typeQueryDto: TypeQueryDto) => {
-        let serverRes = await (await httpServices.callAPI(`${typeAPI}/read`, typeQueryDto, "POST", token)).json();
-        return serverRes as BasicDto<UnitDto>;
+        try {
+            let serverRes = await (await httpServices.callAPI(`${typeAPI}/read`, typeQueryDto, "POST", token)).json();
+            return serverRes as BasicDto<UnitDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        }
     }
 
     const createType = async (typeQueryDto: TypeQueryDto) => {
-        let serverRes = await (await httpServices.callAPI(`${typeAPI}/creation`, typeQueryDto, "POST", token)).json();
-        return serverRes as BasicDto<UnitDto>;
+        try {
+            let serverRes = await (await httpServices.callAPI(`${typeAPI}/creation`, typeQueryDto, "POST", token)).json();
+            return serverRes as BasicDto<UnitDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        }
     }
 
     const updateType = async (typeQueryDto: TypeQueryDto) => {
-        let serverRes = await (await httpServices.callAPI(`${typeAPI}/update`, typeQueryDto, "POST", token)).json();
-        return serverRes as BasicDto<UnitDto>;
+        try {
+            let serverRes = await (await httpServices.callAPI(`${typeAPI}/update`, typeQueryDto, "POST", token)).json();
+            return serverRes as BasicDto<UnitDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        }
     }
 
     const deleteType = async (id: number) => {
-        let serverRes = await (await httpServices.callAPI(`${typeAPI}/${id}`, null, "DELETE", token)).json();
-        return serverRes as BasicDto<UnitDto>;
+        try {
+            let serverRes = await (await httpServices.callAPI(`${typeAPI}/${id}`, null, "DELETE", token)).json();
+            return serverRes as BasicDto<UnitDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        }
     }
 
     const handleDelete = (id: number) => {
         (async () => {
-            let deleteRes = await deleteType(id);
-            if (!deleteRes.isSuccess) {
-                throw new Error("Failed to delete type");
+            try {
+                let deleteRes = await deleteType(id);
+
+                if (!deleteRes) {
+                    showToast("Failed to delete type.");
+                    return;
+                }
+
+                if (!deleteRes.isSuccess) {
+                    showToast("Failed to delete type");
+                    return;
+                }
+                let retrieveRes = await retrieveType({
+                    id  : null,
+                    name: null
+                });
+
+                if (!retrieveRes) {
+                    showToast("Failed to retrieve type after deletion.");
+                    return;
+                }
+
+                if (!retrieveRes.isSuccess) {
+                    showToast(`Fail - ${retrieveRes.error}`);
+                    return;
+                }
+
+                setType(retrieveRes);
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed");
+                }
             }
-            let retrieveRes = await retrieveType({
-                id: null,
-                name: null
-            });
-            if (!retrieveRes.isSuccess) {
-                throw new Error("Failed to retrieve updated type list");
-            }
-            setType(retrieveRes);
         })();
     }
 
     const handleEdit = (id: number) => {
         setEditModal(true);
         (async () => {
-            let retrieveRes = await retrieveType({
-                id: id,
-                name: null
-            });
-            if (!retrieveRes.isSuccess) {
-                throw new Error("Failed to retrieve updated type");
+            try {
+                let retrieveRes = await retrieveType({
+                    id  : id,
+                    name: null
+                });
+
+                if (!retrieveRes) {
+                    showToast("Failed to retrieve updated type");
+                    return;
+                }
+
+                if (!retrieveRes.isSuccess) {
+                    showToast(`Fail - ${retrieveRes.error}`);
+                    return;
+                }
+
+                setEditObj(retrieveRes.value.resultDto[0]);
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed");
+                }
             }
-            setEditObj(retrieveRes.value.resultDto[0]);
         })().finally(() => onOpen());
     }
 
@@ -111,43 +188,88 @@ export default function TypeComponent() {
 
     const confirmEdition = () => {
         (async () => {
-            let updateRes = await updateType({
-                id: editObj.id,
-                name: editObj.name
-            });
-            if (!updateRes.isSuccess) {
-                throw new Error("Failed to update unit");
-            }
+            try {
+                let updateRes = await updateType({
+                    id  : editObj.id,
+                    name: editObj.name
+                });
 
-            let retrieveRes = await retrieveType({
-                id: null,
-                name: null
-            });
-            if (!retrieveRes.isSuccess) {
-                throw new Error("Failed to retrieve updated unit");
+                if (!updateRes) {
+                    showToast("Failed to update type");
+                    return;
+                }
+
+                if (!updateRes.isSuccess) {
+                    showToast(`Fail - ${updateRes.error}`);
+                    return;
+                }
+
+                let retrieveRes = await retrieveType({
+                    id  : null,
+                    name: null
+                });
+
+                if (!retrieveRes) {
+                    showToast("Failed to retrieve updated type");
+                    return;
+                }
+
+                if (!retrieveRes.isSuccess) {
+                    showToast(`Fail - ${retrieveRes.error}`);
+                    return;
+                }
+
+                setType(retrieveRes);
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed");
+                }
             }
-            setType(retrieveRes);
         })().finally((() => closeModal()));
     }
 
     const confirmCreation = () => {
         (async () => {
-            let creationRes = await createType({
-                id: null,
-                name: newName
-            });
-            if (!creationRes.isSuccess) {
-                throw new Error("Failed to create unit");
-            }
+            try {
+                let creationRes = await createType({
+                    id  : null,
+                    name: newName
+                });
 
-            let retrieveRes = await retrieveType({
-                id: null,
-                name: null
-            });
-            if (!retrieveRes.isSuccess) {
-                throw new Error("Failed to retrieve newly created unit");
+                if (!creationRes) {
+                    showToast("Failed to create type");
+                    return;
+                }
+
+                if (!creationRes.isSuccess) {
+                    showToast(`Fail - ${creationRes.error}`);
+                    return;
+                }
+
+                let retrieveRes = await retrieveType({
+                    id  : null,
+                    name: null
+                });
+
+                if (!retrieveRes) {
+                    showToast("Failed to retrieve type");
+                    return;
+                }
+
+                if (!retrieveRes.isSuccess) {
+                    showToast("Failed to retrieve newly created type");
+                    return;
+                }
+                setType(retrieveRes);
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed");
+                }
             }
-            setType(retrieveRes);
         })().finally((() => closeModal()));
     }
 
@@ -182,17 +304,37 @@ export default function TypeComponent() {
     
     useEffect(() => {
         (async () => {
-            let retrieveRes = await retrieveType({
-                id: null,
-                name: null
-            });
-            if (!retrieveRes.isSuccess) {
-                throw new Error("Failed to retrieve unit");
+            try {
+                let retrieveRes = await retrieveType({
+                    id  : null,
+                    name: null
+                });
+                
+                if (!retrieveRes){
+                    showToast("Failed to retrieve type");
+                    return;
+                }
+                
+                if (!retrieveRes.isSuccess) {
+                    showToast(`Fail - ${retrieveRes.error}`);
+                    return;
+                }
+                setType(retrieveRes);
+                setHeaders(Object.keys(new TypeDto(0, "")));
+                setIsLoading(false);
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed");
+                }
             }
-            setType(retrieveRes);
-            setHeaders(Object.keys(new TypeDto(0, "")));
         })();
     }, []);
+
+    if (isLoading) {
+        return <Spinner/>;
+    }
     
     return(
         <>

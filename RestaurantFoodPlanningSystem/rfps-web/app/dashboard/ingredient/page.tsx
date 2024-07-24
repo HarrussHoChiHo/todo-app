@@ -7,13 +7,13 @@ import IngredientDto from "../../../lib/models/ingredient/IngredientDto";
 import IngredientQueryDto from "../../../lib/models/ingredient/IngredientQueryDto";
 import TypeDto from "../../../lib/models/type/TypeDto";
 import UnitDto from "../../../lib/models/unit/UnitDto";
-import {Button, Input, Select, SelectItem, useDisclosure} from "@nextui-org/react";
+import {Button, Input, Select, SelectItem, Spinner, useDisclosure} from "@nextui-org/react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import Modals from "../../../components/CustomModal";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 
 export default function IngredientComponent() {
     const httpServices = new HttpServices();
@@ -64,7 +64,8 @@ export default function IngredientComponent() {
     const [headers, setHeaders] = useState<string[]>([]);
     const [types, setTypes] = useState<TypeDto[]>([]);
     const [units, setUnits] = useState<UnitDto[]>([]);
-
+    const [isLoading, setIsLoading] = useState(true);
+    
     let newName: string, newQuantity: number, newUnit: number, newType: number;
 
     const foodItemAPI: string = "/DataManagement/food-item";
@@ -166,8 +167,19 @@ export default function IngredientComponent() {
 
     const handleDelete = (id: number) => {
         (async () => {
-            let server_res = await deleteIngredient(id);
-            if (server_res!.isSuccess) {
+            try {
+                let server_res = await deleteIngredient(id);
+                
+                if (!server_res){
+                    showToast("Failed to delete ingredient.");
+                    return;
+                }
+                
+                if (!server_res.isSuccess) {
+                    showToast(`Fail - ${server_res.error}`);
+                    return;
+                } 
+                
                 let retrieveUpdatedIngredient = await retrieveIngredient({
                     id: null,
                     name: null,
@@ -176,13 +188,23 @@ export default function IngredientComponent() {
                     quantity: null
                 });
 
-                if (retrieveUpdatedIngredient!.isSuccess) {
-                    setIngredient(retrieveUpdatedIngredient!);
-                } else {
-                    throw new Error("Failed to retrieve ingredient after delete");
+                if (!retrieveUpdatedIngredient){
+                    showToast("Failed to retrieve ingredient after delete.");
+                    return;
                 }
-            } else {
-                throw new Error("Failed to delete ingredient");
+                
+                if (!retrieveUpdatedIngredient.isSuccess) {
+                    showToast(`Fail - ${retrieveUpdatedIngredient.error}`);
+                    return;
+                }
+                
+                setIngredient(retrieveUpdatedIngredient!);
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed.");
+                }
             }
         })();
     }
@@ -190,74 +212,130 @@ export default function IngredientComponent() {
     const handleEdit = (id: number) => {
         (async () => {
             setEditModal(true);
-            let server_res = await retrieveIngredient({
-                id: id,
-                type_Id: null,
-                quantity: null,
-                unit_Id: null,
-                name: null
-            });
-
-            if (server_res) {
+            try {
+                let server_res = await retrieveIngredient({
+                    id      : id,
+                    type_Id : null,
+                    quantity: null,
+                    unit_Id : null,
+                    name    : null
+                });
+                
+                if (!server_res){
+                    showToast("Failed to retrieve ingredient for delete");
+                    return;
+                }
+                
+                if (!server_res.isSuccess){
+                    showToast(`Fail - ${server_res.error}`);
+                    return;
+                }
+                
                 setEditObj(server_res.value.resultDto[0]);
-            } else {
-                throw new Error("Failed to retrieve object for delete");
+                
+            } catch (error) {
+                if (error instanceof Error) {
+                    toast.error(error.message);
+                } else {
+                    toast.error("Service crashed.");
+                }
             }
         })().finally(() => onOpen());
     }
 
     const confirmEdition = () => {
         (async () => {
-            let server_res = await updateIngredient({
-                id: editObj.id,
-                name: editObj.name,
-                quantity: editObj.quantity,
-                type_Id: editObj.type.id,
-                unit_Id: editObj.unit.id
-            });
-            if (server_res!.isSuccess) {
+            try {
+                let server_res = await updateIngredient({
+                    id      : editObj.id,
+                    name    : editObj.name,
+                    quantity: editObj.quantity,
+                    type_Id : editObj.type.id,
+                    unit_Id : editObj.unit.id
+                });
+
+                if (!server_res) {
+                    showToast("Failed to update ingredient.");
+                    return;
+                }
+
+                if (!server_res.isSuccess) {
+                    showToast(`Fail - ${server_res.error}`);
+                    return;
+                }
                 let retrieveIngredientRes = await retrieveIngredient({
-                    id: null,
-                    name: null,
+                    id     : null,
+                    name   : null,
                     quantity: null,
                     unit_Id: null,
                     type_Id: null
                 });
-                if (retrieveIngredientRes!.isSuccess) {
-                    setIngredient(retrieveIngredientRes!);
-                } else {
-                    throw new Error(JSON.stringify(retrieveIngredientRes));
+
+                if (!retrieveIngredientRes) {
+                    showToast("Failed to retrieve updated ingredient");
+                    return;
                 }
-            } else {
-                throw new Error(JSON.stringify(server_res));
+
+                if (!retrieveIngredientRes.isSuccess) {
+                    showToast(`Fail - ${retrieveIngredientRes.error}`);
+                    return;
+                }
+                setIngredient(retrieveIngredientRes!);
+            } catch (error) {
+                if (error instanceof Error) {
+                    toast.error(error.message);
+                } else {
+                    toast.error("Service crashed.");
+                }
             }
         })().finally(() => onClose());
     }
 
     const confirmCreation = () => {
         (async () => {
-            let server_res = await createIngredient({
-                id: null,
-                name: newName,
-                type_Id: newType,
-                unit_Id: newUnit,
-                quantity: newQuantity
-            });
-            if (server_res!.isSuccess) {
+            try {
+                let server_res = await createIngredient({
+                    id      : null,
+                    name    : newName,
+                    type_Id : newType,
+                    unit_Id : newUnit,
+                    quantity: newQuantity
+                });
+
+                if (!server_res) {
+                    showToast("Failed to create ingredient.");
+                    return;
+                }
+
+                if (!server_res!.isSuccess) {
+                    showToast(`Fail - ${server_res.error}`);
+                    return;
+                }
+                
                 let retrieveIngredientRes = await retrieveIngredient({
-                    id: null,
+                    id  : null,
                     name: null,
                     quantity: null,
                     unit_Id: null,
                     type_Id: null
                 });
-                if (retrieveIngredientRes!.isSuccess) {
-                    setIngredient(retrieveIngredientRes!);
-                } else {
-                    throw new Error(JSON.stringify(retrieveIngredientRes));
+
+                if (!retrieveIngredientRes) {
+                    showToast("Failed to retrieve created ingredient.");
+                    return;
                 }
-            } else {
-                throw new Error(JSON.stringify(server_res));
+
+                if (!retrieveIngredientRes.isSuccess) {
+                    showToast(`Fail - ${retrieveIngredientRes.error}`);
+                    return;
+                }
+                setIngredient(retrieveIngredientRes!);
+            } catch (error) {
+                if (error instanceof Error) {
+                    toast.error(error.message);
+                } else {
+                    toast.error("Service crashed.");
+                }
             }
         })().finally(() => onClose());
     }
@@ -454,40 +532,69 @@ export default function IngredientComponent() {
 
     useEffect(() => {
         (async () => {
-            let server_res = await retrieveIngredient({
-                id: null,
-                name: null,
-                type_Id: null,
-                unit_Id: null,
-                quantity: null
-            });
+            try {
+                let server_res = await retrieveIngredient({
+                    id      : null,
+                    name    : null,
+                    type_Id : null,
+                    unit_Id : null,
+                    quantity: null
+                });
 
-            if (server_res!.isSuccess) {
+                if (!server_res) {
+                    showToast("Failed to retrieve ingredient");
+                    return;
+                }
+
+                if (server_res.isSuccess) {
+                    showToast(`Fail - ${server_res.error}`);
+                    return;
+                }
+                
                 setIngredient(server_res!);
                 setHeaders(Object.keys(server_res!.value.resultDto[0]))
                 let typeRetrieve = await retrieveType();
 
-                if (typeRetrieve!.isSuccess) {
-                    setTypes(typeRetrieve!.value.resultDto);
-                } else {
-                    throw new Error("Failed to retrieve type");
+                if (!typeRetrieve) {
+                    showToast("Failed to retrieve type");
+                    return;
                 }
 
+                if (typeRetrieve.isSuccess) {
+                    showToast(`Fail - ${typeRetrieve.error}`);
+                    return;
+                }
+
+                setTypes(typeRetrieve!.value.resultDto);
+                
                 let unitRetrieve = await retrieveUnit();
 
-                if (unitRetrieve!.isSuccess) {
-                    setUnits(unitRetrieve!.value.resultDto);
-                } else {
-                    throw new Error("Failed to retrieve unit");
+                if (!unitRetrieve) {
+                    showToast("Failed to retrieve unit");
+                    return;
                 }
 
-            } else {
-                throw new Error("Failed to retrieve ingredient");
-            }
+                if (!unitRetrieve.isSuccess) {
+                    showToast(`Fail - ${unitRetrieve.error}`);
+                    return;
+                }
 
+                setUnits(unitRetrieve!.value.resultDto);
+                setIsLoading(false);
+            } catch (error) {
+                if (error instanceof Error) {
+                    toast.error(error.message);
+                } else {
+                    toast.error("Service crashed.");
+                }
+            }
         })();
     }, []);
 
+    if (isLoading) {
+        return <Spinner/>;
+    }
+    
     return (
         <>
             {

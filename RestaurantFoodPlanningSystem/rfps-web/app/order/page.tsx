@@ -15,6 +15,7 @@ import FooterComponent from "../../components/Footer";
 import HeaderComponent from "../../components/Header";
 import Modals from "../../components/CustomModal";
 import {faCircleCheck} from "@fortawesome/free-regular-svg-icons";
+import {toast} from "react-toastify";
 
 export default function OrderComponent() {
     const httpServices = new HttpServices();
@@ -50,13 +51,29 @@ export default function OrderComponent() {
     const [orderPlacementDto, setOrderPlacementDto] = useState<OrderPlacementQueryDto>()
 
     const retrieveMenuItem = async function (menuItemQuery: MenuItemQueryDto) {
-        let response = await (await httpServices.callAPI(`${menuItemAPI}/read`, menuItemQuery, "POST", token)).json();
-        return response as BasicDto<MenuItemDto>;
+        try {
+            let response = await (await httpServices.callAPI(`${menuItemAPI}/read`, menuItemQuery, "POST", token)).json();
+            return response as BasicDto<MenuItemDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const createOrder = async function () {
-        let response = await (await httpServices.callAPI(`${orderPlacementAPI}/place-order`, orderPlacementDto, "POST", token)).json();
-        return response as BasicDto<OrderPlacementDto>;
+        try {
+            let response = await (await httpServices.callAPI(`${orderPlacementAPI}/place-order`, orderPlacementDto, "POST", token)).json();
+            return response as BasicDto<OrderPlacementDto>;
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }
     }
 
     const updateOrder = async function (selectedMenuItemId: string[]) {
@@ -73,44 +90,73 @@ export default function OrderComponent() {
 
     const confirmOrder = () => {
         (async () => {
-            if (!orderPlacementDto?.orderItems) {
-                setValid(false);
-            } else {
-                if (orderPlacementDto?.orderItems.length < 1) {
+            try {
+                if (!orderPlacementDto?.orderItems) {
                     setValid(false);
+                } else {
+                    if (orderPlacementDto?.orderItems.length < 1) {
+                        setValid(false);
+                    }
+                }
+
+                const createRes = await createOrder();
+
+                if (!createRes){
+                    showToast("Failed to create order.");
+                    return;
+                }
+                
+                if (!createRes.isSuccess) {
+                    setCreationResult(false);
+                    onOpen();
+                    return;
+                }
+                setCreationResult(true);
+                setSelectedItems([]);
+                setOrderPlacementDto(undefined);
+                setValid(true);
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed")
                 }
             }
-
-            const createRes = await createOrder();
-
-            if (!createRes.isSuccess) {
-                setCreationResult(false);
-                onOpen();
-                return;
-            }
-            setCreationResult(true);
-            setSelectedItems([]);
-            setOrderPlacementDto(undefined);
-            setValid(true);
-
         })();
     }
 
+    const showToast = (message: string) => {
+        toast(message);
+    }
 
     useEffect(() => {
         if (!token || !user) {
             router.push("/login");
         }
         (async () => {
-            const retrieveRes = await retrieveMenuItem({
-                id  : null,
-                name: null
-            });
+            try {
+                const retrieveRes = await retrieveMenuItem({
+                    id  : null,
+                    name: null
+                });
 
-            if (!retrieveRes.isSuccess) {
-                throw new Error("Failed to retrieve menu items");
+                if (!retrieveRes){
+                    showToast("Failed to retrieve menu items.");
+                    return;
+                }
+                
+                if (!retrieveRes.isSuccess) {
+                    showToast(`Fail - ${retrieveRes.error}`);
+                    return;
+                }
+                setMenuItem(retrieveRes);
+            } catch (error) {
+                if (error instanceof Error) {
+                    showToast(error.message);
+                } else {
+                    showToast("Service crashed")
+                }
             }
-            setMenuItem(retrieveRes);
         })();
     }, []);
 
@@ -161,6 +207,7 @@ export default function OrderComponent() {
                     onCancel={onClose}
                     onConfirm={onClose}
                     header={"Notification"}
+                    hideCloseButton={false}
             >
                 {
                     creationResult ? (

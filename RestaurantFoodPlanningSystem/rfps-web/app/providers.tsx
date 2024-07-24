@@ -8,12 +8,12 @@ export function Providers({children}: {
     children: React.ReactNode
 }) {
     return (
-        <AuthProvider>
-            <NextUIProvider>
-                <ToastProvider>
+        <ToastProvider>
+            <AuthProvider>
+                <NextUIProvider>
                     {children}
-                </ToastProvider>
-            </NextUIProvider>
-        </AuthProvider>
+                </NextUIProvider>
+            </AuthProvider>
+        </ToastProvider>
     )
 }
