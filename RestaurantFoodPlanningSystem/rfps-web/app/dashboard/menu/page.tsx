@@ -237,7 +237,7 @@ export default function MenuComponent() {
             try {
                 let server_response = await insertMenu({
                     id         : null,
-                    date       : newDate,
+                    date       : newDate.toUTCString(),
                     menuItem_Id: newMenuItemId
                 });
 
@@ -292,7 +292,7 @@ export default function MenuComponent() {
 
         menuQueryDto = {
             id         : editObj.id,
-            date       : editObj.date,
+            date       : editObj.date.toUTCString(),
             menuItem_Id: menuItemId
         };
 

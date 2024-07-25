@@ -1,6 +1,3 @@
-import MenuItemDto from "../menu/MenuItemDto";
-import IngredientDto from "../ingredient/IngredientDto";
-
 interface IMenuItemFoodItemQueryDto {
     menuItem_Id: number | null;
     foodItem_Id: number | null;

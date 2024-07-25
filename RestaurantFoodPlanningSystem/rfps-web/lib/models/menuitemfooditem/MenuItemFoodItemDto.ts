@@ -26,3 +26,5 @@ class MenuItemFoodItemDto implements IMenuItemFoodItemDto {
 }
 
 export default MenuItemFoodItemDto;
+
+export const mifiHeaders = ["Menu Item", "Food Item", "Consumption"]
