@@ -3,10 +3,9 @@
 import HttpServices from "../../lib/HttpServices";
 import {useAuth} from "../AuthContext";
 import React, {useEffect, useState} from "react";
-import MenuItemDto from "../../lib/models/menu/MenuItemDto";
 import OrderPlacementQueryDto from "../../lib/models/order/OrderPlacementQueryDto";
 import OrderPlacementDto from "../../lib/models/order/OrderPlacementDto";
-import {Button, Select, SelectItem, useDisclosure} from "@nextui-org/react";
+import {Button, Select, SelectItem, Spinner, useDisclosure} from "@nextui-org/react";
 import OrderItemQueryDto from "../../lib/models/order/OrderItemQueryDto";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck, faCircleExclamation} from "@fortawesome/free-solid-svg-icons";
@@ -16,6 +15,8 @@ import HeaderComponent from "../../components/Header";
 import Modals from "../../components/CustomModal";
 import {faCircleCheck} from "@fortawesome/free-regular-svg-icons";
 import {toast} from "react-toastify";
+import MenuQueryDto from "../../lib/models/menu/MenuQueryDto";
+import MenuDto from "../../lib/models/menu/MenuDto";
 
 export default function OrderComponent() {
     const httpServices = new HttpServices();
@@ -24,36 +25,34 @@ export default function OrderComponent() {
         user
     } = useAuth();
     const router = useRouter();
-    const [menuItem, setMenuItem] = useState<BasicDto<MenuItemDto>>({
+    const [menu, setMenu] = useState<BasicDto<MenuDto>>({
         error    : "",
         isSuccess: false,
         value    : {
             amount   : 0,
             resultDto: [{
-                id  : 0,
-                name: ""
+                date    : new Date(),
+                id      : 0,
+                menuItem: {
+                    id  : 0,
+                    name: ""
+                }
             }]
         }
     });
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
     const [valid, setValid] = useState(true);
-    const [creationResult, setCreationResult] = useState(true);
-    const menuItemAPI: string = "/DataManagement/menu-item";
+    const [isLoading, setIsLoading] = useState(true);
+    const menuAPI: string = "/DataManagement/menu";
     const orderPlacementAPI: string = "/Order";
-
-    const {
-        isOpen,
-        onOpen,
-        onClose,
-        onOpenChange
-    } = useDisclosure();
+    
 
     const [orderPlacementDto, setOrderPlacementDto] = useState<OrderPlacementQueryDto>()
 
-    const retrieveMenuItem = async function (menuItemQuery: MenuItemQueryDto) {
+    const retrieveMenu = async function (menuQuery: MenuQueryDto) {
         try {
-            let response = await (await httpServices.callAPI(`${menuItemAPI}/read`, menuItemQuery, "POST", token)).json();
-            return response as BasicDto<MenuItemDto>;
+            let response = await (await httpServices.callAPI(`${menuAPI}/read`, menuQuery, "POST", token)).json();
+            return response as BasicDto<MenuDto>;
         } catch (error) {
             if (error instanceof Error) {
                 showToast(error.message);
@@ -93,9 +92,11 @@ export default function OrderComponent() {
             try {
                 if (!orderPlacementDto?.orderItems) {
                     setValid(false);
+                    return;
                 } else {
                     if (orderPlacementDto?.orderItems.length < 1) {
                         setValid(false);
+                        return;
                     }
                 }
 
@@ -107,14 +108,14 @@ export default function OrderComponent() {
                 }
                 
                 if (!createRes.isSuccess) {
-                    setCreationResult(false);
-                    onOpen();
+                    showToast(`Fail - ${createRes.error}`);
                     return;
                 }
-                setCreationResult(true);
+
                 setSelectedItems([]);
                 setOrderPlacementDto(undefined);
                 setValid(true);
+                showToast("Successfully create a new order");
             } catch (error) {
                 if (error instanceof Error) {
                     showToast(error.message);
@@ -135,9 +136,10 @@ export default function OrderComponent() {
         }
         (async () => {
             try {
-                const retrieveRes = await retrieveMenuItem({
+                const retrieveRes = await retrieveMenu({
                     id  : null,
-                    name: null
+                    date       : new Date().toDateString(),
+                    menuItem_Id: null
                 });
 
                 if (!retrieveRes){
@@ -149,7 +151,8 @@ export default function OrderComponent() {
                     showToast(`Fail - ${retrieveRes.error}`);
                     return;
                 }
-                setMenuItem(retrieveRes);
+                setMenu(retrieveRes);
+                setIsLoading(false);
             } catch (error) {
                 if (error instanceof Error) {
                     showToast(error.message);
@@ -160,6 +163,17 @@ export default function OrderComponent() {
         })();
     }, []);
 
+    if (isLoading) {
+        return (
+            <>
+                <div className={"w-dvw h-dvh flex flex-col items-center justify-center"}>
+                    <Spinner/>
+                </div>
+            </>
+
+        );
+    }
+    
     return (
         <>
             <HeaderComponent/>
@@ -176,9 +190,10 @@ export default function OrderComponent() {
                             onSelectionChange={(key) => updateOrder(Array.from(key, opt => opt.toString()))}
                     >
                         {
-                            menuItem.value.resultDto.map(item =>
-                                <SelectItem key={item.id}>
-                                    {item.name}
+
+                            menu.value.resultDto.map(mItem =>
+                                <SelectItem key={mItem.id} textValue={mItem.menuItem.name}>
+                                    {mItem.menuItem.name}
                                 </SelectItem>
                             )
                         }
@@ -188,7 +203,9 @@ export default function OrderComponent() {
                         {
                             selectedItems.map((id, index) =>
                                 <li key={index}>
-                                    {menuItem.value.resultDto.filter(item => item.id.toString() === id)[0].name}
+                                    {
+                                        menu.value.resultDto.filter(item => item.menuItem.id.toString() === id)[0].menuItem.name
+                                    }
                                 </li>
                             )
                         }
@@ -202,21 +219,6 @@ export default function OrderComponent() {
                 </div>
             </div>
             <FooterComponent/>
-            <Modals isOpen={isOpen}
-                    onOpenChange={onOpenChange}
-                    onCancel={onClose}
-                    onConfirm={onClose}
-                    header={"Notification"}
-                    hideCloseButton={false}
-            >
-                {
-                    creationResult ? (
-                        <p className={"flex flex-row justify-center items-center"}>Success <FontAwesomeIcon
-                            icon={faCircleCheck} size={"2xl"} className={"p-2"}/></p>) : (
-                        <p className={"flex flex-row justify-center items-center"}>Fail<FontAwesomeIcon
-                            icon={faCircleExclamation} size={"2xl"} className={"p-2"}/></p>)
-                }
-            </Modals>
         </>
     );
 }

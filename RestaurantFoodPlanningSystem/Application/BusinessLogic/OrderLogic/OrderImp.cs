@@ -24,6 +24,8 @@ namespace Application.BusinessLogic.OrderLogic
 
             result.amount = await _context.SaveChangesAsync();
 
+            orderQuery.Id = order.Id;
+
             result.resultDto = new List<OrderResultDto>()
                                {
                                    _mapper.Map<OrderResultDto>(order)
@@ -35,7 +37,19 @@ namespace Application.BusinessLogic.OrderLogic
         public async Task<DbOperationResult<OrderResultDto>> Update(OrderQueryDto orderQuery)
         {
             DbOperationResult<OrderResultDto> result = new DbOperationResult<OrderResultDto>();
-            Order                             order  = _mapper.Map<Order>(orderQuery);
+            Order order = _context
+                          .Order
+                          .Where(x => x.Id == orderQuery.Id)
+                          .Include(x => x.OrderItems)
+                          .ThenInclude(x => x.MenuItem)
+                          .Select(
+                                  o => new Order()
+                                       {
+                                           Id = o.Id,
+                                           IsCanceled = orderQuery.IsCanceled ?? o.IsCanceled,
+                                           OrderItems = o.OrderItems
+                                       })
+                          .SingleOrDefault() ?? throw new Exception("Cannot find order.");
 
             _context.Order.Update(order);
 
@@ -53,12 +67,14 @@ namespace Application.BusinessLogic.OrderLogic
             DbOperationResult<OrderResultDto> result = new DbOperationResult<OrderResultDto>();
 
             List<OrderResultDto> orderResultDtos = _context
-                                                   .Order.Where(
+                                                   .Order
+                                                   .Where(
                                                                 order =>
                                                                     (order.Id == orderQuery.Id || orderQuery.Id == null)
                                                                  && (order.IsCanceled      == orderQuery.IsCanceled
                                                                   || orderQuery.IsCanceled == null))
                                                    .Include(order => order.OrderItems)
+                                                   .OrderBy(o => o.Id)
                                                    .ProjectTo<OrderResultDto>(_mapper.ConfigurationProvider)
                                                    .ToList();
 

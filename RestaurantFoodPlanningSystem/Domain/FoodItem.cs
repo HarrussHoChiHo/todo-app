@@ -16,7 +16,7 @@ public class FoodItem
     public int    Type_Id  { get; set; }
     
     
-    public Type Type { get; set; }
-    public Unit Unit { get; set; }
+    public Type                          Type              { get; set; }
+    public Unit                          Unit              { get; set; }
     public ICollection<MenuItemFoodItem> MenuItemFoodItems { get; set; }
 }

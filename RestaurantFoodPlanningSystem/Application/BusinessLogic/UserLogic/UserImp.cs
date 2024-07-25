@@ -63,8 +63,6 @@ namespace Application.BusinessLogic.UserLogic
         {
             DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
 
-            //User user = _mapper.Map<User>(_mapper.Map<UserFullDto>(queryDto));
-
             User user = await userManager.FindByIdAsync(queryDto.Id.ToString());
 
             user = _mapper.Map(
@@ -183,6 +181,7 @@ namespace Application.BusinessLogic.UserLogic
             DbOperationResult<UserResultDto> result = new DbOperationResult<UserResultDto>();
             List<User> users = userManager
                                .Users
+                               .OrderBy(o => o.Id)
                                .ToList();
 
             result.resultDto = new List<UserResultDto>();

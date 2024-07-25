@@ -3,6 +3,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
 using EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.BusinessLogic.OrderItemLogic
 {
@@ -16,26 +17,39 @@ namespace Application.BusinessLogic.OrderItemLogic
         {
             DbOperationResult<OrderItemResultDto> result    = new DbOperationResult<OrderItemResultDto>();
             OrderItem                             orderItem = _mapper.Map<OrderItem>(orderItemQuery);
-            
+
             _context.OrderItem.Add(orderItem);
-            
-            result.amount    = await _context.SaveChangesAsync();
+
+            result.amount = await _context.SaveChangesAsync();
             result.resultDto = new List<OrderItemResultDto>()
                                {
                                    _mapper.Map<OrderItemResultDto>(orderItem)
                                };
-            
+
             return result;
         }
 
         public async Task<DbOperationResult<OrderItemResultDto>> Update(OrderItemQueryDto orderItemQuery)
         {
             DbOperationResult<OrderItemResultDto> result = new DbOperationResult<OrderItemResultDto>();
-            OrderItem orderItem = _mapper.Map<OrderItem>(orderItemQuery);
-            
+            OrderItem orderItem = _context
+                                  .OrderItem
+                                  .Where(x => x.Id == orderItemQuery.Id)
+                                  .Include(o => o.MenuItem)
+                                  .Select(
+                                          o => new OrderItem()
+                                               {
+                                                   Id         = o.Id,
+                                                   MenuItemId = orderItemQuery.MenuItemId ?? o.MenuItemId,
+                                                   OrderId    = orderItemQuery.OrderId    ?? o.OrderId,
+                                                   MenuItem   = o.MenuItem
+                                               })
+                                  .SingleOrDefault() ?? throw new Exception("Cannot find order item.");
+
             _context.OrderItem.Update(orderItem);
-            
-            result.amount    = await _context.SaveChangesAsync();
+
+            result.amount = await _context.SaveChangesAsync();
+
             result.resultDto = new List<OrderItemResultDto>()
                                {
                                    _mapper.Map<OrderItemResultDto>(orderItem)
@@ -51,12 +65,18 @@ namespace Application.BusinessLogic.OrderItemLogic
             List<OrderItemResultDto> orderItemResultDtos = _context
                                                            .OrderItem.Where(
                                                                             orderItem =>
-                                                                                (orderItem.OrderId
+                                                                                (orderItem.Id      == orderItemQuery.Id
+                                                                              || orderItemQuery.Id == null)
+                                                                             && (orderItem.OrderId
                                                                               == orderItemQuery.OrderId
                                                                               || orderItemQuery.OrderId == null)
                                                                              && (orderItem.MenuItemId
                                                                               == orderItemQuery.MenuItemId
                                                                               || orderItemQuery.MenuItemId == null))
+                                                           .Include(orderItem => orderItem.MenuItem)
+                                                           .Include(orderItem => orderItem.Order)
+                                                           .OrderBy(o => o.OrderId)
+                                                           .ThenBy(o => o.MenuItemId)
                                                            .ProjectTo<OrderItemResultDto>(_mapper.ConfigurationProvider)
                                                            .ToList();
 

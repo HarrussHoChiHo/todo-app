@@ -84,7 +84,7 @@ export default function HeaderComponent() {
                         Place Order
                     </Button>
                 </NavbarBrand>
-                <NavbarContent className={"flex"} justify={"center"}>
+                <NavbarContent className={"flex overflow-x-scroll"} justify={"center"}>
                     <NavbarItem isActive={activeItem === "user"}
                                 hidden={!user?.role.includes("Manager")}>
                         <Link href={"/dashboard/user"} color={"foreground"}>
@@ -107,6 +107,12 @@ export default function HeaderComponent() {
                     <NavbarItem isActive={activeItem === "ingredient"}>
                         <Link href={"/dashboard/ingredient"} color={"foreground"}>
                             Ingredient Management
+                        </Link>
+                    </NavbarItem>
+                    <Divider orientation="vertical"/>
+                    <NavbarItem isActive={activeItem === "menu-item-food-item"}>
+                        <Link href={"/dashboard/menu-item-food-item"} color={"foreground"}>
+                            Menu Item Food Item Management
                         </Link>
                     </NavbarItem>
                     <Divider orientation="vertical"/>

@@ -25,7 +25,7 @@ public class RoleImp(
             throw new Exception(createResult.ToString());
         }
 
-        result.amount    = 1;
+        result.amount = 1;
         result.resultDto = new List<RoleResultDto>()
                            {
                                mapper.Map<RoleResultDto>(role)
@@ -57,7 +57,7 @@ public class RoleImp(
             throw new Exception(updateResult.ToString());
         }
 
-        result.amount    = 1;
+        result.amount = 1;
         result.resultDto = new List<RoleResultDto>()
                            {
                                mapper.Map<RoleResultDto>(role)
@@ -83,6 +83,7 @@ public class RoleImp(
                                               || fullDto.CreatedDate == null)
                                              && (item.Description == fullDto.Description || fullDto.Description == null)
                                            )
+                               .OrderBy(o => o.Id)
                                .ProjectTo<RoleResultDto>(mapper.ConfigurationProvider)
                                .ToList();
         }
@@ -91,14 +92,14 @@ public class RoleImp(
             result.resultDto = roleManager
                                .Roles.Where(
                                             item =>
-                                                (item.Id   == fullDto.Id   || fullDto.Id   == null)
-                                             && (item.Name == fullDto.Name || fullDto.Name == null)
+                                                (item.Id          == fullDto.Id          || fullDto.Id          == null)
+                                             && (item.Name        == fullDto.Name        || fullDto.Name        == null)
                                              && (item.Description == fullDto.Description || fullDto.Description == null)
                                            )
                                .ProjectTo<RoleResultDto>(mapper.ConfigurationProvider)
                                .ToList();
         }
-        
+
         result.amount = result.resultDto.Count;
 
         return result;
@@ -121,7 +122,7 @@ public class RoleImp(
                            {
                                mapper.Map<RoleResultDto>(role)
                            };
-        result.amount    = 1;
+        result.amount = 1;
 
         return result;
     }

@@ -31,10 +31,24 @@ namespace Application.BusinessLogic.MenuItemFoodItemLogic
         }
 
         public async Task<DbOperationResult<MenuItemFoodItemResultDto>> Update(
-            MenuItemFoodItemQueryDto menuIteFoodItemQuery)
+            MenuItemFoodItemQueryDto menuItemFoodItemQuery)
         {
             DbOperationResult<MenuItemFoodItemResultDto> result = new DbOperationResult<MenuItemFoodItemResultDto>();
-            MenuItemFoodItem menuItemFoodItem = _mapper.Map<MenuItemFoodItem>(menuIteFoodItemQuery);
+
+            MenuItemFoodItem menuItemFoodItem =
+                _context
+                    .MenuItemFoodItem
+                    .Where(
+                           x => x.MenuItem_Id == menuItemFoodItemQuery.MenuItem_Id
+                             && x.FoodItem_Id == menuItemFoodItemQuery.FoodItem_Id)
+                    .Select(
+                            o => new MenuItemFoodItem()
+                                 {
+                                     FoodItem_Id = o.FoodItem_Id,
+                                     MenuItem_Id = o.MenuItem_Id,
+                                     Consumption = menuItemFoodItemQuery.Consumption ?? o.Consumption
+                                 })
+                    .SingleOrDefault() ?? throw new Exception("Cannot find item with MenuItem_Id and FoodItem_Id.");
 
             _context.MenuItemFoodItem.Update(menuItemFoodItem);
 
@@ -61,6 +75,8 @@ namespace Application.BusinessLogic.MenuItemFoodItemLogic
                                                              || menuIteFoodItemQuery.FoodItem_Id == null)
                                                             && (item.Consumption == menuIteFoodItemQuery.Consumption
                                                              || menuIteFoodItemQuery.Consumption == null))
+                               .OrderBy(o => o.MenuItem_Id)
+                               .ThenBy(o => o.FoodItem_Id)
                                .ProjectTo<MenuItemFoodItemResultDto>(_mapper.ConfigurationProvider)
                                .ToList();
 

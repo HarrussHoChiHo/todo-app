@@ -10,6 +10,9 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import Modals from "../../../components/CustomModal";
 import {toast} from "react-toastify";
+import IngredientDto from "../../../lib/models/ingredient/IngredientDto";
+import MenuItemFoodItemQueryDto from "../../../lib/models/menuitemfooditem/MenuItemFoodItemQueryDto";
+import MenuItemFoodItemDto from "../../../lib/models/menuitemfooditem/MenuItemFoodItemDto";
 
 export default function MenuItemComponent() {
     const [menuItem, setMenuItem] = useState<BasicDto<MenuItemDto>>(
@@ -24,6 +27,8 @@ export default function MenuItemComponent() {
                 }]
             }
         });
+    
+    
     const httpServices = new HttpServices();
     const {token} = useAuth();
     const [headers, setHeaders] = useState<string[]>([]);
@@ -43,12 +48,16 @@ export default function MenuItemComponent() {
     } = useDisclosure();
 
     const menuItemAPI: string = "/DataManagement/menu-item";
+    
     let newName: string;
 
     useEffect(() => {
         (async () => {
             try {
-                let server_res = await retrieveMenuItem({id: null, name: null});
+                const server_res = await retrieveMenuItem({
+                    id  : null,
+                    name: null
+                });
 
                 if (!server_res) {
                     showToast("Failed to retrieve menu item.");
@@ -60,8 +69,9 @@ export default function MenuItemComponent() {
                     return;
                 }
 
-                setMenuItem(server_res!);
-                setHeaders(Object.keys((server_res!.value.resultDto as MenuItemDto[])[0]));
+                setMenuItem(server_res);
+                
+                setHeaders(Object.keys((server_res.value.resultDto as MenuItemDto[])[0]));
                 setIsLoading(false);
             } catch (error) {
                 if (error instanceof Error) {
@@ -93,6 +103,8 @@ export default function MenuItemComponent() {
         }
     }
 
+    
+    
     const retrieveMenuItem = async function (menuItemQuery: MenuItemQueryDto) {
         try {
             let response = await (await httpServices.callAPI(`${menuItemAPI}/read`, menuItemQuery, "POST", token)).json();
@@ -105,7 +117,7 @@ export default function MenuItemComponent() {
             }
         }
     }
-
+    
     const updateMenuItem = async function (menuItemQuery: MenuItemQueryDto) {
         try {
             let response = await (await httpServices.callAPI(`${menuItemAPI}/update`, menuItemQuery, "POST", token)).json();
@@ -118,7 +130,7 @@ export default function MenuItemComponent() {
             }
         }
     }
-
+    
     const deleteMenuItem = async function (id: number) {
         try {
             let response = await (await httpServices.callAPI(`${menuItemAPI}/${id}`, {}, "DELETE", token)).json();
@@ -131,7 +143,7 @@ export default function MenuItemComponent() {
             }
         }
     }
-
+    
     const handleEdit = (id: number) => {
         setEditModal(true);
         (async () => {
@@ -328,14 +340,12 @@ export default function MenuItemComponent() {
             )
         } else {
             return (
-                <>
                     <Input label={"Name"}
                            placeholder={"Insert a name"}
                            onInput={(event) => createName(event.currentTarget.value)}
                            onValueChange={(value) => createName(value)}
                            onChange={(value) => createName(value.target.value)}
                     />
-                </>
             )
         }
     }

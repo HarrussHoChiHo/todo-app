@@ -546,7 +546,7 @@ export default function IngredientComponent() {
                     return;
                 }
 
-                if (server_res.isSuccess) {
+                if (!server_res.isSuccess) {
                     showToast(`Fail - ${server_res.error}`);
                     return;
                 }
@@ -560,7 +560,7 @@ export default function IngredientComponent() {
                     return;
                 }
 
-                if (typeRetrieve.isSuccess) {
+                if (!typeRetrieve.isSuccess) {
                     showToast(`Fail - ${typeRetrieve.error}`);
                     return;
                 }

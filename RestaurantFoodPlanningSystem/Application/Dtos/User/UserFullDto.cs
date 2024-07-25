@@ -2,6 +2,6 @@
 {
     public class UserFullDto : UserBasicDto
     {
-        public int?           Id   { get; set; }
+        public int? Id { get; set; }
     }
 }

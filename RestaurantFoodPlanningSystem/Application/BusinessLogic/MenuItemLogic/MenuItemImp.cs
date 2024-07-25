@@ -37,7 +37,17 @@ namespace Application.BusinessLogic.MenuItemLogic
         {
             DbOperationResult<MenuItemResultDto> result = new DbOperationResult<MenuItemResultDto>();
 
-            MenuItem menuItem = _mapper.Map<MenuItem>(menuItemQuery);
+            MenuItem menuItem = _context
+                                .MenuItem
+                                .Where(x => x.Id == menuItemQuery.Id)
+                                .Select(
+                                        o =>
+                                            new MenuItem()
+                                            {
+                                                Id   = o.Id,
+                                                Name = menuItemQuery.Name ?? o.Name
+                                            })
+                                .SingleOrDefault() ?? throw new Exception("Cannot find menu item.");
 
             _context.MenuItem.Update(_mapper.Map<MenuItem>(menuItemQuery));
 
@@ -55,30 +65,23 @@ namespace Application.BusinessLogic.MenuItemLogic
         {
             DbOperationResult<MenuItemResultDto> result = new DbOperationResult<MenuItemResultDto>();
 
-            List<MenuItem> menuItems = _context
-                                       .MenuItem.Where(
-                                                       x =>
-                                                           (x.Id             == menuItemQuery.Id
-                                                         || menuItemQuery.Id == null)
-                                                        || (x.Name             == menuItemQuery.Name
-                                                         || menuItemQuery.Name == null)
-                                                      )
-                                       .Include(x => x.Menus)
-                                       .Include(x => x.OrderItems)
-                                       .Include(x => x.MenuItemFoodItems)
-                                       .ToList();
-            
             result.resultDto = _context
                                .MenuItem.Where(
                                                x =>
                                                    (x.Id             == menuItemQuery.Id
                                                  || menuItemQuery.Id == null)
-                                                || (x.Name             == menuItemQuery.Name
+                                                && (x.Name             == menuItemQuery.Name
                                                  || menuItemQuery.Name == null)
                                               )
+                               .Include(x => x.Menus)
+                               .Include(x => x.OrderItems)
+                               .Include(x => x.MenuItemFoodItems)
+                               .OrderBy(o => o.Id)
                                .ProjectTo<MenuItemResultDto>(_mapper.ConfigurationProvider)
                                .ToList();
 
+            result.amount = result.resultDto.Count;
+            
             return result;
         }
 

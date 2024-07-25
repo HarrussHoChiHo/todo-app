@@ -34,7 +34,16 @@ namespace Application.BusinessLogic.TypeLogic
         {
             DbOperationResult<TypeResultDto> result = new DbOperationResult<TypeResultDto>();
 
-            Type type = _mapper.Map<Type>(typeQuery);
+            Type type = _context
+                        .Type
+                        .Where(x => x.Id == typeQuery.Id)
+                        .Select(
+                                o => new Type()
+                                     {
+                                         Id   = o.Id,
+                                         Name = typeQuery.Name ?? o.Name
+                                     })
+                        .SingleOrDefault() ?? throw new Exception("Cannot find type.");
 
             _context.Type.Update(type);
 
@@ -56,6 +65,7 @@ namespace Application.BusinessLogic.TypeLogic
                                .Type.Where(
                                            item => (item.Id   == typeQuery.Id   || typeQuery.Id   == null)
                                                 && (item.Name == typeQuery.Name || typeQuery.Name == null))
+                               .OrderBy(o => o.Id)
                                .ProjectTo<TypeResultDto>(_mapper.ConfigurationProvider)
                                .ToList();
 

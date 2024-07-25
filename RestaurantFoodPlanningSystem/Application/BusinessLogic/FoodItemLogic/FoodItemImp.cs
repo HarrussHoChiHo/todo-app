@@ -31,15 +31,28 @@ namespace Application.BusinessLogic.FoodItemLogic
 
         public async Task<DbOperationResult<FoodItemResultDto>> Update(FoodItemQueryDto foodItemQuery)
         {
-            DbOperationResult<FoodItemResultDto> result   = new DbOperationResult<FoodItemResultDto>();
-            FoodItem                             foodItem = _mapper.Map<FoodItem>(foodItemQuery);
+            DbOperationResult<FoodItemResultDto> result = new DbOperationResult<FoodItemResultDto>();
 
-            _context.FoodItem.Update(foodItem);
+            FoodItem original = _context
+                                .FoodItem.Where(o => o.Id.Equals(foodItemQuery.Id))
+                                .Select(
+                                        o =>
+                                            new FoodItem()
+                                            {
+                                                Id       = o.Id,
+                                                Quantity = foodItemQuery.Quantity ?? o.Quantity,
+                                                Name     = foodItemQuery.Name     ?? o.Name,
+                                                Type_Id  = foodItemQuery.Type_Id  ?? o.Type_Id,
+                                                Unit_Id  = foodItemQuery.Unit_Id  ?? o.Unit_Id
+                                            })
+                                .SingleOrDefault() ?? throw new Exception("Cannot find food item.");
+
+            _context.FoodItem.Update(original);
 
             result.amount = await _context.SaveChangesAsync();
             result.resultDto = new List<FoodItemResultDto>()
                                {
-                                   _mapper.Map<FoodItemResultDto>(foodItem)
+                                   _mapper.Map<FoodItemResultDto>(original)
                                };
 
             return result;
@@ -62,6 +75,7 @@ namespace Application.BusinessLogic.FoodItemLogic
                                                          || foodItemQuery.Unit_Id == null))
                                .Include(x => x.Type)
                                .Include(x => x.Unit)
+                               .OrderBy(o => o.Id)
                                .ProjectTo<FoodItemResultDto>(_mapper.ConfigurationProvider)
                                .ToList();
 

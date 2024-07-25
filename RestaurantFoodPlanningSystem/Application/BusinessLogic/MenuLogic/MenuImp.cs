@@ -37,10 +37,20 @@ namespace Application.BusinessLogic.MenuLogic
         {
             DbOperationResult<MenuResultDto> result = new DbOperationResult<MenuResultDto>();
 
-            Menu menu = _mapper.Map<Menu>(menuQuery);
+            Menu menu = _context
+                        .Menu
+                        .Where(x => x.Id == menuQuery.Id)
+                        .Select(
+                                o => new Menu()
+                                     {
+                                         Id = o.Id,
+                                         MenuItem_Id = menuQuery.MenuItem_Id ?? o.MenuItem_Id,
+                                         Date = menuQuery.Date ?? o.Date
+                                     })
+                        .SingleOrDefault() ?? throw new Exception("Cannot find Menu.");
 
             _context.Menu.Update(menu);
-            
+
             result.amount = await _context.SaveChangesAsync();
 
             result.resultDto = _context
@@ -87,7 +97,7 @@ namespace Application.BusinessLogic.MenuLogic
             }
 
             result.amount = result.resultDto.Count;
-            
+
             return result;
         }
 
