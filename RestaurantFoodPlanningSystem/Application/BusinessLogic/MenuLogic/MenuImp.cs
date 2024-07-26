@@ -27,7 +27,7 @@ namespace Application.BusinessLogic.MenuLogic
             result.amount = await _context.SaveChangesAsync();
             result.resultDto = new List<MenuResultDto>()
                                {
-                                   _mapper.Map<MenuResultDto>(result)
+                                   _mapper.Map<MenuResultDto>(menu)
                                };
 
             return result;
@@ -47,6 +47,8 @@ namespace Application.BusinessLogic.MenuLogic
                                          MenuItem_Id = menuQuery.MenuItem_Id ?? o.MenuItem_Id,
                                          Date = menuQuery.Date ?? o.Date
                                      })
+                        .OrderByDescending(o => o.Date)
+                        .ThenBy(o => o.Id)
                         .SingleOrDefault() ?? throw new Exception("Cannot find Menu.");
 
             _context.Menu.Update(menu);

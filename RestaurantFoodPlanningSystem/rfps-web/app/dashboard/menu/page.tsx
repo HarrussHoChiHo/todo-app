@@ -13,6 +13,7 @@ import {CalendarDate, getLocalTimeZone} from "@internationalized/date";
 import MenuItemDto from "../../../lib/models/menu/MenuItemDto";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import {toast} from "react-toastify";
+import {throws} from "node:assert";
 
 export default function MenuComponent() {
     const httpServices = new HttpServices();
@@ -67,44 +68,37 @@ export default function MenuComponent() {
 
     useEffect(() => {
         (async () => {
-            try {
-                let server_res = await retrieveMenu(menuQueryDto);
+            const server_res = await retrieveMenu(menuQueryDto);
 
-                if (!server_res) {
-                    showToast("Failed to retrieve menu.");
-                    return;
-                }
-
-                if (!server_res.isSuccess) {
-                    showToast(`Fail - ${server_res.error}`);
-                    return;
-                }
-                
-                setMenu(server_res!);
-                setHeaders(Object.keys((server_res!.value.resultDto as MenuDto[])[0]));
-
-                let menuItemResponse = await retrieveMenuItem();
-
-                if (!menuItemResponse) {
-                    showToast("Failed to retrieve menu item.");
-                    return;
-                }
-
-                if (!menuItemResponse.isSuccess) {
-                    showToast(`Fail - ${menuItemResponse.error}`);
-                    return;
-                }
-                setMenuItemDto(menuItemResponse!.value.resultDto);
-                setIsLoading(false);
-            } catch (error) {
-                if (error instanceof Error) {
-                    toast.error(error.message);
-                } else {
-                    toast.error("Service crashed.");
-                }
+            if (!server_res) {
+                throw new Error("Failed to retrieve menu.");
             }
 
-        })();
+            if (!server_res.isSuccess) {
+                throw new Error(`Fail - ${server_res.error}`);
+            }
+
+            setMenu(server_res);
+            setHeaders(Object.keys((server_res!.value.resultDto as MenuDto[])[0]));
+
+            const menuItemResponse = await retrieveMenuItem();
+
+            if (!menuItemResponse) {
+                throw new Error("Failed to retrieve menu item.");
+            }
+
+            if (!menuItemResponse.isSuccess) {
+                throw new Error(`Fail - ${menuItemResponse.error}`);
+            }
+            setMenuItemDto(menuItemResponse!.value.resultDto);
+            setIsLoading(false);
+        })().catch(error => {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Service crashed.");
+            }
+        });
     }, []);
 
     const showToast = (message: string) => {
@@ -113,73 +107,59 @@ export default function MenuComponent() {
 
     const handleDelete = (id: number) => {
         (async () => {
-            try {
-                let server_res = await deleteMenu(id);
+            let server_res = await deleteMenu(id);
 
-                if (!server_res) {
-                    showToast("Failed to delete menu.");
-                    return;
-                }
-
-                if (!server_res.isSuccess) {
-                    showToast(`Fail - ${server_res.error}`);
-                    return;
-                }
-                
-                let updatedList = await retrieveMenu({
-                    id         : null,
-                    date       : null,
-                    menuItem_Id: null
-                });
-                setMenu(updatedList!);
-            } catch (error) {
-                if (error instanceof Error) {
-                    toast.error(error.message);
-                } else {
-                    toast.error("Service crashed.");
-                }
+            if (!server_res) {
+                throw new Error("Failed to delete menu.");
             }
-        })();
+
+            if (!server_res.isSuccess) {
+                throw new Error(`Fail - ${server_res.error}`);
+            }
+
+            let updatedList = await retrieveMenu({
+                id         : null,
+                date       : null,
+                menuItem_Id: null
+            });
+            setMenu(updatedList!);
+        })().catch(error => {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Service crashed.");
+            }
+        });
     }
 
     const handleEdit = (id: number) => {
         setEditModal(true);
         (async () => {
-            try {
-                let server_res = await retrieveMenu({
-                    id         : id,
-                    menuItem_Id: null,
-                    date       : null
-                });
+            let server_res = await retrieveMenu({
+                id         : id,
+                menuItem_Id: null,
+                date       : null
+            });
 
-                if (!server_res) {
-                    showToast("Failed to retrieve menu for edition.")
-                    return;
-                }
-
-                if (!server_res.isSuccess) {
-                    showToast(`Fail - ${server_res.error}`);
-                }
-                
-                let existingMenu: MenuDto | undefined = (server_res!.value.resultDto as MenuDto[]).pop();
-
-                if (!existingMenu) {
-                    showToast("Existing menu is null.");
-                    return;
-                }
-
-                setEditObj(existingMenu);
-                onOpen();
-
-            } catch (error) {
-                if (error instanceof Error) {
-                    toast.error(error.message);
-                } else {
-                    toast.error("Service crashed.");
-                }
+            if (!server_res) {
+                throw new Error("Failed to retrieve menu for edition.")
             }
 
-        })();
+            if (!server_res.isSuccess) {
+                throw new Error(`Fail - ${server_res.error}`);
+            }
+
+            const [existingMenu] = server_res.value.resultDto;
+
+            setEditObj(existingMenu);
+            onOpen();
+        })().catch(error => {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Service crashed.");
+            }
+        });
     }
 
     const handleCreate = () => {
@@ -234,48 +214,43 @@ export default function MenuComponent() {
 
     const confirmCreation = () => {
         (async () => {
-            try {
-                let server_response = await insertMenu({
-                    id         : null,
-                    date       : newDate.toUTCString(),
-                    menuItem_Id: newMenuItemId
-                });
+            const server_response = await insertMenu({
+                id         : null,
+                date       : newDate.toUTCString(),
+                menuItem_Id: newMenuItemId
+            });
 
-                if (!server_response) {
-                    showToast("Failed to create new menu.");
-                    return;
-                }
-
-                if (!server_response.isSuccess) {
-                    showToast(`Fail - ${server_response.error}`);
-                    return;
-                }
-                
-                let retrieveMenuResponse = await retrieveMenu({
-                    id         : null,
-                    date       : null,
-                    menuItem_Id: null
-                });
-
-                if (!retrieveMenuResponse) {
-                    showToast("Failed to retrieve new menu.");
-                    return;
-                }
-
-                if (!retrieveMenuResponse.isSuccess) {
-                    showToast(`Fail - ${retrieveMenuResponse.error}`);
-                }
-
-                setMenu(retrieveMenuResponse!);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed")
-                }
+            if (!server_response) {
+                throw new Error("Failed to create new menu.");
             }
 
-        })().finally(() => onClose());
+            if (!server_response.isSuccess) {
+                throw new Error(`Fail - ${server_response.error}`);
+            }
+
+            const retrieveMenuResponse = await retrieveMenu({
+                id         : null,
+                date       : null,
+                menuItem_Id: null
+            });
+
+            if (!retrieveMenuResponse) {
+                throw new Error("Failed to retrieve new menu.");
+            }
+
+            if (!retrieveMenuResponse.isSuccess) {
+                throw new Error(`Fail - ${retrieveMenuResponse.error}`);
+            }
+
+            setMenu(retrieveMenuResponse!);
+            onClose()
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        });
 
     }
 
@@ -297,43 +272,39 @@ export default function MenuComponent() {
         };
 
         (async () => {
-            try {
-                let server_response = await updateMenu(menuQueryDto);
+            const server_response = await updateMenu(menuQueryDto);
 
-                if (!server_response) {
-                    showToast("Update menu failed");
-                    return;
-                }
-
-                if (!server_response.isSuccess) {
-                    showToast(`Fail - ${server_response.error}`);
-                    return;
-                }
-                let menuReadResponse = await retrieveMenu({
-                    id         : null,
-                    date       : null,
-                    menuItem_Id: null
-                });
-
-                if (!menuReadResponse) {
-                    showToast("Failed to retrieve updated menu.");
-                    return;
-                }
-
-                if (!menuReadResponse.isSuccess) {
-                    showToast("Retrieve updated menu failed");
-                    return;
-                }
-
-                setMenu(menuReadResponse!);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed")
-                }
+            if (!server_response) {
+                throw new Error("Update menu failed");
             }
-        })().finally(() => onClose());
+
+            if (!server_response.isSuccess) {
+                throw new Error(`Fail - ${server_response.error}`);
+            }
+            
+            const menuReadResponse = await retrieveMenu({
+                id         : null,
+                date       : null,
+                menuItem_Id: null
+            });
+
+            if (!menuReadResponse) {
+                throw new Error("Failed to retrieve updated menu.");
+            }
+
+            if (!menuReadResponse.isSuccess) {
+                throw new Error("Retrieve updated menu failed");
+            }
+
+            setMenu(menuReadResponse!);
+            onClose();
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        });
     }
 
     const retrieveMenuItem = async function () {
@@ -465,7 +436,7 @@ export default function MenuComponent() {
     if (isLoading) {
         return <Spinner/>;
     }
-    
+
     return (
         <>
             <div className={"w-full flex flex-row justify-end p-2"}>

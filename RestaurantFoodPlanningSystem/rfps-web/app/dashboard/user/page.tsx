@@ -12,6 +12,7 @@ import Modals from "../../../components/CustomModal";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import UserQueryDto from "../../../lib/models/user/UserQueryDto";
 import {toast} from "react-toastify";
+import {throws} from "node:assert";
 
 export default function Page() {
     const httpServices = new HttpServices();
@@ -52,44 +53,38 @@ export default function Page() {
 
     useEffect(() => {
         (async function fetchData() {
-            try {
-                let server_res = await retrieveAllUser().catch(error => showToast(error));
+            let server_res = await retrieveAllUser();
 
-                if (!server_res) {
-                    showToast("Failed to retrieve all users");
-                    return;
-                }
-
-                if (!server_res.isSuccess || !server_res.value.resultDto) {
-                    showToast(`Fail - ${server_res.error}`);
-                    return;
-                }
-
-                setJsonObj(server_res);
-                setHeaders(Object.keys(server_res.value.resultDto[0]));
-
-                let role_res = await retrieveAllRoles();
-
-                if (!role_res) {
-                    showToast("Failed to retrieve all roles.");
-                    return;
-                }
-
-                if (!role_res.isSuccess) {
-                    showToast(`Fail - ${role_res.error}`);
-                    return;
-                }
-
-                setRoles(role_res.value.resultDto);
-                setIsLoading(false);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed");
-                }
+            if (!server_res) {
+                throw new Error("Failed to retrieve all users");
             }
-        })();
+
+            if (!server_res.isSuccess || !server_res.value.resultDto) {
+                throw new Error(`Fail - ${server_res.error}`);
+            }
+
+            setJsonObj(server_res);
+            setHeaders(Object.keys(server_res.value.resultDto[0]));
+
+            let role_res = await retrieveAllRoles();
+
+            if (!role_res) {
+                throw new Error("Failed to retrieve all roles.");
+            }
+
+            if (!role_res.isSuccess) {
+                throw new Error(`Fail - ${role_res.error}`);
+            }
+
+            setRoles(role_res.value.resultDto);
+            setIsLoading(false);
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        });
     }, []);
 
     const showToast = (message: string) => {
@@ -98,41 +93,34 @@ export default function Page() {
 
     const handleDelete = (id: number) => {
         (async () => {
-            try {
-                let server_res = await (await httpServices.callAPI(`/User/${id}`, null, "DELETE", token)).json() as BasicDto<UserDto>;
+            let server_res = await (await httpServices.callAPI(`/User/${id}`, null, "DELETE", token)).json() as BasicDto<UserDto>;
 
-                if (!server_res) {
-                    showToast("Failed to delete list");
-                    return;
-                }
-
-                if (!server_res.isSuccess) {
-                    showToast(`Fail - ${server_res.error}`);
-                    return;
-                }
-
-                let updatedList = await (await httpServices.callAPI("/user", null, "GET", token)).json() as BasicDto<UserDto>;
-
-                if (!updatedList) {
-                    showToast("Failed to retrieve updated list after deletion");
-                    return;
-                }
-
-                if (!updatedList.isSuccess) {
-                    showToast(`Fail - ${updatedList.error}`);
-                    return;
-
-                }
-                setJsonObj(updatedList);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed")
-                }
+            if (!server_res) {
+                throw new Error("Failed to delete list");
             }
 
-        })();
+            if (!server_res.isSuccess) {
+                throw new Error(`Fail - ${server_res.error}`);
+            }
+
+            let updatedList = await (await httpServices.callAPI("/user", null, "GET", token)).json() as BasicDto<UserDto>;
+
+            if (!updatedList) {
+                throw new Error("Failed to retrieve updated list after deletion");
+            }
+
+            if (!updatedList.isSuccess) {
+                throw new Error(`Fail - ${updatedList.error}`);
+
+            }
+            setJsonObj(updatedList);
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        });
     }
 
     const handleEdit = (id: number) => {
@@ -300,83 +288,72 @@ export default function Page() {
 
     const confirmEdition = () => {
         (async () => {
-            try {
-                let server_res = await updateUser();
-                if (!server_res) {
-                    showToast("Failed to update user.");
-                    return;
-                }
-
-                if (!server_res.isSuccess) {
-                    showToast(`Fail - ${server_res.error}`);
-                    return;
-                }
-
-                let retrieveUpdatedUserRes = await retrieveAllUser();
-
-                if (!retrieveUpdatedUserRes) {
-                    showToast("Failed to retrieve all users.");
-                    return;
-                }
-
-                if (!retrieveUpdatedUserRes.isSuccess) {
-                    showToast(`Fail - ${retrieveUpdatedUserRes.error}`);
-                    return;
-                }
-
-                setJsonObj(retrieveUpdatedUserRes!);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed")
-                }
-
+            let server_res = await updateUser();
+            if (!server_res) {
+                throw new Error("Failed to update user.");
             }
-        })().finally(() => onClose());
+
+            if (!server_res.isSuccess) {
+                throw new Error(`Fail - ${server_res.error}`);
+            }
+
+            let retrieveUpdatedUserRes = await retrieveAllUser();
+
+            if (!retrieveUpdatedUserRes) {
+                throw new Error("Failed to retrieve all users.");
+            }
+
+            if (!retrieveUpdatedUserRes.isSuccess) {
+                throw new Error(`Fail - ${retrieveUpdatedUserRes.error}`);
+            }
+
+            setJsonObj(retrieveUpdatedUserRes!);
+            onClose();
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        });
     }
 
     const confirmCreation = () => {
         (async () => {
-            try {
-                let server_response = await createUser({
-                    id      : null,
-                    userName: newName,
-                    password: newPassword,
-                    role    : newRoles
-                });
+            let server_response = await createUser({
+                id      : null,
+                userName: newName,
+                password: newPassword,
+                role    : newRoles
+            });
 
-                if (!server_response) {
-                    showToast("Failed to create user.");
-                    return;
-                }
-
-                if (!server_response.isSuccess) {
-                    showToast(`Fail - ${server_response.error}`);
-                    return;
-                }
-
-                let retrieveUpdatedUserResponse = await retrieveAllUser();
-
-                if (!retrieveUpdatedUserResponse) {
-                    showToast("Failed to retrieve created user.");
-                    return;
-                }
-
-                if (!retrieveUpdatedUserResponse.isSuccess) {
-                    showToast(`Fail - ${retrieveUpdatedUserResponse.error}`);
-                    return;
-                }
-
-                setJsonObj(retrieveUpdatedUserResponse!);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed")
-                }
+            if (!server_response) {
+                throw new Error("Failed to create user.");
             }
-        })().finally(() => onClose());
+
+            if (!server_response.isSuccess) {
+                throw new Error(`Fail - ${server_response.error}`);
+            }
+
+            let retrieveUpdatedUserResponse = await retrieveAllUser();
+
+            if (!retrieveUpdatedUserResponse) {
+                throw new Error("Failed to retrieve created user.");
+            }
+
+            if (!retrieveUpdatedUserResponse.isSuccess) {
+                throw new Error(`Fail - ${retrieveUpdatedUserResponse.error}`);
+            }
+
+            setJsonObj(retrieveUpdatedUserResponse!);
+            onClose();
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        });
     }
 
     const cancelCreation = () => {
@@ -449,7 +426,7 @@ export default function Page() {
     if (isLoading) {
         return <Spinner/>;
     }
-    
+
     return (
         <>
             <div className={"w-full flex flex-row justify-end p-2"}>
