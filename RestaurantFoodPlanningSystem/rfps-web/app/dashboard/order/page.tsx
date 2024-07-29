@@ -1,9 +1,10 @@
 "use client"
+
 import HttpServices from "../../../lib/HttpServices";
 import {useAuth} from "../../AuthContext";
 import React, {Fragment, useEffect, useState} from "react";
 import {Checkbox, Select, SelectItem, Spinner, useDisclosure} from "@nextui-org/react";
-import OrderDto from "../../../lib/models/order/OrderDto";
+import OrderDto, {orderHeaders} from "../../../lib/models/order/OrderDto";
 import OrderQueryDto from "../../../lib/models/order/OrderQueryDto";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -15,7 +16,6 @@ import {toast} from "react-toastify";
 export default function OrderComponent() {
     const httpServices = new HttpServices();
     const {token} = useAuth();
-    const [headers, setHeaders] = useState<string[]>([]);
     const orderAPI: string = "/DataManagement/order";
     const orderItemAPI: string = "/DataManagement/order-item";
     const {
@@ -27,7 +27,7 @@ export default function OrderComponent() {
 
     const [editObj, setEditObj] = useState<OrderDto>(
         {
-            id: 0,
+            id        : 0,
             isCanceled: false,
             orderItems: []
         }
@@ -35,18 +35,18 @@ export default function OrderComponent() {
 
     const [order, setOrder] = useState<BasicDto<OrderDto>>(
         {
-            error: "",
+            error    : "",
             isSuccess: false,
-            value: {
-                amount: 0,
+            value    : {
+                amount   : 0,
                 resultDto: [{
-                    id: 0,
+                    id        : 0,
                     isCanceled: false,
                     orderItems: [{
-                        id: 0,
-                        orderId: 0,
+                        id      : 0,
+                        orderId : 0,
                         menuItem: {
-                            id: 0,
+                            id  : 0,
                             name: ""
                         }
                     }]
@@ -55,77 +55,72 @@ export default function OrderComponent() {
         });
     const [isCanceled, setIsCanceled] = useState("false");
     const [isLoading, setIsLoading] = useState(true);
-    let orderItemList: number[] = [];
+    const [orderItemList, setOrderItemList] = useState<number[]>([]);
 
 
     const handleDelete = (id: number) => {
-        (async() => {
-            try {
+        (async () => {
                 const serverRes = await deleteOrder(id);
-                
+
                 if (!serverRes) {
-                    showToast("Failed to retrieve order.");
-                    return;
+                    throw new Error("Failed to retrieve order.");
                 }
 
                 if (!serverRes.isSuccess) {
-                    showToast(`Fail - ${serverRes.error}`);
-                    return;
+                    throw new Error(`Fail - ${serverRes.error}`);
+                }
+
+                const retrieveRes = await retrieveOrder({
+                    id        : null,
+                    isCanceled: null
+                });
+
+                if (!retrieveRes) {
+                    throw new Error("Failed to retrieve updated order");
+                }
+
+                if (!retrieveRes.isSuccess) {
+                    throw new Error(`Fail - ${retrieveRes.error}`);
                 }
                 
-                const retrieveRes = await retrieveOrder({id: null, isCanceled: null});
-                
-                if (!retrieveRes){
-                    showToast("Failed to retrieve updated order");
-                    return;
-                }
-                
-                if (!retrieveRes.isSuccess){
-                    showToast(`Fail - ${retrieveRes.error}`);
-                    return;
-                }
                 setOrder(retrieveRes);
-                
+
                 setEditObj(serverRes.value.resultDto[0]);
                 setIsCanceled(`${serverRes.value.resultDto[0].isCanceled}`);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed");
-                }
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
             }
-        })();
+        });
     }
 
     const handleEdit = (id: number) => {
         (async () => {
-            try {
-                let serverRes = await retrieveOrder({
-                    id        : id,
-                    isCanceled: null
-                });
+            const serverRes = await retrieveOrder({
+                id        : id,
+                isCanceled: null
+            });
 
-                if (!serverRes) {
-                    showToast("Failed to retrieve order.");
-                    return;
-                }
-
-                if (!serverRes.isSuccess) {
-                    showToast(`Fail - ${serverRes.error}`);
-                    return;
-                }
-                
-                setEditObj(serverRes.value.resultDto[0]);
-                setIsCanceled(`${serverRes.value.resultDto[0].isCanceled}`);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed");
-                }
+            if (!serverRes) {
+                throw new Error("Failed to retrieve order.");
             }
-        })().finally(() => onOpen());
+
+            if (!serverRes.isSuccess) {
+                throw new Error(`Fail - ${serverRes.error}`);
+            }
+
+            setEditObj(serverRes.value.resultDto[0]);
+            setIsCanceled(`${serverRes.value.resultDto[0].isCanceled}`);
+            onOpen();
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        });
     }
 
 
@@ -135,7 +130,7 @@ export default function OrderComponent() {
 
     const retrieveOrder = async (orderQueryDto: OrderQueryDto) => {
         try {
-            let server_res = await (await httpServices.callAPI(`${orderAPI}/read`, orderQueryDto, "POST", token)).json();
+            const server_res = await (await httpServices.callAPI(`${orderAPI}/read`, orderQueryDto, "POST", token)).json();
             return server_res as BasicDto<OrderDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -148,7 +143,7 @@ export default function OrderComponent() {
 
     const deleteOrder = async (id: number) => {
         try {
-            let server_res = await (await httpServices.callAPI(`${orderAPI}/${id}`, null, "DELETE", token)).json();
+            const server_res = await (await httpServices.callAPI(`${orderAPI}/${id}`, null, "DELETE", token)).json();
             return server_res as BasicDto<OrderDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -161,7 +156,7 @@ export default function OrderComponent() {
 
     const updateOrder = async (orderQueryDto: OrderQueryDto) => {
         try {
-            let server_res = await (await httpServices.callAPI(`${orderAPI}/update`, orderQueryDto, "POST", token)).json();
+            const server_res = await (await httpServices.callAPI(`${orderAPI}/update`, orderQueryDto, "POST", token)).json();
             return server_res as BasicDto<OrderDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -174,7 +169,7 @@ export default function OrderComponent() {
 
     const deleteOrderItem = async (id: number) => {
         try {
-            let server_res = await (await httpServices.callAPI(`${orderItemAPI}/${id}`, null, "DELETE", token)).json();
+            const server_res = await (await httpServices.callAPI(`${orderItemAPI}/${id}`, null, "DELETE", token)).json();
             return server_res as BasicDto<OrderItemDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -191,100 +186,90 @@ export default function OrderComponent() {
 
     const confirmEdition = () => {
         (async () => {
-            try {
-                if (orderItemList) {
-                    const updateRes = await updateOrder({
-                        id        : editObj.id,
-                        isCanceled: (isCanceled === "true")
-                    });
-                    if (!updateRes) {
-                        showToast("Failed to update order.");
-                        return;
-                    }
-
-                    if (!updateRes.isSuccess) {
-                        showToast(`Fail - ${updateRes.error}`);
-                        return;
-                    }
-
-                    const promiseList = orderItemList.map(item => deleteOrderItem(item));
-                    let serverRes = await Promise.all(promiseList);
-                    
-                    let failedServerRes = serverRes.filter(res => !res!.isSuccess);
-                    if (failedServerRes.length > 0) {
-                        showToast("Failed to update order item");
-                        return;
-                    }
-
-                    let retrieveServerRes = await retrieveOrder({
-                        id        : null,
-                        isCanceled: null
-                    });
-
-                    if (!retrieveServerRes) {
-                        showToast("Failed to retrieve update order");
-                        return;
-                    }
-
-                    if (!retrieveServerRes.isSuccess) {
-                        showToast(`Fail - ${retrieveServerRes.error}`);
-                        return;
-                    }
-                    setOrder(retrieveServerRes);
+            if (orderItemList) {
+                const updateRes = await updateOrder({
+                    id        : editObj.id,
+                    isCanceled: (isCanceled === "true")
+                });
+                if (!updateRes) {
+                    throw new Error("Failed to update order.");
                 }
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed");
+
+                if (!updateRes.isSuccess) {
+                    throw new Error(`Fail - ${updateRes.error}`);
                 }
+
+                const promiseList = orderItemList.map(item => deleteOrderItem(item));
+                const serverRes = await Promise.all(promiseList);
+
+                const failedServerRes = serverRes.filter(res => !res!.isSuccess);
+                
+                if (failedServerRes.length > 0) {
+                    throw new Error("Failed to update order item");
+                }
+
+                let retrieveServerRes = await retrieveOrder({
+                    id        : null,
+                    isCanceled: null
+                });
+
+                if (!retrieveServerRes) {
+                    throw new Error("Failed to retrieve update order");
+                }
+
+                if (!retrieveServerRes.isSuccess) {
+                    throw new Error(`Fail - ${retrieveServerRes.error}`);
+                }
+                setOrder(retrieveServerRes);
+                onClose();
             }
-        })().finally(() => onClose());
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        });
     }
 
     const updateOrderItemList = (checked: boolean, orderItemId: number) => {
         if (!checked) {
-            orderItemList.push(orderItemId);
+            setOrderItemList([...orderItemList, orderItemId]);
         } else {
-            orderItemList = orderItemList.filter(id => id !== orderItemId);
+            setOrderItemList(orderItemList.filter(id => id !== orderItemId));
         }
     }
 
     useEffect(() => {
         (async () => {
-            try {
-                let retrieveResult = await retrieveOrder({
-                    id        : null,
-                    isCanceled: null
-                });
+            const retrieveResult = await retrieveOrder({
+                id        : null,
+                isCanceled: null
+            });
 
-                if (!retrieveResult) {
-                    showToast("Failed to retrieve order.");
-                    return;
-                }
-
-                if (!retrieveResult.isSuccess) {
-                    showToast(`Fail - ${retrieveResult.error}`);
-                    return;
-                }
-                
-                setOrder(retrieveResult);
-                setHeaders(Object.keys(new OrderDto(0, false, [])));
-                setIsLoading(false);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed");
-                }
+            if (!retrieveResult) {
+                throw new Error("Failed to retrieve order.");
             }
-        })();
+
+            if (!retrieveResult.isSuccess) {
+                throw new Error(`Fail - ${retrieveResult.error}`);
+            }
+
+            setOrder(retrieveResult);
+            setIsLoading(false);
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        });
     }, []);
 
     const showToast = (message: string) => {
         toast(message);
     }
-    
+
     const renderContent = () => {
         return (
             <>
@@ -320,12 +305,12 @@ export default function OrderComponent() {
     if (isLoading) {
         return <Spinner/>;
     }
-    
+
     return (
         <>
             <div className={"grid grid-cols-5 w-full"}>
                 {
-                    headers.map((header, index) => (
+                    orderHeaders.map((header) => (
                         <Fragment key={header}>
                             <div className={"font-extrabold gird-style text-center"}>
                                 {header}
@@ -344,7 +329,7 @@ export default function OrderComponent() {
                     </div>
                 </Fragment>
                 {
-                    order.value.resultDto.map((orderDto, index) => {
+                    order.value.resultDto.map((orderDto) => {
                         return (
                             <Fragment key={orderDto.id}>
                                 <div className={"p-4 gird-style text-center"}>

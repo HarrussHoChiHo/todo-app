@@ -5,6 +5,7 @@ interface IUserDto {
     id: number
 }
 
+export const userHeaders = ["ID", "User name", "Password", "Role"];
 
 class UserDto implements IUserDto {
     password: string;
@@ -19,6 +20,5 @@ class UserDto implements IUserDto {
         this.id   = id;
     }
 }
-
 
 export default UserDto;

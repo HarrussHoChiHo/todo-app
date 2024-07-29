@@ -6,6 +6,8 @@ interface IOrderDto {
     orderItems: OrderItemDto[];
 }
 
+export const orderHeaders = ["ID", "Cancelled?", "Items"];
+
 class OrderDto implements IOrderDto {
     id: number;
     isCanceled: boolean;

@@ -11,6 +11,6 @@ public class MenuItemFoodItem
     
     public int      Consumption { get; set; }
     
-    public FoodItem FoodItem { get; set; }
-    public MenuItem MenuItem { get; set; }
+    public FoodItem? FoodItem { get; set; }
+    public MenuItem? MenuItem { get; set; }
 }

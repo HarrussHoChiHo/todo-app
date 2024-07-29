@@ -1,7 +1,7 @@
 "use client"
 import React, {Fragment, useEffect, useState} from "react";
 import HttpServices from "../../../lib/HttpServices";
-import UserDto from "../../../lib/models/user/UserDto";
+import UserDto, {userHeaders} from "../../../lib/models/user/UserDto";
 import {useAuth} from "../../AuthContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -12,7 +12,6 @@ import Modals from "../../../components/CustomModal";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import UserQueryDto from "../../../lib/models/user/UserQueryDto";
 import {toast} from "react-toastify";
-import {throws} from "node:assert";
 
 export default function Page() {
     const httpServices = new HttpServices();
@@ -40,7 +39,11 @@ export default function Page() {
     });
     const [editModal, setEditModal] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
-    let newName: string, newPassword: string, newRoles: string[];
+    const [newData, setNewData] = useState({
+        newName    : "",
+        newPassword: "",
+        newRoles   : [""]
+    });
     const {
         isOpen,
         onOpen,
@@ -52,8 +55,8 @@ export default function Page() {
     const roleAPI = "/Role";
 
     useEffect(() => {
-        (async function fetchData() {
-            let server_res = await retrieveAllUser();
+        (async () => {
+            const server_res = await retrieveAllUser();
 
             if (!server_res) {
                 throw new Error("Failed to retrieve all users");
@@ -66,7 +69,7 @@ export default function Page() {
             setJsonObj(server_res);
             setHeaders(Object.keys(server_res.value.resultDto[0]));
 
-            let role_res = await retrieveAllRoles();
+            const role_res = await retrieveAllRoles();
 
             if (!role_res) {
                 throw new Error("Failed to retrieve all roles.");
@@ -93,7 +96,7 @@ export default function Page() {
 
     const handleDelete = (id: number) => {
         (async () => {
-            let server_res = await (await httpServices.callAPI(`/User/${id}`, null, "DELETE", token)).json() as BasicDto<UserDto>;
+            const server_res = await (await httpServices.callAPI(`/User/${id}`, null, "DELETE", token)).json() as BasicDto<UserDto>;
 
             if (!server_res) {
                 throw new Error("Failed to delete list");
@@ -103,7 +106,7 @@ export default function Page() {
                 throw new Error(`Fail - ${server_res.error}`);
             }
 
-            let updatedList = await (await httpServices.callAPI("/user", null, "GET", token)).json() as BasicDto<UserDto>;
+            const updatedList = await (await httpServices.callAPI("/user", null, "GET", token)).json() as BasicDto<UserDto>;
 
             if (!updatedList) {
                 throw new Error("Failed to retrieve updated list after deletion");
@@ -137,7 +140,7 @@ export default function Page() {
 
     const createUser = async (userQueryDto: UserQueryDto) => {
         try {
-            let server_response = await (await httpServices.callAPI(`${userAPI}/register`, userQueryDto, "POST", token)).json();
+            const server_response = await (await httpServices.callAPI(`${userAPI}/register`, userQueryDto, "POST", token)).json();
             return server_response as BasicDto<UserDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -150,7 +153,7 @@ export default function Page() {
 
     const retrieveAllUser = async () => {
         try {
-            let server_response = await (await httpServices.callAPI(`${userAPI}/`, null, "GET", token)).json();
+            const server_response = await (await httpServices.callAPI(`${userAPI}/`, null, "GET", token)).json();
             return server_response as BasicDto<UserDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -163,7 +166,7 @@ export default function Page() {
 
     const retrieveAllRoles = async () => {
         try {
-            let server_response = await (await httpServices.callAPI(`${roleAPI}/read`, {
+            const server_response = await (await httpServices.callAPI(`${roleAPI}/read`, {
                 name       : null,
                 description: null,
                 id         : null,
@@ -181,7 +184,7 @@ export default function Page() {
 
     const updateUser = async () => {
         try {
-            let server_response = await (await httpServices.callAPI("/user/update", editObj, "POST", token)).json();
+            const server_response = await (await httpServices.callAPI("/user/update", editObj, "POST", token)).json();
             return server_response as BasicDto<UserDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -194,7 +197,7 @@ export default function Page() {
 
     const updateUserName = (updatedUserName: string) => {
         try {
-            let {
+            const {
                 id,
                 role,
                 password
@@ -216,7 +219,7 @@ export default function Page() {
 
     const updatePassword = (updatedPassword: string) => {
         try {
-            let {
+            const {
                 id,
                 role,
                 userName
@@ -239,7 +242,7 @@ export default function Page() {
 
     const updateRole = (updatedRole: string[]) => {
         try {
-            let {
+            const {
                 id,
                 userName,
                 password
@@ -260,15 +263,18 @@ export default function Page() {
     }
 
     const createNewName = (name: string) => {
-        newName = name;
+        const {newPassword, newRoles} = newData;
+        setNewData({newPassword: newPassword, newRoles: newRoles, newName: name});
     }
 
     const createNewPassword = (password: string) => {
-        newPassword = password;
+        const {newName, newRoles} = newData;
+        setNewData({newPassword: password, newRoles: newRoles, newName: newName});
     }
 
     const createNewRoles = (roles: string[]) => {
-        newRoles = roles;
+        const {newName, newPassword} = newData;
+        setNewData({newPassword: newPassword, newRoles: roles, newName: newName});
     }
 
     const handleCreate = () => {
@@ -288,7 +294,7 @@ export default function Page() {
 
     const confirmEdition = () => {
         (async () => {
-            let server_res = await updateUser();
+            const server_res = await updateUser();
             if (!server_res) {
                 throw new Error("Failed to update user.");
             }
@@ -297,7 +303,7 @@ export default function Page() {
                 throw new Error(`Fail - ${server_res.error}`);
             }
 
-            let retrieveUpdatedUserRes = await retrieveAllUser();
+            const retrieveUpdatedUserRes = await retrieveAllUser();
 
             if (!retrieveUpdatedUserRes) {
                 throw new Error("Failed to retrieve all users.");
@@ -320,7 +326,8 @@ export default function Page() {
 
     const confirmCreation = () => {
         (async () => {
-            let server_response = await createUser({
+            const {newName, newPassword, newRoles} = newData;
+            const server_response = await createUser({
                 id      : null,
                 userName: newName,
                 password: newPassword,
@@ -335,7 +342,7 @@ export default function Page() {
                 throw new Error(`Fail - ${server_response.error}`);
             }
 
-            let retrieveUpdatedUserResponse = await retrieveAllUser();
+            const retrieveUpdatedUserResponse = await retrieveAllUser();
 
             if (!retrieveUpdatedUserResponse) {
                 throw new Error("Failed to retrieve created user.");
@@ -438,7 +445,7 @@ export default function Page() {
             </div>
             <div className={"grid grid-cols-6 w-full"}>
                 {
-                    headers.map((header, index) => (
+                    userHeaders.map((header) => (
                         <Fragment key={header}>
                             <div className={"font-extrabold gird-style text-center"}>
                                 {header}

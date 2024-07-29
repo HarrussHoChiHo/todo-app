@@ -52,14 +52,16 @@ public class RFPSDbContext : IdentityDbContext<User, Role, int>
             .Entity<MenuItemFoodItem>()
             .HasOne<MenuItem>(mifi => mifi.MenuItem)
             .WithMany(menuItem => menuItem.MenuItemFoodItems)
-            .HasForeignKey(mifi => mifi.MenuItem_Id);
+            .HasForeignKey(mifi => mifi.MenuItem_Id)
+            .HasPrincipalKey(menuItem => menuItem.Id);
 
         modelBuilder
             .Entity<MenuItemFoodItem>()
             .HasOne<FoodItem>(mifi => mifi.FoodItem)
             .WithMany(foodItem => foodItem.MenuItemFoodItems)
-            .HasForeignKey(mifi => mifi.FoodItem_Id);
-
+            .HasForeignKey(mifi => mifi.FoodItem_Id)
+            .HasPrincipalKey(foodItem => foodItem.Id);
+        
         modelBuilder
             .Entity<FoodItem>()
             .HasOne<Unit>(foodItem => foodItem.Unit)

@@ -1,7 +1,5 @@
 import UnitDto from "../unit/UnitDto";
 import TypeDto from "../type/TypeDto";
-import {id} from "postcss-selector-parser";
-import {type} from "node:os";
 
 interface IIngredientDto {
     id: number;
@@ -10,6 +8,8 @@ interface IIngredientDto {
     unit: UnitDto;
     type: TypeDto
 }
+
+export const ingredientHeaders = ["ID", "Name", "Quantity", "Unit", "Type"];
 
 class IngredientDto implements IIngredientDto {
     id: number;

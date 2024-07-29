@@ -26,7 +26,6 @@ namespace Application.BusinessLogic.MenuItemFoodItemLogic
                                {
                                    _mapper.Map<MenuItemFoodItemResultDto>(menuItemFoodItem)
                                };
-
             return result;
         }
 

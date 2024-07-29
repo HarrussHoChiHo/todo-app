@@ -5,7 +5,7 @@ import React, {Fragment, useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
-import UnitDto from "../../../lib/models/unit/UnitDto";
+import UnitDto, {unitHeaders} from "../../../lib/models/unit/UnitDto";
 import UnitQueryDto from "../../../lib/models/unit/UnitQueryDto";
 import {Button, Input, Spinner, useDisclosure} from "@nextui-org/react";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
@@ -15,22 +15,21 @@ import {toast} from "react-toastify";
 export default function UnitComponent() {
     const httpServices = new HttpServices();
     const {token} = useAuth();
-    const [headers, setHeaders] = useState<string[]>([]);
     const unitAPI: string = "/DataManagement/unit";
     const [unit, setUnit] = useState<BasicDto<UnitDto>>(
         {
-            error: "",
+            error    : "",
             isSuccess: false,
-            value: {
-                amount: 0,
+            value    : {
+                amount   : 0,
                 resultDto: [{
-                    id: 0,
+                    id  : 0,
                     name: ""
                 }]
             }
         });
     const [editObj, setEditObj] = useState<UnitDto>({
-        id: 0,
+        id  : 0,
         name: ""
     });
     const [editModal, setEditModal] = useState(true);
@@ -41,43 +40,38 @@ export default function UnitComponent() {
         onClose,
         onOpenChange
     } = useDisclosure();
-    let newName: string;
+    const [newName, setNewName] = useState<string>("");
 
     useEffect(() => {
         (async () => {
-            try {
-                let retrieveRes = await retrieveUnit({
-                    id: null,
-                    name: null
-                });
+            const retrieveRes = await retrieveUnit({
+                id  : null,
+                name: null
+            });
 
-                if (!retrieveRes) {
-                    showToast("Failed to retrieve unit");
-                    return;
-                }
-                
-                if (!retrieveRes.isSuccess) {
-                    showToast(`Fail - ${retrieveRes.error}`);
-                    return;
-                }
-                
-                setUnit(retrieveRes);
-                setHeaders(Object.keys(new UnitDto(0, "")));
-                setIsLoading(false);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed");
-                }
+            if (!retrieveRes) {
+                throw new Error("Failed to retrieve unit");
             }
-        })();
+
+            if (!retrieveRes.isSuccess) {
+                throw new Error(`Fail - ${retrieveRes.error}`);
+            }
+
+            setUnit(retrieveRes);
+            setIsLoading(false);
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        });
     }, []);
-    
+
     const showToast = (message: string) => {
         toast(message);
     }
-    
+
     const retrieveUnit = async (unitQueryDto: UnitQueryDto) => {
         try {
             let serverRes = await (await httpServices.callAPI(`${unitAPI}/read`, unitQueryDto, "POST", token)).json();
@@ -132,175 +126,156 @@ export default function UnitComponent() {
 
     const handleDelete = (id: number) => {
         (async () => {
-            try {
-                let deleteRes = await deleteUnit(id);
-                
-                if (!deleteRes){
-                    showToast("Failed to delete unit");
-                    return;
-                }
-                
-                if (!deleteRes.isSuccess) {
-                    showToast(`Fail - ${deleteRes.error}`);
-                    return;
-                }
-                
-                let retrieveRes = await retrieveUnit({
-                    id: null,
-                    name: null
-                });
+            const deleteRes = await deleteUnit(id);
 
-                if (!retrieveRes){
-                    showToast("Failed to retrieve updated unit list");
-                    return;
-                }
-                
-                if (!retrieveRes.isSuccess) {
-                    showToast(`Fail - ${retrieveRes.error}`);
-                    return;
-                }
-                setUnit(retrieveRes);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed");
-                }
+            if (!deleteRes) {
+                throw new Error("Failed to delete unit");
             }
-        })();
+
+            if (!deleteRes.isSuccess) {
+                throw new Error(`Fail - ${deleteRes.error}`);
+            }
+
+            const retrieveRes = await retrieveUnit({
+                id  : null,
+                name: null
+            });
+
+            if (!retrieveRes) {
+                throw new Error("Failed to retrieve updated unit list");
+            }
+
+            if (!retrieveRes.isSuccess) {
+                throw new Error(`Fail - ${retrieveRes.error}`);
+            }
+            setUnit(retrieveRes);
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        });
     }
 
     const handleEdit = (id: number) => {
         setEditModal(true);
         (async () => {
-            try {
-                let retrieveRes = await retrieveUnit({
-                    id: id,
-                    name: null
-                });
-                
-                if (!retrieveRes){
-                    showToast("Failed to retrieve updated unit");
-                    return;
-                }
-                
-                if (!retrieveRes.isSuccess) {
-                    showToast(`Fail - ${retrieveRes.error}`);
-                    return;
-                }
-                
-                setEditObj(retrieveRes.value.resultDto[0]);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed");
-                }
+            const retrieveRes = await retrieveUnit({
+                id  : id,
+                name: null
+            });
+
+            if (!retrieveRes) {
+                throw new Error("Failed to retrieve updated unit");
             }
-        })().finally(() => onOpen());
+
+            if (!retrieveRes.isSuccess) {
+                throw new Error(`Fail - ${retrieveRes.error}`);
+            }
+
+            setEditObj(retrieveRes.value.resultDto[0]);
+            onOpen();
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        });
     }
 
     const handleCreate = () => {
         setEditModal(false);
         onOpen();
     }
-    
+
     const updateName = (name: string) => {
         const {id} = editObj;
         setEditObj({
-            id: id,
+            id  : id,
             name: name
         });
     }
-    
+
     const createNewName = (name: string) => {
-        newName = name;
+        setNewName(name);
     }
 
     const confirmEdition = () => {
         (async () => {
-            try {
-                let updateRes = await updateUnit({
-                    id: editObj.id,
-                    name: editObj.name
-                });
-                
-                if (!updateRes){
-                    showToast("Failed to update unit");
-                    return;
-                }
-                
-                if (!updateRes.isSuccess) {
-                    showToast(`Fail - ${updateRes.error}`);
-                    return;
-                }
+            const updateRes = await updateUnit({
+                id  : editObj.id,
+                name: editObj.name
+            });
 
-                let retrieveRes = await retrieveUnit({
-                    id: null,
-                    name: null
-                });
-
-                if (!retrieveRes){
-                    showToast("Failed to retrieve updated unit");
-                    return;
-                }
-                
-                if (!retrieveRes.isSuccess) {
-                    showToast(`Fail - ${retrieveRes.error}`);
-                    return;
-                }
-                setUnit(retrieveRes);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed");
-                }
+            if (!updateRes) {
+                throw new Error("Failed to update unit");
             }
-        })().finally((() => closeModal()));
+
+            if (!updateRes.isSuccess) {
+                throw new Error(`Fail - ${updateRes.error}`);
+            }
+
+            const retrieveRes = await retrieveUnit({
+                id  : null,
+                name: null
+            });
+
+            if (!retrieveRes) {
+                throw new Error("Failed to retrieve updated unit");
+            }
+
+            if (!retrieveRes.isSuccess) {
+                throw new Error(`Fail - ${retrieveRes.error}`);
+            }
+            setUnit(retrieveRes);
+            closeModal();
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        });
     }
 
     const confirmCreation = () => {
         (async () => {
-            try {
-                let creationRes = await createUnit({
-                    id: null,
-                    name: newName
-                });
-                
-                if (!creationRes){
-                    showToast("Failed to create unit");
-                    return;
-                }
-                
-                if (!creationRes.isSuccess) {
-                    showToast(`Fail - ${creationRes.error}`);
-                    return;
-                }
+            const creationRes = await createUnit({
+                id  : null,
+                name: newName
+            });
 
-                let retrieveRes = await retrieveUnit({
-                    id: null,
-                    name: null
-                });
-
-                if (!retrieveRes){
-                    showToast("Failed to retrieve newly created unit");
-                    return;
-                }
-                
-                if (!retrieveRes.isSuccess) {
-                    showToast(`Fail - ${retrieveRes.error}`);
-                    return;
-                }
-                setUnit(retrieveRes);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed");
-                }
+            if (!creationRes) {
+                throw new Error("Failed to create unit");
             }
-        })().finally((() => closeModal()));
+
+            if (!creationRes.isSuccess) {
+                throw new Error(`Fail - ${creationRes.error}`);
+            }
+
+            const retrieveRes = await retrieveUnit({
+                id  : null,
+                name: null
+            });
+
+            if (!retrieveRes) {
+                throw new Error("Failed to retrieve newly created unit");
+            }
+
+            if (!retrieveRes.isSuccess) {
+                throw new Error(`Fail - ${retrieveRes.error}`);
+            }
+            setUnit(retrieveRes);
+            closeModal();
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        });
     }
 
     const closeModal = () => {
@@ -332,10 +307,10 @@ export default function UnitComponent() {
         }
     }
 
-    if (isLoading){
-        return <Spinner />;
+    if (isLoading) {
+        return <Spinner/>;
     }
-    
+
     return (
         <>
             <div className={"w-full flex flex-row justify-end p-2"}>
@@ -347,7 +322,7 @@ export default function UnitComponent() {
             </div>
             <div className={"grid grid-cols-4 w-full"}>
                 {
-                    headers.map((header, index) => (
+                    unitHeaders.map((header) => (
                         <Fragment key={header}>
                             <div className={"font-extrabold gird-style text-center"}>
                                 {header}
@@ -366,7 +341,7 @@ export default function UnitComponent() {
                     </div>
                 </Fragment>
                 {
-                    unit.value.resultDto.map((unitDto, index) => {
+                    unit.value.resultDto.map((unitDto) => {
                         return (
                             <Fragment key={unitDto.id}>
                                 <div className={"p-4 gird-style text-center"}>

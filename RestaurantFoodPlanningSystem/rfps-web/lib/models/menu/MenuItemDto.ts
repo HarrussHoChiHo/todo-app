@@ -3,6 +3,8 @@ interface IMenuItemDto {
     name: string;
 }
 
+export const menuItemHeaders = ["ID", "Name"];
+
 class MenuItemDto implements IMenuItemDto {
     id: number;
     name: string;

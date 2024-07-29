@@ -1,8 +1,9 @@
 "use client"
+
 import HttpServices from "../../../lib/HttpServices";
 import {useAuth} from "../../AuthContext";
 import React, {Fragment, useEffect, useState} from "react";
-import MenuDto from "../../../lib/models/menu/MenuDto";
+import MenuDto, {menuHeaders} from "../../../lib/models/menu/MenuDto";
 import MenuQueryDto from "../../../lib/models/menu/MenuQueryDto";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -13,7 +14,6 @@ import {CalendarDate, getLocalTimeZone} from "@internationalized/date";
 import MenuItemDto from "../../../lib/models/menu/MenuItemDto";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import {toast} from "react-toastify";
-import {throws} from "node:assert";
 
 export default function MenuComponent() {
     const httpServices = new HttpServices();
@@ -107,7 +107,7 @@ export default function MenuComponent() {
 
     const handleDelete = (id: number) => {
         (async () => {
-            let server_res = await deleteMenu(id);
+            const server_res = await deleteMenu(id);
 
             if (!server_res) {
                 throw new Error("Failed to delete menu.");
@@ -117,7 +117,7 @@ export default function MenuComponent() {
                 throw new Error(`Fail - ${server_res.error}`);
             }
 
-            let updatedList = await retrieveMenu({
+            const updatedList = await retrieveMenu({
                 id         : null,
                 date       : null,
                 menuItem_Id: null
@@ -135,7 +135,7 @@ export default function MenuComponent() {
     const handleEdit = (id: number) => {
         setEditModal(true);
         (async () => {
-            let server_res = await retrieveMenu({
+            const server_res = await retrieveMenu({
                 id         : id,
                 menuItem_Id: null,
                 date       : null
@@ -281,7 +281,7 @@ export default function MenuComponent() {
             if (!server_response.isSuccess) {
                 throw new Error(`Fail - ${server_response.error}`);
             }
-            
+
             const menuReadResponse = await retrieveMenu({
                 id         : null,
                 date       : null,
@@ -448,7 +448,7 @@ export default function MenuComponent() {
             </div>
             <div className={"grid grid-cols-5 w-full"}>
                 {
-                    headers.map((header) => (
+                    menuHeaders.map((header) => (
                         <Fragment key={header}>
                             <div className={"font-extrabold gird-style text-center"}>
                                 {header}

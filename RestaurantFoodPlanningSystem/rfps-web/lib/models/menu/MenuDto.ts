@@ -1,4 +1,3 @@
-import {id} from "postcss-selector-parser";
 import MenuItemDto from "./MenuItemDto";
 
 interface IMenuDto {
@@ -6,6 +5,8 @@ interface IMenuDto {
     date: Date;
     menuItem: MenuItemDto;
 }
+
+export const menuHeaders = ["ID", "Date", "Item"];
 
 class MenuDto implements IMenuDto {
     date: Date;

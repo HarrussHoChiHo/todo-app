@@ -15,8 +15,6 @@ import Modals from "../../../components/CustomModal";
 import MenuItemDto from "../../../lib/models/menu/MenuItemDto";
 import IngredientDto from "../../../lib/models/ingredient/IngredientDto";
 import IngredientQueryDto from "../../../lib/models/ingredient/IngredientQueryDto";
-import {throws} from "node:assert";
-import update = toast.update;
 
 export default function MenuItemFoodItemComponent() {
     const menuItemFoodItemAPI: string = "/DataManagement/menu-item-food-item";
@@ -27,21 +25,21 @@ export default function MenuItemFoodItemComponent() {
     const [editObj, setEditObj] = useState<MenuItemFoodItemDto>(
         {
             foodItem   : {
-                id      : 0,
-                name    : "",
-                quantity: 0,
-                unit    : {
+                id                   : 0,
+                name                 : "",
+                quantity             : 0,
+                unit                 : {
                     id  : 0,
                     name: ""
                 },
-                type    : {
+                type                 : {
                     id  : 0,
                     name: ""
                 }
             },
             menuItem   : {
-                id  : 0,
-                name: ""
+                id                 : 0,
+                name               : ""
             },
             consumption: 0,
             foodItem_Id: 0,
@@ -65,22 +63,22 @@ export default function MenuItemFoodItemComponent() {
             resultDto: [{
                 consumption: 0,
                 foodItem   : {
-                    id      : 0,
-                    name    : "",
-                    quantity: 0,
-                    unit    : {
+                    id                   : 0,
+                    name                 : "",
+                    quantity             : 0,
+                    unit                 : {
                         id  : 0,
                         name: ""
                     },
-                    type    : {
+                    type                 : {
                         id  : 0,
                         name: ""
                     }
                 },
                 foodItem_Id: 0,
                 menuItem   : {
-                    id  : 0,
-                    name: ""
+                    id                 : 0,
+                    name               : ""
                 },
                 menuItem_Id: 0
             }]
@@ -92,8 +90,8 @@ export default function MenuItemFoodItemComponent() {
         value    : {
             amount   : 0,
             resultDto: [{
-                id  : 0,
-                name: ""
+                id                 : 0,
+                name               : ""
             }]
         }
     });
@@ -103,28 +101,29 @@ export default function MenuItemFoodItemComponent() {
         value    : {
             amount   : 0,
             resultDto: [{
-                id      : 0,
-                name    : "",
-                quantity: 0,
-                unit    : {
+                id                   : 0,
+                name                 : "",
+                quantity             : 0,
+                unit                 : {
                     id  : 0,
                     name: ""
                 },
-                type    : {
+                type                 : {
                     id  : 0,
                     name: ""
                 }
             }]
         }
-    })
+    });
+    const [mifiQueryDto, setMifiQueryDto] = useState<MenuItemFoodItemQueryDto>({
+        consumption: null,
+        foodItem_Id: null,
+        menuItem_Id: null
+    });
 
-    const createMenuItemFoodItem = async function () {
+    const createMenuItemFoodItem = async function (mifi: MenuItemFoodItemQueryDto) {
         try {
-            let response = await (await httpServices.callAPI(`${menuItemFoodItemAPI}/creation`, {
-                menuItem_Id: null,
-                foodItem_Id: null,
-                consumption: 0
-            }, "POST", token)).json();
+            let response = await (await httpServices.callAPI(`${menuItemFoodItemAPI}/creation`, mifi, "POST", token)).json();
             return response as BasicDto<MenuItemFoodItemDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -205,11 +204,11 @@ export default function MenuItemFoodItemComponent() {
     }
 
     const updateConsumption = (consumption: number) => {
-        if (consumption < 1){
+        if (consumption < 1) {
             setInvalidConsumption(true);
             return;
         }
-        
+
         const {
             foodItem_Id,
             menuItem_Id,
@@ -224,22 +223,6 @@ export default function MenuItemFoodItemComponent() {
             foodItem
         });
         setInvalidConsumption(false);
-    }
-
-    const updateMenuItem = (mi: number) => {
-        const {
-            foodItem_Id,
-            consumption,
-            menuItem,
-            foodItem
-        } = editObj;
-        setEditObj({
-            menuItem_Id: mi,
-            foodItem_Id: foodItem_Id,
-            consumption: consumption,
-            menuItem,
-            foodItem
-        });
     }
 
     const updateFoodItem = (fi: number) => {
@@ -258,106 +241,105 @@ export default function MenuItemFoodItemComponent() {
         });
     }
 
+    const createConsumption = (consumption: number) => {
+        if (consumption < 1) {
+            setInvalidConsumption(true);
+            return;
+        }
+        const {
+            foodItem_Id,
+            menuItem_Id
+        } = mifiQueryDto;
+        setMifiQueryDto({
+            menuItem_Id: menuItem_Id,
+            foodItem_Id: foodItem_Id,
+            consumption: consumption,
+        });
+        setInvalidConsumption(false);
+    }
+
+    const createMenuItem = (mi: number) => {
+        const {
+            foodItem_Id,
+            consumption
+        } = mifiQueryDto;
+        setMifiQueryDto({
+            menuItem_Id: mi,
+            foodItem_Id: foodItem_Id,
+            consumption: consumption
+        });
+    }
+
+    const createFoodItem = (fi: number) => {
+        const {
+            menuItem_Id,
+            consumption
+        } = mifiQueryDto;
+        setMifiQueryDto({
+            menuItem_Id: menuItem_Id,
+            foodItem_Id: fi,
+            consumption: consumption
+        });
+    }
+
     const handleEdit = (menuItemId: number, foodItemId: number) => {
         setEditModal(true);
         (async () => {
-            try {
-                const menuItem_res = await retrieveMenuItem({
-                    id  : null,
-                    name: null
-                });
 
-                if (!menuItem_res) {
-                    showToast("Failed to retrieve menu item.");
-                    return;
-                }
+            const [tempEditObj] = menuItemFoodItem.value.resultDto.filter(mifi => mifi.foodItem_Id === foodItemId && mifi.menuItem_Id === menuItemId);
 
-                if (!menuItem_res.isSuccess) {
-                    showToast(`Fail - ${menuItem_res.error}`);
-                }
-
-                setMenuItem(menuItem_res);
-
-                const foodItem_res = await retrieveIngredient({
-                    id      : null,
-                    unit_Id : null,
-                    type_Id : null,
-                    name    : null,
-                    quantity: null
-                });
-
-                if (!foodItem_res) {
-                    showToast("Failed to retrieve food item.");
-                    return;
-                }
-
-                if (!foodItem_res.isSuccess) {
-                    showToast(`Fail - ${foodItem_res.error}`);
-                }
-
-                setFoodItem(foodItem_res);
-
-                const [tempEditObj] = menuItemFoodItem.value.resultDto.filter(mifi => mifi.foodItem_Id === foodItemId && mifi.menuItem_Id === menuItemId);
-
-                if (!tempEditObj) {
-                    showToast("Failed to find related item.");
-                    return;
-                }
-                setEditObj(tempEditObj);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed")
-                }
+            if (!tempEditObj) {
+                throw new Error("Failed to find related item.");
             }
-        })().then(() => onOpen()).catch(error => showToast("Failed to find related item."));
+            setEditObj(tempEditObj);
+            onOpen();
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        });
     }
 
     const handleDelete = (menuItemId: number, foodItemId: number) => {
         (async () => {
-            try {
-                const server_res = await deleteMenuItemFoodItem({
-                    menuItem_Id: menuItemId,
-                    foodItem_Id: foodItemId,
-                    consumption: null
-                });
+            const server_res = await deleteMenuItemFoodItem({
+                menuItem_Id: menuItemId,
+                foodItem_Id: foodItemId,
+                consumption: null
+            });
 
-                if (!server_res) {
-                    showToast("Failed to delete MenuItemFoodItem.");
-                    return;
-                }
-
-                if (!server_res.isSuccess) {
-                    showToast(`Fail - ${server_res.error}`);
-                    return;
-                }
-
-                const menuItemFoodItem_res = await retrieveMenuItemFoodItem({
-                    menuItem_Id: null,
-                    foodItem_Id: null,
-                    consumption: null
-                });
-
-                if (!menuItemFoodItem_res) {
-                    showToast("Failed to retrieve updated MenuItemFoodItem.");
-                    return;
-                }
-
-                if (!menuItemFoodItem_res.isSuccess) {
-                    showToast(`Fail - ${menuItemFoodItem_res.error}`);
-                    return;
-                }
-
-                setMenuItemFoodItem(menuItemFoodItem_res);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed")
-                }
+            if (!server_res) {
+                throw new Error("Failed to delete MenuItemFoodItem.");
             }
-        })();
+
+            if (!server_res.isSuccess) {
+                throw new Error(`Fail - ${server_res.error}`);
+            }
+
+            const menuItemFoodItem_res = await retrieveMenuItemFoodItem({
+                menuItem_Id: null,
+                foodItem_Id: null,
+                consumption: null
+            });
+
+            if (!menuItemFoodItem_res) {
+                throw new Error("Failed to retrieve updated MenuItemFoodItem.");
+            }
+
+            if (!menuItemFoodItem_res.isSuccess) {
+                throw new Error(`Fail - ${menuItemFoodItem_res.error}`);
+            }
+
+            setMenuItemFoodItem(menuItemFoodItem_res);
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        });
     }
 
     const handleCreate = () => {
@@ -368,33 +350,6 @@ export default function MenuItemFoodItemComponent() {
     const cancelEdition = () => {
         onClose();
     }
-
-    useEffect(() => {
-        (async () => {
-            const menuItemFoodItem_res = await retrieveMenuItemFoodItem({
-                menuItem_Id: null,
-                foodItem_Id: null,
-                consumption: null
-            });
-
-            if (!menuItemFoodItem_res) {
-                throw new Error("Failed to retrieve Menu Item and Food Item.");
-            }
-
-            if (!menuItemFoodItem_res.isSuccess) {
-                throw new Error(`Fail - ${menuItemFoodItem_res.error}`);
-            }
-
-            setMenuItemFoodItem(menuItemFoodItem_res);
-            setIsLoading(false);
-        })().catch(error => {
-            if (error instanceof Error) {
-                showToast(error.message);
-            } else {
-                showToast("Service crashed");
-            }
-        });
-    }, []);
 
     const confirmEdition = () => {
         (async () => {
@@ -423,32 +378,146 @@ export default function MenuItemFoodItemComponent() {
                 foodItem_Id: null,
                 consumption: null
             });
-            
-            if (!retrieve_res){
+
+            if (!retrieve_res) {
                 throw new Error("Failed to retrieve updated items.");
             }
-            
-            if (!retrieve_res.isSuccess){
+
+            if (!retrieve_res.isSuccess) {
                 throw new Error(`Fail - ${retrieve_res.error}`);
             }
-            
+
             setMenuItemFoodItem(retrieve_res);
+            onClose();
         })().catch(error => {
             if (error instanceof Error) {
                 showToast(error.message);
             } else {
                 showToast("Service crashed");
             }
-        }).finally(() => onClose());
+        });
     }
 
     const cancelCreation = () => {
+        setInvalidConsumption(false);
         onClose();
     }
 
     const confirmCreation = () => {
+        (async () => {
+            console.log(mifiQueryDto);
+            const creation_res = await createMenuItemFoodItem(mifiQueryDto);
 
+            if (!creation_res) {
+                throw new Error("Failed to create item.")
+            }
+
+            if (!creation_res.isSuccess) {
+                throw new Error(`Fail - ${creation_res.error}`);
+            }
+
+            const retrieveUpdatedItems_res = await retrieveMenuItemFoodItem({
+                menuItem_Id: null,
+                foodItem_Id: null,
+                consumption: null
+            });
+
+            if (!retrieveUpdatedItems_res) {
+                throw new Error("Failed to retrieve updated items.");
+            }
+
+            if (!retrieveUpdatedItems_res.isSuccess) {
+                throw new Error(`Fail - ${retrieveUpdatedItems_res.error}`);
+            }
+
+            setMenuItemFoodItem(retrieveUpdatedItems_res);
+            onClose();
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        });
     }
+
+    const retrieveItems = async () => {
+        const responses = await Promise.all([retrieveIngredient({
+            id      : null,
+            unit_Id : null,
+            type_Id : null,
+            name    : null,
+            quantity: null
+        }), retrieveMenuItem({
+            id  : null,
+            name: null
+        })]);
+
+        responses.map(res => {
+            if (!res) {
+                throw new Error(`Failed to retrieve items.`);
+            }
+
+            if (!res.isSuccess) {
+                throw new Error(`Fail - ${res.error}`);
+            }
+
+            if (isBasicDtoMenuItemDto(res)) {
+                setMenuItem((res as BasicDto<MenuItemDto>));
+            }
+
+            if (isBasicDtoIngredientDto(res)) {
+                setFoodItem((res as BasicDto<IngredientDto>));
+            }
+        });
+    }
+
+    function isMenuItemDto(obj: any): obj is MenuItemDto {
+        return obj && typeof obj === 'object' && 'name' in obj; // Assuming MenuItemDto has a 'name' property
+    }
+
+    function isIngredientDto(obj: any): obj is IngredientDto {
+        return obj && typeof obj === 'object' && 'quantity' in obj; // Assuming IngredientDto has a 'quantity' property
+    }
+
+    function isBasicDtoMenuItemDto(obj: any): obj is BasicDto<MenuItemDto> {
+        return obj && obj.value && Array.isArray(obj.value.resultDto) && obj.value.resultDto.length > 0 && isMenuItemDto(obj.value.resultDto[0]);
+    }
+
+    function isBasicDtoIngredientDto(obj: any): obj is BasicDto<IngredientDto> {
+        return obj && obj.value && Array.isArray(obj.value.resultDto) && obj.value.resultDto.length > 0 && isIngredientDto(obj.value.resultDto[0]);
+    }
+
+
+    useEffect(() => {
+        (async () => {
+            const menuItemFoodItem_res = await retrieveMenuItemFoodItem({
+                menuItem_Id: null,
+                foodItem_Id: null,
+                consumption: null
+            });
+
+            if (!menuItemFoodItem_res) {
+                throw new Error("Failed to retrieve Menu Item and Food Item.");
+            }
+
+            if (!menuItemFoodItem_res.isSuccess) {
+                throw new Error(`Fail - ${menuItemFoodItem_res.error}`);
+            }
+
+            setMenuItemFoodItem(menuItemFoodItem_res);
+            setIsLoading(false);
+
+            retrieveItems().then();
+
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        });
+    }, []);
 
     const renderContent = () => {
         if (editModal) {
@@ -457,7 +526,7 @@ export default function MenuItemFoodItemComponent() {
                     <Select
                         label={"Food Item"}
                         selectionMode={"single"}
-                        selectedKeys={editObj.foodItem_Id?.toString()}
+                        selectedKeys={editObj.foodItem_Id === 0 ? "" : editObj.foodItem_Id.toString()}
                         onSelectionChange={(selection) => updateFoodItem(Array.from(selection)[0] as number)}
                     >
                         {
@@ -484,6 +553,48 @@ export default function MenuItemFoodItemComponent() {
         } else {
             return (
                 <>
+                    <Select
+                        label={"Menu Item"}
+                        selectionMode={"single"}
+                        value={mifiQueryDto.menuItem_Id ? mifiQueryDto.menuItem_Id.toString() : ""}
+                        onSelectionChange={(selection) => createMenuItem(Array.from(selection)[0] as number)}
+                    >
+                        {
+                            menuItem.value.resultDto.map(value =>
+                                <SelectItem key={value.id}
+                                            value={value.id}
+                                            textValue={value.name}
+                                >
+                                    {value.name}
+                                </SelectItem>
+                            )
+                        }
+                    </Select>
+                    <Select
+                        label={"Food Item"}
+                        selectionMode={"single"}
+                        value={mifiQueryDto.foodItem_Id ? mifiQueryDto.foodItem_Id.toString() : ""}
+                        onSelectionChange={(selection) => createFoodItem(Array.from(selection)[0] as number)}
+                    >
+                        {
+                            foodItem.value.resultDto.map(value =>
+                                <SelectItem key={value.id}
+                                            value={value.id}
+                                            textValue={value.name}
+                                >
+                                    {value.name}
+                                </SelectItem>
+                            )
+                        }
+                    </Select>
+                    <Input label={"Consumption"}
+                           type={"number"}
+                           min={1}
+                           isRequired={true}
+                           isInvalid={invalidConsumption}
+                           value={mifiQueryDto.consumption ? mifiQueryDto.consumption?.toString() : ""}
+                           onChange={(event) => createConsumption(parseInt(event.target.value))}
+                    />
                 </>
             )
         }

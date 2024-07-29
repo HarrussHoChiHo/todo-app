@@ -6,7 +6,7 @@ import React, {useEffect, useState} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import {useAuth} from "../app/AuthContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheck, faDoorOpen} from "@fortawesome/free-solid-svg-icons";
+import {faDoorOpen, faPenNib} from "@fortawesome/free-solid-svg-icons";
 import {PressEvent} from "@react-types/shared";
 
 export default function HeaderComponent() {
@@ -75,7 +75,7 @@ export default function HeaderComponent() {
                     >
                         Log out
                     </Button>
-                    <Button endContent={<FontAwesomeIcon icon={faCheck}/>}
+                    <Button endContent={<FontAwesomeIcon icon={faPenNib}/>}
                             size={"sm"}
                             variant={"ghost"}
                             onPress={handlePlaceOrder}

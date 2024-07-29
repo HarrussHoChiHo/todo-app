@@ -3,6 +3,8 @@ interface ITypeDto {
     name: string;
 }
 
+export const typeHeaders = ["ID", "Name"];
+
 class TypeDto implements ITypeDto {
     id: number;
     name: string;
