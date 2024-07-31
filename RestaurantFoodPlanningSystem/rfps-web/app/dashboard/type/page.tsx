@@ -324,7 +324,7 @@ export default function TypeComponent() {
                 </div>
                 <div className={"grid grid-cols-4 w-full"}>
                     {
-                        typeHeaders.map((header, index) => (
+                        typeHeaders.map((header) => (
                             <Fragment key={header}>
                                 <div className={"font-extrabold gird-style text-center"}>
                                     {header}
@@ -343,7 +343,7 @@ export default function TypeComponent() {
                         </div>
                     </Fragment>
                     {
-                        type.value.resultDto.map((typeDto, index) => {
+                        type.value.resultDto.map((typeDto) => {
                             return (
                                 <Fragment key={typeDto.id}>
                                     <div className={"p-4 gird-style text-center"}>

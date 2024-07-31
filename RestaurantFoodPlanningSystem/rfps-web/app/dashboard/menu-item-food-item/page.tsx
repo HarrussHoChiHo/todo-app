@@ -123,7 +123,7 @@ export default function MenuItemFoodItemComponent() {
 
     const createMenuItemFoodItem = async function (mifi: MenuItemFoodItemQueryDto) {
         try {
-            let response = await (await httpServices.callAPI(`${menuItemFoodItemAPI}/creation`, mifi, "POST", token)).json();
+            const response = await (await httpServices.callAPI(`${menuItemFoodItemAPI}/creation`, mifi, "POST", token)).json();
             return response as BasicDto<MenuItemFoodItemDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -136,7 +136,7 @@ export default function MenuItemFoodItemComponent() {
 
     const retrieveMenuItemFoodItem = async function (menuItemFoodItemQuery: MenuItemFoodItemQueryDto) {
         try {
-            let response = await (await httpServices.callAPI(`${menuItemFoodItemAPI}/read`, menuItemFoodItemQuery, "POST", token)).json();
+            const response = await (await httpServices.callAPI(`${menuItemFoodItemAPI}/read`, menuItemFoodItemQuery, "POST", token)).json();
             return response as BasicDto<MenuItemFoodItemDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -149,7 +149,7 @@ export default function MenuItemFoodItemComponent() {
 
     const retrieveMenuItem = async function (menuItemQuery: MenuItemQueryDto) {
         try {
-            let response = await (await httpServices.callAPI(`${menuItemAPI}/read`, menuItemQuery, "POST", token)).json();
+            const response = await (await httpServices.callAPI(`${menuItemAPI}/read`, menuItemQuery, "POST", token)).json();
             return response as BasicDto<MenuItemDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -162,7 +162,7 @@ export default function MenuItemFoodItemComponent() {
 
     const retrieveIngredient = async (ingredientQueryDto: IngredientQueryDto) => {
         try {
-            let server_res = await (await httpServices.callAPI(`${foodItemAPI}/read`, ingredientQueryDto, "POST", token)).json();
+            const server_res = await (await httpServices.callAPI(`${foodItemAPI}/read`, ingredientQueryDto, "POST", token)).json();
             return server_res as BasicDto<IngredientDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -175,7 +175,7 @@ export default function MenuItemFoodItemComponent() {
 
     const updateMenuItemFoodItem = async function (menuItemFoodItemQuery: MenuItemFoodItemQueryDto) {
         try {
-            let response = await (await httpServices.callAPI(`${menuItemFoodItemAPI}/update`, menuItemFoodItemQuery, "POST", token)).json();
+            const response = await (await httpServices.callAPI(`${menuItemFoodItemAPI}/update`, menuItemFoodItemQuery, "POST", token)).json();
             return response as BasicDto<MenuItemFoodItemDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -188,7 +188,7 @@ export default function MenuItemFoodItemComponent() {
 
     const deleteMenuItemFoodItem = async function (menuItemFoodItemQueryDto: MenuItemFoodItemQueryDto) {
         try {
-            let response = await (await httpServices.callAPI(`${menuItemFoodItemAPI}`, menuItemFoodItemQueryDto, "DELETE", token)).json();
+            const response = await (await httpServices.callAPI(`${menuItemFoodItemAPI}`, menuItemFoodItemQueryDto, "DELETE", token)).json();
             return response as BasicDto<MenuItemFoodItemDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -405,7 +405,7 @@ export default function MenuItemFoodItemComponent() {
 
     const confirmCreation = () => {
         (async () => {
-            console.log(mifiQueryDto);
+            
             const creation_res = await createMenuItemFoodItem(mifiQueryDto);
 
             if (!creation_res) {

@@ -5,5 +5,5 @@ namespace Application.ResponseDto;
 
 public class OrderPlacementResDto
 {
-    public DbOperationResult<OrderResultDto>           orderResDto      { get; set; }
+    public DbOperationResult<OrderResultDto> orderResDto { get; set; }
 }

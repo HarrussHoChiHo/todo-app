@@ -30,7 +30,6 @@ export default function Page() {
         }
     });
     const [roles, setRoles] = useState<RoleDto[]>([]);
-    const [headers, setHeaders] = useState<string[]>([]);
     const [editObj, setEditObj] = useState<UserDto>({
         id      : 0,
         password: "",
@@ -370,7 +369,6 @@ export default function Page() {
             }
 
             setJsonObj(server_res);
-            setHeaders(Object.keys(server_res.value.resultDto[0]));
 
             const role_res = await retrieveAllRoles();
 
@@ -491,7 +489,7 @@ export default function Page() {
                     </div>
                 </Fragment>
                 {
-                    (jsonObj.value.resultDto as UserDto[]).map((userDto, index) => (
+                    (jsonObj.value.resultDto as UserDto[]).map((userDto) => (
                         <Fragment key={userDto.id}>
                             <div className={"p-4 gird-style text-center"}>
                                 {userDto.id}

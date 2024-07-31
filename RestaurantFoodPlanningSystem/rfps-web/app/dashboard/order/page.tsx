@@ -208,7 +208,7 @@ export default function OrderComponent() {
                     throw new Error("Failed to update order item");
                 }
 
-                let retrieveServerRes = await retrieveOrder({
+                const retrieveServerRes = await retrieveOrder({
                     id        : null,
                     isCanceled: null
                 });

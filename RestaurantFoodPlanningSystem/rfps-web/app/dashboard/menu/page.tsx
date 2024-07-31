@@ -40,8 +40,7 @@ export default function MenuComponent() {
                 }]
             }
         });
-
-    const [headers, setHeaders] = useState<string[]>([]);
+    
     const [editObj, setEditObj] = useState<MenuDto>(
         {
             date    : new Date(),
@@ -55,6 +54,8 @@ export default function MenuComponent() {
     const [menuItemDto, setMenuItemDto] = useState<MenuItemDto[]>([]);
     const [editModal, setEditModal] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState(true);
+    const [newMenuItemId, setNewMenuItemId] = useState(0);
+    const [newDate, setNewDate] = useState("");
     const menuAPI: string = "/DataManagement/menu";
     const menuItemAPI: string = "/DataManagement/menu-item";
     let menuQueryDto: MenuQueryDto =
@@ -63,8 +64,6 @@ export default function MenuComponent() {
             date       : null,
             menuItem_Id: null
         };
-    let newDate: Date;
-    let newMenuItemId: number;
 
     useEffect(() => {
         (async () => {
@@ -79,7 +78,6 @@ export default function MenuComponent() {
             }
 
             setMenu(server_res);
-            setHeaders(Object.keys((server_res!.value.resultDto as MenuDto[])[0]));
 
             const menuItemResponse = await retrieveMenuItem();
 
@@ -205,18 +203,18 @@ export default function MenuComponent() {
     }
 
     const createDate = (date: CalendarDate) => {
-        newDate = date.toDate(getLocalTimeZone());
+       setNewDate(date.toDate(getLocalTimeZone()).toUTCString());
     }
 
     const createMenuItem = (menuItemId: number) => {
-        newMenuItemId = menuItemId;
+        setNewMenuItemId(menuItemId);
     }
 
     const confirmCreation = () => {
         (async () => {
             const server_response = await insertMenu({
                 id         : null,
-                date       : newDate.toUTCString(),
+                date       : newDate,
                 menuItem_Id: newMenuItemId
             });
 

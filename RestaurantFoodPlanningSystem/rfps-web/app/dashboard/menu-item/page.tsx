@@ -79,7 +79,7 @@ export default function MenuItemComponent() {
 
     const createMenuItem = async function () {
         try {
-            let response = await (await httpServices.callAPI(`${menuItemAPI}/creation`, {
+            const response = await (await httpServices.callAPI(`${menuItemAPI}/creation`, {
                 id  : null,
                 name: newName
             }, "POST", token)).json();
@@ -96,7 +96,7 @@ export default function MenuItemComponent() {
 
     const retrieveMenuItem = async function (menuItemQuery: MenuItemQueryDto) {
         try {
-            let response = await (await httpServices.callAPI(`${menuItemAPI}/read`, menuItemQuery, "POST", token)).json();
+            const response = await (await httpServices.callAPI(`${menuItemAPI}/read`, menuItemQuery, "POST", token)).json();
             return response as BasicDto<MenuItemDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -109,7 +109,7 @@ export default function MenuItemComponent() {
 
     const updateMenuItem = async function (menuItemQuery: MenuItemQueryDto) {
         try {
-            let response = await (await httpServices.callAPI(`${menuItemAPI}/update`, menuItemQuery, "POST", token)).json();
+            const response = await (await httpServices.callAPI(`${menuItemAPI}/update`, menuItemQuery, "POST", token)).json();
             return response as BasicDto<MenuItemDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -122,7 +122,7 @@ export default function MenuItemComponent() {
 
     const deleteMenuItem = async function (id: number) {
         try {
-            let response = await (await httpServices.callAPI(`${menuItemAPI}/${id}`, {}, "DELETE", token)).json();
+            const response = await (await httpServices.callAPI(`${menuItemAPI}/${id}`, {}, "DELETE", token)).json();
             return response as BasicDto<MenuItemDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -136,7 +136,7 @@ export default function MenuItemComponent() {
     const handleEdit = (id: number) => {
         setEditModal(true);
         (async () => {
-            let server_res = await retrieveMenuItem({
+            const server_res = await retrieveMenuItem({
                 id  : id,
                 name: null
             });
@@ -147,7 +147,7 @@ export default function MenuItemComponent() {
                 throw new Error("failed to retrieve menu with id");
             }
 
-            let existingMenuItem: MenuItemDto | undefined = (server_res.value.resultDto as MenuItemDto[]).pop();
+            const existingMenuItem: MenuItemDto | undefined = (server_res.value.resultDto as MenuItemDto[]).pop();
 
             if (!existingMenuItem) {
                 throw new Error("Existing menu is null.");
@@ -165,14 +165,14 @@ export default function MenuItemComponent() {
 
     const handleDelete = (id: number) => {
         (async () => {
-            let server_res = await deleteMenuItem(id);
+            const server_res = await deleteMenuItem(id);
             if (!server_res) {
                 throw new Error("Failed to delete menu item.");
             }
             if (!server_res.isSuccess) {
                 throw new Error(`Fail - ${server_res.error}`);
             }
-            let updatedList = await retrieveMenuItem({
+            const updatedList = await retrieveMenuItem({
                 id  : null,
                 name: null
             });
@@ -220,7 +220,7 @@ export default function MenuItemComponent() {
         const {id} = editObj;
 
         (async () => {
-            let server_res = await updateMenuItem({
+            const server_res = await updateMenuItem({
                 id  : id,
                 name: newName
             });
@@ -233,7 +233,7 @@ export default function MenuItemComponent() {
                 throw new Error(`Fail - ${server_res.error}`);
             }
 
-            let menuReadResponse = await retrieveMenuItem({
+            const menuReadResponse = await retrieveMenuItem({
                 id  : null,
                 name: null
             });
@@ -262,7 +262,7 @@ export default function MenuItemComponent() {
 
     const confirmCreation = () => {
         (async () => {
-            let server_res = await createMenuItem();
+            const server_res = await createMenuItem();
 
             if (!server_res) {
                 throw new Error("Failed to create menu item.");
@@ -272,7 +272,7 @@ export default function MenuItemComponent() {
                 throw new Error(`Fail - ${server_res.error}`);
             }
 
-            let updatedMenuItemResponse = await retrieveMenuItem({
+            const updatedMenuItemResponse = await retrieveMenuItem({
                 id  : null,
                 name: null
             });

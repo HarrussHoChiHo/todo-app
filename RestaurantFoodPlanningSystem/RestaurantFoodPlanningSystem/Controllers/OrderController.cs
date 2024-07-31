@@ -125,11 +125,15 @@ public class OrderController(
             queryDto.orderItems.ForEach(
                                         item =>
                                         {
-                                            item.OrderId = orderInsertion
-                                                           .resultDto.First()
-                                                           .Id;
-                                            var oi = orderItem.Insert(item)
-                                                              .Result;
+                                            if (orderInsertion
+                                                    .resultDto != null)
+                                            {
+                                                item.OrderId = orderInsertion
+                                                               .resultDto.First()
+                                                               .Id;
+                                                var oi = orderItem.Insert(item)
+                                                                  .Result;
+                                            }
                                         });
 
             response.orderResDto = await order.Read(

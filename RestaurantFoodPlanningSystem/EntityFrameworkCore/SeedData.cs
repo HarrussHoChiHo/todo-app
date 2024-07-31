@@ -224,12 +224,16 @@ public class SeedData
             logger.LogDebug($"Menu insertion result: {await context.SaveChangesAsync()}");
         }
 
-        if (!context.Menu.Any(x => x.Date == DateTime.Today) && context.MenuItem.Any())
+        TimeZoneInfo zoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+        DateTime localDate = TimeZoneInfo.ConvertTimeFromUtc(
+                                                             DateTime.UtcNow,
+                                                             zoneInfo);
+        if (!context.Menu.Any(x => x.Date == localDate) && context.MenuItem.Any())
         {
             Menu menu = new Menu()
                         {
                             MenuItem_Id = 2,
-                            Date = DateTime.Today
+                            Date = localDate
                         };
 
             context.Menu.Add(menu);
@@ -246,28 +250,24 @@ public class SeedData
                     FoodItem_Id = 1,
                     Consumption = 2
                 },
-
                 new MenuItemFoodItem()
                 {
                     MenuItem_Id = 1,
                     FoodItem_Id = 3,
                     Consumption = 1
                 },
-
                 new MenuItemFoodItem()
                 {
                     MenuItem_Id = 2,
                     FoodItem_Id = 4,
                     Consumption = 2
                 },
-
                 new MenuItemFoodItem()
                 {
                     MenuItem_Id = 3,
                     FoodItem_Id = 4,
                     Consumption = 2
                 },
-
                 new MenuItemFoodItem()
                 {
                     MenuItem_Id = 3,

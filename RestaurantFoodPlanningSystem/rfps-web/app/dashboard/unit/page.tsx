@@ -74,7 +74,7 @@ export default function UnitComponent() {
 
     const retrieveUnit = async (unitQueryDto: UnitQueryDto) => {
         try {
-            let serverRes = await (await httpServices.callAPI(`${unitAPI}/read`, unitQueryDto, "POST", token)).json();
+            const serverRes = await (await httpServices.callAPI(`${unitAPI}/read`, unitQueryDto, "POST", token)).json();
             return serverRes as BasicDto<UnitDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -87,7 +87,7 @@ export default function UnitComponent() {
 
     const createUnit = async (unitQueryDto: UnitQueryDto) => {
         try {
-            let serverRes = await (await httpServices.callAPI(`${unitAPI}/creation`, unitQueryDto, "POST", token)).json();
+            const serverRes = await (await httpServices.callAPI(`${unitAPI}/creation`, unitQueryDto, "POST", token)).json();
             return serverRes as BasicDto<UnitDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -100,7 +100,7 @@ export default function UnitComponent() {
 
     const updateUnit = async (unitQueryDto: UnitQueryDto) => {
         try {
-            let serverRes = await (await httpServices.callAPI(`${unitAPI}/update`, unitQueryDto, "POST", token)).json();
+            const serverRes = await (await httpServices.callAPI(`${unitAPI}/update`, unitQueryDto, "POST", token)).json();
             return serverRes as BasicDto<UnitDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -113,7 +113,7 @@ export default function UnitComponent() {
 
     const deleteUnit = async (id: number) => {
         try {
-            let serverRes = await (await httpServices.callAPI(`${unitAPI}/${id}`, null, "DELETE", token)).json();
+            const serverRes = await (await httpServices.callAPI(`${unitAPI}/${id}`, null, "DELETE", token)).json();
             return serverRes as BasicDto<UnitDto>;
         } catch (error) {
             if (error instanceof Error) {
