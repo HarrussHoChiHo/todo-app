@@ -13,7 +13,6 @@ export default function Home() {
                         variant={"ghost"}
                         className={"font-serif h-fit p-4 text-4xl"}
                         size={"lg"}
-                        
                 >
                     Login
                 </Button>
