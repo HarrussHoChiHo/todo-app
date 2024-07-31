@@ -53,43 +53,7 @@ export default function Page() {
 
     const userAPI = "/User";
     const roleAPI = "/Role";
-
-    useEffect(() => {
-        (async () => {
-            const server_res = await retrieveAllUser();
-
-            if (!server_res) {
-                throw new Error("Failed to retrieve all users");
-            }
-
-            if (!server_res.isSuccess || !server_res.value.resultDto) {
-                throw new Error(`Fail - ${server_res.error}`);
-            }
-
-            setJsonObj(server_res);
-            setHeaders(Object.keys(server_res.value.resultDto[0]));
-
-            const role_res = await retrieveAllRoles();
-
-            if (!role_res) {
-                throw new Error("Failed to retrieve all roles.");
-            }
-
-            if (!role_res.isSuccess) {
-                throw new Error(`Fail - ${role_res.error}`);
-            }
-
-            setRoles(role_res.value.resultDto);
-            setIsLoading(false);
-        })().catch(error => {
-            if (error instanceof Error) {
-                showToast(error.message);
-            } else {
-                showToast("Service crashed");
-            }
-        });
-    }, []);
-
+    
     const showToast = (message: string) => {
         toast(message);
     }
@@ -154,6 +118,7 @@ export default function Page() {
     const retrieveAllUser = async () => {
         try {
             const server_response = await (await httpServices.callAPI(`${userAPI}/`, null, "GET", token)).json();
+            console.log(server_response);
             return server_response as BasicDto<UserDto>;
         } catch (error) {
             if (error instanceof Error) {
@@ -263,18 +228,39 @@ export default function Page() {
     }
 
     const createNewName = (name: string) => {
-        const {newPassword, newRoles} = newData;
-        setNewData({newPassword: newPassword, newRoles: newRoles, newName: name});
+        const {
+            newPassword,
+            newRoles
+        } = newData;
+        setNewData({
+            newPassword: newPassword,
+            newRoles   : newRoles,
+            newName    : name
+        });
     }
 
     const createNewPassword = (password: string) => {
-        const {newName, newRoles} = newData;
-        setNewData({newPassword: password, newRoles: newRoles, newName: newName});
+        const {
+            newName,
+            newRoles
+        } = newData;
+        setNewData({
+            newPassword: password,
+            newRoles   : newRoles,
+            newName    : newName
+        });
     }
 
     const createNewRoles = (roles: string[]) => {
-        const {newName, newPassword} = newData;
-        setNewData({newPassword: newPassword, newRoles: roles, newName: newName});
+        const {
+            newName,
+            newPassword
+        } = newData;
+        setNewData({
+            newPassword: newPassword,
+            newRoles   : roles,
+            newName    : newName
+        });
     }
 
     const handleCreate = () => {
@@ -326,7 +312,11 @@ export default function Page() {
 
     const confirmCreation = () => {
         (async () => {
-            const {newName, newPassword, newRoles} = newData;
+            const {
+                newName,
+                newPassword,
+                newRoles
+            } = newData;
             const server_response = await createUser({
                 id      : null,
                 userName: newName,
@@ -367,6 +357,42 @@ export default function Page() {
         onClose();
     }
 
+    useEffect(() => {
+        (async () => {
+            const server_res = await retrieveAllUser();
+
+            if (!server_res) {
+                throw new Error("Failed to retrieve all users");
+            }
+
+            if (!server_res.isSuccess || !server_res.value.resultDto) {
+                throw new Error(`Fail - ${server_res.error}`);
+            }
+
+            setJsonObj(server_res);
+            setHeaders(Object.keys(server_res.value.resultDto[0]));
+
+            const role_res = await retrieveAllRoles();
+
+            if (!role_res) {
+                throw new Error("Failed to retrieve all roles.");
+            }
+
+            if (!role_res.isSuccess) {
+                throw new Error(`Fail - ${role_res.error}`);
+            }
+
+            setRoles(role_res.value.resultDto);
+            setIsLoading(false);
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        });
+    }, []);
+    
     const renderContent = () => {
         if (editModal) {
             return (
@@ -437,10 +463,11 @@ export default function Page() {
     return (
         <>
             <div className={"w-full flex flex-row justify-end p-2"}>
-                <Button variant={"ghost"}
+                <Button variant={"solid"}
                         startContent={<FontAwesomeIcon icon={faFolderPlus}/>}
                         className={"w-3/12"}
                         onClick={handleCreate}
+                        color={"success"}
                 />
             </div>
             <div className={"grid grid-cols-6 w-full"}>

@@ -315,10 +315,11 @@ export default function TypeComponent() {
         <>
             <>
                 <div className={"w-full flex flex-row justify-end p-2"}>
-                    <Button variant={"ghost"}
+                    <Button variant={"solid"}
                             startContent={<FontAwesomeIcon icon={faFolderPlus}/>}
                             className={"w-3/12"}
                             onClick={handleCreate}
+                            color={"success"}
                     />
                 </div>
                 <div className={"grid grid-cols-4 w-full"}>

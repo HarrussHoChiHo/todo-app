@@ -5,7 +5,7 @@ import {useAuth} from "../AuthContext";
 import React, {useEffect, useState} from "react";
 import OrderPlacementQueryDto from "../../lib/models/order/OrderPlacementQueryDto";
 import OrderPlacementDto from "../../lib/models/order/OrderPlacementDto";
-import {Button, Select, SelectItem, Spinner} from "@nextui-org/react";
+import {Button, Card, CardBody, CardFooter, CardHeader, Divider, Select, SelectItem, Spinner} from "@nextui-org/react";
 import OrderItemQueryDto from "../../lib/models/order/OrderItemQueryDto";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck} from "@fortawesome/free-solid-svg-icons";
@@ -43,7 +43,7 @@ export default function OrderComponent() {
     const [isLoading, setIsLoading] = useState(true);
     const menuAPI: string = "/DataManagement/menu";
     const orderPlacementAPI: string = "/Order";
-    
+
 
     const [orderPlacementDto, setOrderPlacementDto] = useState<OrderPlacementQueryDto>()
 
@@ -87,7 +87,6 @@ export default function OrderComponent() {
 
     const confirmOrder = () => {
         (async () => {
-            try {
                 if (!orderPlacementDto?.orderItems) {
                     setValid(false);
                     return;
@@ -97,68 +96,61 @@ export default function OrderComponent() {
                         return;
                     }
                 }
-
+                
                 const createRes = await createOrder();
 
-                if (!createRes){
-                    showToast("Failed to create order.");
-                    return;
+                if (!createRes) {
+                    throw new Error("Failed to create order.");
                 }
-                
+
                 if (!createRes.isSuccess) {
-                    showToast(`Fail - ${createRes.error}`);
-                    return;
+                    throw new Error(`Fail - ${createRes.error}`);
                 }
 
                 setSelectedItems([]);
                 setOrderPlacementDto(undefined);
                 setValid(true);
                 showToast("Successfully create a new order");
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed")
-                }
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
             }
-        })();
+        });
     }
 
     const showToast = (message: string) => {
         toast(message);
     }
-
+    
     useEffect(() => {
         if (!token || !user) {
             router.push("/login");
         }
         (async () => {
-            try {
                 const retrieveRes = await retrieveMenu({
-                    id  : null,
+                    id         : null,
                     date       : new Date().toDateString(),
                     menuItem_Id: null
                 });
 
-                if (!retrieveRes){
-                    showToast("Failed to retrieve menu items.");
-                    return;
+                if (!retrieveRes) {
+                    throw new Error("Failed to retrieve menu items.");
                 }
-                
+
                 if (!retrieveRes.isSuccess) {
-                    showToast(`Fail - ${retrieveRes.error}`);
-                    return;
+                    throw new Error(`Fail - ${retrieveRes.error}`);
                 }
                 setMenu(retrieveRes);
                 setIsLoading(false);
-            } catch (error) {
-                if (error instanceof Error) {
-                    showToast(error.message);
-                } else {
-                    showToast("Service crashed")
-                }
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
             }
-        })();
+        });
     }, []);
 
     if (isLoading) {
@@ -171,52 +163,67 @@ export default function OrderComponent() {
 
         );
     }
-    
-    return (
-        <>
-            <HeaderComponent/>
-            <div className={"w-full flex flex-col items-center"}>
-                <h1 className={"m-4"}>Place your order!!!!</h1>
-                <div className={"w-1/2"}>
-                    <Select label={"Course"}
-                            selectionMode={"multiple"}
-                            placeholder={"Select your course"}
-                            selectedKeys={selectedItems}
-                            isRequired={true}
-                            isInvalid={!valid}
-                            errorMessage={"Must select a course"}
-                            onSelectionChange={(key) => updateOrder(Array.from(key, opt => opt.toString()))}
-                    >
-                        {
 
-                            menu.value.resultDto.map(mItem =>
-                                <SelectItem key={mItem.id} textValue={mItem.menuItem.name}>
-                                    {mItem.menuItem.name}
-                                </SelectItem>
-                            )
-                        }
-                    </Select>
-                    <p className="text-small text-default-500 p-4">Selected Courses:</p>
-                    <ol className={"list-decimal list-inside ps-4"}>
+    return <>
+        <HeaderComponent/>
+        <div className={"w-full flex flex-col items-center"}>
+            <h1 className={"m-4"}>Place your order!!!!</h1>
+            <div className={"w-1/2"}>
+                <Card>
+                    <CardBody>
+                        <Select label={"Course"}
+                                selectionMode={"multiple"}
+                                placeholder={menu.value.resultDto.length > 0 ? "Select your course" : "No item for today."}
+                                selectedKeys={selectedItems}
+                                isDisabled={!(menu.value.resultDto.length > 0)}
+                                isRequired={true}
+                                isInvalid={!valid}
+                                errorMessage={"Must select a course"}
+                                onSelectionChange={(key) => updateOrder(Array.from(key, opt => opt.toString()))}
+                        >
+                            {
+
+                                menu.value.resultDto.map(mItem =>
+                                    <SelectItem key={mItem.menuItem.id} textValue={mItem.menuItem.name}>
+                                        {mItem.menuItem.name}
+                                    </SelectItem>
+                                )
+                            }
+                        </Select>
+                    </CardBody>
+                    <Divider className={"mt-2 mb-2"}/>
+                    <CardBody>
+                        <p className={"text-small text-default-500 p-4"}>Selected Courses:</p>
                         {
-                            selectedItems.map((id, index) =>
-                                <li key={index}>
+                            selectedItems.length > 0 ? <ol className={"list-decimal list-inside ps-4"}>
                                     {
-                                        menu.value.resultDto.filter(item => item.menuItem.id.toString() === id)[0].menuItem.name
+                                        selectedItems.map((id, index) =>
+                                            <li key={index}>
+                                                {
+                                                    menu.value.resultDto.filter(item => item.menuItem.id.toString() === id)[0].menuItem.name
+                                                }
+                                            </li>
+                                        )
                                     }
-                                </li>
-                            )
+                                </ol> : <p className={"text-small text-default-400 p-4"}>No any item is selected.</p>
                         }
-                    </ol>
-                    <Button startContent={"Confirm your order"}
-                            endContent={<FontAwesomeIcon icon={faCheck} textAnchor={"Log out"}/>}
-                            size={"sm"}
-                            variant={"ghost"}
+
+                    </CardBody>
+                    <Divider className={"mt-2 mb-2"}/>
+                    <CardFooter className={"flex justify-end"}>
+                        <Button
+                            startContent={<FontAwesomeIcon icon={faCheck}/>}
+                            size={"lg"}
+                            variant={"solid"}
+                            color={"primary"}
                             onPress={confirmOrder}
-                    />
-                </div>
+                        >
+                            Confirm your order
+                        </Button>
+                    </CardFooter>
+                </Card>
             </div>
-            <FooterComponent/>
-        </>
-    );
+        </div>
+        <FooterComponent/>
+    </>;
 }

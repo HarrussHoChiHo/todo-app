@@ -664,10 +664,12 @@ export default function IngredientComponent() {
                 user?.role.includes("Manager")
                     ? (
                         <div className={"w-full flex flex-row justify-end p-2"}>
-                            <Button variant={"ghost"}
+                            <Button variant={"solid"}
                                     startContent={<FontAwesomeIcon icon={faFolderPlus}/>}
                                     className={"w-3/12"}
                                     onClick={handleCreate}
+                                    color={"success"}
+                                    
                             />
                         </div>
                     )
@@ -733,7 +735,8 @@ export default function IngredientComponent() {
                                         </>
                                     )
                                     : (
-                                        <></>
+                                        <>
+                                        </>
                                     )
                             }
                         </Fragment>

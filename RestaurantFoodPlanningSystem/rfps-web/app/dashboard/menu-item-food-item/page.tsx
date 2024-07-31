@@ -608,10 +608,11 @@ export default function MenuItemFoodItemComponent() {
     return (
         <>
             <div className={"w-full flex flex-row justify-end p-2"}>
-                <Button variant={"ghost"}
+                <Button variant={"solid"}
                         startContent={<FontAwesomeIcon icon={faFolderPlus}/>}
                         onClick={handleCreate}
                         className={"w-3/12"}
+                        color={"success"}
                 />
             </div>
             <div className={"grid grid-cols-5 w-full"}>

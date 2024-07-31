@@ -47,7 +47,7 @@ public class OrderController(
                                                                                  })
                                                                            .Result.resultDto;
 
-                                            if (tempMifi != null)
+                                            if (tempMifi != null && tempMifi.Count > 0)
                                             {
                                                 mifiDto.AddRange(tempMifi);
                                             }

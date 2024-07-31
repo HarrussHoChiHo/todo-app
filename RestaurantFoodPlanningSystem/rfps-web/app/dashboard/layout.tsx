@@ -19,6 +19,8 @@ const DashboardLayout = ({children}: {
     useEffect(() => {
         if (!token || !user) {
             router.push("/login");
+        } else if (!user.role.includes("Manager")) {
+            router.push("/order")
         } else {
             setIsLoading(false);
         }

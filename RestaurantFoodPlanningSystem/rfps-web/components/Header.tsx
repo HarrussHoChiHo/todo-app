@@ -1,13 +1,21 @@
 "use client"
 
-import {Button, Divider, Navbar, NavbarBrand, NavbarContent, NavbarItem} from "@nextui-org/react";
+import {
+    Button,
+    Divider,
+    Dropdown, DropdownItem, DropdownMenu,
+    DropdownTrigger,
+    Navbar,
+    NavbarBrand,
+    NavbarContent,
+    NavbarItem
+} from "@nextui-org/react";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import {useAuth} from "../app/AuthContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faDoorOpen, faPenNib} from "@fortawesome/free-solid-svg-icons";
-import {PressEvent} from "@react-types/shared";
+import {faCaretDown, faDoorOpen, faPenNib} from "@fortawesome/free-solid-svg-icons";
 
 export default function HeaderComponent() {
     const [activeItem, setActiveItem] = useState("");
@@ -22,16 +30,16 @@ export default function HeaderComponent() {
         setActiveItem(pathName.split("/").pop() ?? "");
     }, [pathName]);
 
-    const handleLogOut = (e: PressEvent) => {
+    const handleLogOut = () => {
         logout();
         router.push("/login");
     }
 
-    const handlePlaceOrder = (e: PressEvent) => {
+    const handlePlaceOrder = () => {
         router.push("/order");
     }
 
-    if (!pathName.split("/").includes("dashboard")) {
+    if (!pathName.split("/").includes("dashboard") || !user?.role.includes("Manager")) {
         return (
             <Navbar position={"static"}
                     isBordered={true}
@@ -48,15 +56,22 @@ export default function HeaderComponent() {
                         Log out
                     </Button>
                 </NavbarBrand>
-                <NavbarContent className={"flex gap-4"} justify={"center"}>
-                    <NavbarItem
-                    >
-                        <Link href={user?.role.includes("Manager") ? "/dashboard/user" : "dashboard/menu"}
-                              color={"foreground"}>
-                            Go to Dashboard
-                        </Link>
-                    </NavbarItem>
-                </NavbarContent>
+                {
+                    user?.role.includes("Manager") ? (
+                        <NavbarContent className={"flex gap-4"} justify={"center"}>
+                            <NavbarItem>
+                                <Link href={user?.role.includes("Manager") ? "/dashboard/user" : "dashboard/menu"}
+                                      color={"foreground"}>
+                                    Go to Dashboard
+                                </Link>
+                            </NavbarItem>
+                        </NavbarContent>
+                    ) : (
+                        <>
+                        </>
+                    )
+                }
+
             </Navbar>
         );
     } else {
@@ -64,9 +79,10 @@ export default function HeaderComponent() {
             <Navbar position={"static"}
                     isBordered={true}
                     maxWidth={"full"}
-                    className={"p-4"}
+                    height={"max-content"}
+                    className={"m-0 p-0"}
             >
-                <NavbarBrand className={"flex-col"}>
+                <NavbarBrand className={"flex-col pt-4 pb-4"}>
                     <p>Hello! <span className="font-bold text-inherit underline">{user?.userName}</span></p>
                     <Button endContent={<FontAwesomeIcon icon={faDoorOpen}/>}
                             size={"sm"}
@@ -84,55 +100,74 @@ export default function HeaderComponent() {
                         Place Order
                     </Button>
                 </NavbarBrand>
-                <NavbarContent className={"flex overflow-x-scroll"} justify={"center"}>
-                    <NavbarItem isActive={activeItem === "user"}
-                                hidden={!user?.role.includes("Manager")}>
+                <NavbarContent className={"flex w-full"} justify={"center"}>
+                    <NavbarItem isActive={activeItem === "user"}>
                         <Link href={"/dashboard/user"} color={"foreground"}>
-                            User Management
-                        </Link>
-                    </NavbarItem>
-                    <Divider orientation="vertical"/>
-                    <NavbarItem isActive={activeItem === "menu"}>
-                        <Link href={"/dashboard/menu"} color={"foreground"}>
-                            Menu Management
-                        </Link>
-                    </NavbarItem>
-                    <Divider orientation="vertical"/>
-                    <NavbarItem isActive={activeItem === "menu-item"}>
-                        <Link href={"/dashboard/menu-item"} color={"foreground"}>
-                            Menu Item Management
-                        </Link>
-                    </NavbarItem>
-                    <Divider orientation="vertical"/>
-                    <NavbarItem isActive={activeItem === "ingredient"}>
-                        <Link href={"/dashboard/ingredient"} color={"foreground"}>
-                            Ingredient Management
-                        </Link>
-                    </NavbarItem>
-                    <Divider orientation="vertical"/>
-                    <NavbarItem isActive={activeItem === "menu-item-food-item"}>
-                        <Link href={"/dashboard/menu-item-food-item"} color={"foreground"}>
-                            Menu Item Food Item Management
+                            User
                         </Link>
                     </NavbarItem>
                     <Divider orientation="vertical"/>
                     <NavbarItem isActive={activeItem === "order"}>
                         <Link href={"/dashboard/order"} color={"foreground"}>
-                            Order Management
+                            Order
                         </Link>
                     </NavbarItem>
                     <Divider orientation="vertical"/>
-                    <NavbarItem isActive={activeItem === "unit"}>
-                        <Link href={"/dashboard/unit"} color={"foreground"}>
-                            Unit Management
-                        </Link>
-                    </NavbarItem>
+                    <Dropdown>
+                        <NavbarItem>
+                            <DropdownTrigger>
+                                <Button disableRipple
+                                        endContent={<FontAwesomeIcon icon={faCaretDown}/>}
+                                        className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                                        radius={"sm"}
+                                        variant={"light"}
+                                >
+                                    Menu
+                                </Button>
+                            </DropdownTrigger>
+                        </NavbarItem>
+                        <DropdownMenu selectionMode={"single"}
+                                      selectedKeys={[activeItem]}
+                        >
+                            <DropdownItem key={"menu"} href={"/dashboard/menu"}>
+                                Menu Management
+                            </DropdownItem>
+                            <DropdownItem key={"menu-item"} href={"/dashboard/menu-item"}>
+                                Course Management
+                            </DropdownItem>
+                            <DropdownItem key={"menu-item-food-item"} href={"/dashboard/menu-item-food-item"}>
+                                Menu Item Food Item Management
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                     <Divider orientation="vertical"/>
-                    <NavbarItem isActive={activeItem === "type"}>
-                        <Link href={"/dashboard/type"} color={"foreground"}>
-                            Type Management
-                        </Link>
-                    </NavbarItem>
+                    <Dropdown>
+                        <NavbarItem>
+                            <DropdownTrigger>
+                                <Button disableRipple
+                                        endContent={<FontAwesomeIcon icon={faCaretDown}/>}
+                                        className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                                        radius={"sm"}
+                                        variant={"light"}
+                                >
+                                    Food
+                                </Button>
+                            </DropdownTrigger>
+                        </NavbarItem>
+                        <DropdownMenu selectionMode={"single"}
+                                      selectedKeys={[activeItem]}
+                        >
+                            <DropdownItem key={"ingredient"} href={"/dashboard/ingredient"}>
+                                Food Management
+                            </DropdownItem>
+                            <DropdownItem key={"unit"} href={"/dashboard/unit"}>
+                                Unit Management
+                            </DropdownItem>
+                            <DropdownItem key={"type"} href={"/dashboard/type"}>
+                                Type Management
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                 </NavbarContent>
             </Navbar>
         );

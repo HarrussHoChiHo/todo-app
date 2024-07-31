@@ -541,7 +541,7 @@ public class DataManagementController(
     /// </summary>
     /// <param name="queryDto">This object contains: id, the date of a menu, the id of menu items</param>
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
-    [Authorize(Policy = "ManagerOnly")]
+    [Authorize(Policy = "StaffAndManager")]
     [HttpPost("menu/read")]
     public async Task<ActionResult<Result<DbOperationResult<MenuResultDto>>>> ReadMenu(MenuQueryDto queryDto)
     {

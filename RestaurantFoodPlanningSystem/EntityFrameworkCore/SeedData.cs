@@ -219,8 +219,20 @@ public class SeedData
                     Date        = DateTime.Parse("2024-06-22")
                 }
             ];
-
+            
             context.Menu.AddRange(menus);
+            logger.LogDebug($"Menu insertion result: {await context.SaveChangesAsync()}");
+        }
+
+        if (!context.Menu.Any(x => x.Date == DateTime.Today) && context.MenuItem.Any())
+        {
+            Menu menu = new Menu()
+                        {
+                            MenuItem_Id = 2,
+                            Date = DateTime.Today
+                        };
+
+            context.Menu.Add(menu);
             logger.LogDebug($"Menu insertion result: {await context.SaveChangesAsync()}");
         }
 
