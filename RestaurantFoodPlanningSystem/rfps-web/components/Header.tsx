@@ -3,7 +3,9 @@
 import {
     Button,
     Divider,
-    Dropdown, DropdownItem, DropdownMenu,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
     DropdownTrigger,
     Navbar,
     NavbarBrand,
@@ -16,6 +18,7 @@ import {usePathname, useRouter} from "next/navigation";
 import {useAuth} from "../app/AuthContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCaretDown, faDoorOpen, faPenNib} from "@fortawesome/free-solid-svg-icons";
+import {Image} from "@nextui-org/image";
 
 export default function HeaderComponent() {
     const [activeItem, setActiveItem] = useState("");
@@ -32,81 +35,22 @@ export default function HeaderComponent() {
 
     const handleLogOut = () => {
         logout();
-        router.push("/login");
+        router.push("/");
     }
 
     const handlePlaceOrder = () => {
-        router.push("/order");
+        router.push("/place-order");
     }
 
-    if (!pathName.split("/").includes("dashboard") || !user?.role.includes("Manager")) {
-        return (
-            <Navbar position={"static"}
-                    isBordered={true}
-                    maxWidth={"full"}
-                    className={"p-4 justify-evenly"}
-            >
-                <NavbarBrand className={"flex-col items-start"}>
-                    <p>Hello! <span className="font-bold text-inherit underline mr-4">{user?.userName}</span></p>
-                    <Button endContent={<FontAwesomeIcon icon={faDoorOpen}/>}
-                            size={"sm"}
-                            variant={"ghost"}
-                            onPress={handleLogOut}
-                    >
-                        Log out
-                    </Button>
-                </NavbarBrand>
-                {
-                    user?.role.includes("Manager") ? (
-                        <NavbarContent className={"flex gap-4"} justify={"center"}>
-                            <NavbarItem>
-                                <Link href={user?.role.includes("Manager") ? "/dashboard/user" : "dashboard/menu"}
-                                      color={"foreground"}>
-                                    Go to Dashboard
-                                </Link>
-                            </NavbarItem>
-                        </NavbarContent>
-                    ) : (
-                        <>
-                        </>
-                    )
-                }
+    const generateNavBarContent = () => {
 
-            </Navbar>
-        );
-    } else {
+        if (!user?.role.includes("Manager")) {
+            return (<></>);
+        }
+        
         return (
-            <Navbar position={"static"}
-                    isBordered={true}
-                    maxWidth={"full"}
-                    height={"max-content"}
-                    className={"m-0 p-0"}
-            >
-                <NavbarBrand className={"flex-col pt-4 pb-4"}>
-                    <p>Hello! <span className="font-bold text-inherit underline">{user?.userName}</span></p>
-                    <Button endContent={<FontAwesomeIcon icon={faDoorOpen}/>}
-                            size={"sm"}
-                            variant={"ghost"}
-                            onPress={handleLogOut}
-                    >
-                        Log out
-                    </Button>
-                    <Button endContent={<FontAwesomeIcon icon={faPenNib}/>}
-                            size={"sm"}
-                            variant={"ghost"}
-                            onPress={handlePlaceOrder}
-                            className={"mt-1"}
-                    >
-                        Place Order
-                    </Button>
-                </NavbarBrand>
+            <>
                 <NavbarContent className={"flex w-full"} justify={"center"}>
-                    <NavbarItem isActive={activeItem === "user"}>
-                        <Link href={"/dashboard/user"} color={"foreground"}>
-                            User
-                        </Link>
-                    </NavbarItem>
-                    <Divider orientation="vertical"/>
                     <NavbarItem isActive={activeItem === "order"}>
                         <Link href={"/dashboard/order"} color={"foreground"}>
                             Order
@@ -168,8 +112,87 @@ export default function HeaderComponent() {
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
+                    <Divider orientation="vertical"/>
+                    <NavbarItem isActive={activeItem === "user"}>
+                        <Link href={"/dashboard/user"} color={"foreground"}>
+                            User
+                        </Link>
+                    </NavbarItem>
                 </NavbarContent>
+            </>
+        )
+    }
+
+    const generateNavBarBrand = () => {
+        let navBarBrand;
+        if (user?.role.includes("Manager")) {
+            navBarBrand = (
+                <NavbarBrand className={"flex-col pt-4 pb-4"}>
+                    <span className="font-bold text-inherit underline">{user?.userName}</span>
+                    <Button endContent={<FontAwesomeIcon icon={faDoorOpen}/>}
+                            className={"w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
+                            onPress={handleLogOut}
+                    >
+                        Log out
+                    </Button>
+                    {
+                        pathName.includes("place-order") ?
+                            (
+                                <Button
+                                    href={"/dashboard"}
+                                    as={Link}
+                                    className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
+                                >
+                                    Go to Dashboard
+                                </Button>
+                            ) :
+                            (
+                                <Button endContent={<FontAwesomeIcon icon={faPenNib}/>}
+                                        onPress={handlePlaceOrder}
+                                        className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
+                                >
+                                    Place Order
+                                </Button>
+                            )
+                    }
+                </NavbarBrand>
+            );
+        } else {
+            navBarBrand = (
+                <div className={"flex flex-row justify-end items-end w-full"}>
+                    <NavbarBrand className={"flex-col pt-4 pb-4 max-w-fit"}>
+                        <span className="font-bold text-inherit underline">{user?.userName}</span>
+                        <Button endContent={<FontAwesomeIcon icon={faDoorOpen}/>}
+                                className={"w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
+                                onPress={handleLogOut}
+                        >
+                            Log out
+                        </Button>
+                    </NavbarBrand>
+                </div>);
+        }
+
+
+        return navBarBrand;
+    }
+
+    return (
+        <Navbar position={"static"}
+                isBordered={true}
+                maxWidth={"full"}
+                height={"max-content"}
+                className={"m-0 p-0"}
+        >
+            <Image src={"/MenuMaster.png"}
+                   width={"110px"}
+                   height={"110px"}
+            />
+            {
+                generateNavBarContent()
+            }
+            {
+                generateNavBarBrand()
+            }
             </Navbar>
         );
-    }
 }

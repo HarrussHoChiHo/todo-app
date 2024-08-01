@@ -3,7 +3,20 @@
 import HttpServices from "../../../lib/HttpServices";
 import {useAuth} from "../../AuthContext";
 import React, {Fragment, useEffect, useState} from "react";
-import {Checkbox, Select, SelectItem, Spinner, useDisclosure} from "@nextui-org/react";
+import {
+    Button,
+    Checkbox,
+    Select,
+    SelectItem,
+    Spinner,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
+    useDisclosure
+} from "@nextui-org/react";
 import OrderDto, {orderHeaders} from "../../../lib/models/order/OrderDto";
 import OrderQueryDto from "../../../lib/models/order/OrderQueryDto";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -12,6 +25,7 @@ import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import Modals from "../../../components/CustomModal";
 import OrderItemDto from "../../../lib/models/order/OrderItemDto";
 import {toast} from "react-toastify";
+import {unitHeaders} from "../../../lib/models/unit/UnitDto";
 
 export default function OrderComponent() {
     const httpServices = new HttpServices();
@@ -63,7 +77,7 @@ export default function OrderComponent() {
                 const serverRes = await deleteOrder(id);
 
                 if (!serverRes) {
-                    throw new Error("Failed to retrieve order.");
+                    throw new Error("Failed to retrieve place-order.");
                 }
 
                 if (!serverRes.isSuccess) {
@@ -76,7 +90,7 @@ export default function OrderComponent() {
                 });
 
                 if (!retrieveRes) {
-                    throw new Error("Failed to retrieve updated order");
+                    throw new Error("Failed to retrieve updated place-order");
                 }
 
                 if (!retrieveRes.isSuccess) {
@@ -104,7 +118,7 @@ export default function OrderComponent() {
             });
 
             if (!serverRes) {
-                throw new Error("Failed to retrieve order.");
+                throw new Error("Failed to retrieve place-order.");
             }
 
             if (!serverRes.isSuccess) {
@@ -192,7 +206,7 @@ export default function OrderComponent() {
                     isCanceled: (isCanceled === "true")
                 });
                 if (!updateRes) {
-                    throw new Error("Failed to update order.");
+                    throw new Error("Failed to update place-order.");
                 }
 
                 if (!updateRes.isSuccess) {
@@ -205,7 +219,7 @@ export default function OrderComponent() {
                 const failedServerRes = serverRes.filter(res => !res!.isSuccess);
                 
                 if (failedServerRes.length > 0) {
-                    throw new Error("Failed to update order item");
+                    throw new Error("Failed to update place-order item");
                 }
 
                 const retrieveServerRes = await retrieveOrder({
@@ -214,7 +228,7 @@ export default function OrderComponent() {
                 });
 
                 if (!retrieveServerRes) {
-                    throw new Error("Failed to retrieve update order");
+                    throw new Error("Failed to retrieve update place-order");
                 }
 
                 if (!retrieveServerRes.isSuccess) {
@@ -248,7 +262,7 @@ export default function OrderComponent() {
             });
 
             if (!retrieveResult) {
-                throw new Error("Failed to retrieve order.");
+                throw new Error("Failed to retrieve place-order.");
             }
 
             if (!retrieveResult.isSuccess) {
@@ -308,62 +322,52 @@ export default function OrderComponent() {
 
     return (
         <>
-            <div className={"grid grid-cols-5 w-full"}>
-                {
-                    orderHeaders.map((header) => (
-                        <Fragment key={header}>
-                            <div className={"font-extrabold gird-style text-center"}>
-                                {header}
-                            </div>
-                        </Fragment>
-                    ))
-                }
-                <Fragment key={"header_delete"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Delete
-                    </div>
-                </Fragment>
-                <Fragment key={"header_edit"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Edit
-                    </div>
-                </Fragment>
-                {
-                    order.value.resultDto.map((orderDto) => {
-                        return (
-                            <Fragment key={orderDto.id}>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {orderDto.id}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {orderDto.isCanceled ? "Yes" : "No"}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    <ol>
-                                        {
-                                            orderDto.orderItems.map(item =>
-                                                <li key={item.id}>
-                                                    {item.menuItem.name}
-                                                </li>
-                                            )
-                                        }
-                                    </ol>
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    <button onClick={() => handleDelete(orderDto.id)}>
-                                        <FontAwesomeIcon icon={faTrash}/>
-                                    </button>
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    <button onClick={() => handleEdit(orderDto.id)}>
+            <Table>
+                <TableHeader>
+                    {
+                        orderHeaders.map(tableHeader => <TableColumn
+                            key={tableHeader.key}>{tableHeader.label}</TableColumn>)
+                    }
+                </TableHeader>
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        order.value.resultDto.map((dto) =>
+                            <TableRow key={dto.id}>
+                                <TableCell>{dto.id}</TableCell>
+                                <TableCell>{dto.isCanceled ? "Yes" : "No"}</TableCell>
+                                <TableCell>
+                                    {
+                                        <ol>
+                                            {
+                                                dto.orderItems.map(item =>
+                                                    <li key={item.id}>
+                                                        {item.menuItem.name}
+                                                    </li>
+                                                )
+                                            }
+                                        </ol>
+                                    }
+                                </TableCell>
+                                <TableCell width={"30px"}>
+                                    <Button size={"sm"}
+                                            onClick={() => handleDelete(dto.id)}
+                                    >
+                                        <FontAwesomeIcon icon={faTrash}
+                                                         id={dto.id.toString()}/>
+                                    </Button>
+                                </TableCell>
+                                <TableCell width={"30px"}>
+                                    <Button size={"sm"}
+                                            onClick={() => handleEdit(dto.id)}
+                                    >
                                         <FontAwesomeIcon icon={faPenToSquare}/>
-                                    </button>
-                                </div>
-                            </Fragment>
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
                         )
-                    })
-                }
-            </div>
+                    }
+                </TableBody>
+            </Table>
             <Modals isOpen={isOpen}
                     onOpenChange={onOpenChange}
                     onCancel={cancelEdition}

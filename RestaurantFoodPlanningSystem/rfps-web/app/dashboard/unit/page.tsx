@@ -7,7 +7,18 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import UnitDto, {unitHeaders} from "../../../lib/models/unit/UnitDto";
 import UnitQueryDto from "../../../lib/models/unit/UnitQueryDto";
-import {Button, Input, Spinner, useDisclosure} from "@nextui-org/react";
+import {
+    Button,
+    Input,
+    Spinner,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
+    useDisclosure
+} from "@nextui-org/react";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import Modals from "../../../components/CustomModal";
 import {toast} from "react-toastify";
@@ -321,51 +332,39 @@ export default function UnitComponent() {
                         color={"success"}
                 />
             </div>
-            <div className={"grid grid-cols-4 w-full"}>
-                {
-                    unitHeaders.map((header) => (
-                        <Fragment key={header}>
-                            <div className={"font-extrabold gird-style text-center"}>
-                                {header}
-                            </div>
-                        </Fragment>
-                    ))
-                }
-                <Fragment key={"header_delete"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Delete
-                    </div>
-                </Fragment>
-                <Fragment key={"header_edit"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Edit
-                    </div>
-                </Fragment>
-                {
-                    unit.value.resultDto.map((unitDto) => {
-                        return (
-                            <Fragment key={unitDto.id}>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {unitDto.id}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {unitDto.name}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    <button onClick={() => handleDelete(unitDto.id)}>
-                                        <FontAwesomeIcon icon={faTrash}/>
-                                    </button>
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    <button onClick={() => handleEdit(unitDto.id)}>
+            <Table>
+                <TableHeader>
+                    {
+                        unitHeaders.map(tableHeader => <TableColumn
+                            key={tableHeader.key}>{tableHeader.label}</TableColumn>)
+                    }
+                </TableHeader>
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        unit.value.resultDto.map((dto) =>
+                            <TableRow key={dto.id}>
+                                <TableCell>{dto.id}</TableCell>
+                                <TableCell>{dto.name}</TableCell>
+                                <TableCell width={"30px"}>
+                                    <Button size={"sm"}
+                                            onClick={() => handleDelete(dto.id)}
+                                    >
+                                        <FontAwesomeIcon icon={faTrash}
+                                                         id={dto.id.toString()}/>
+                                    </Button>
+                                </TableCell>
+                                <TableCell width={"30px"}>
+                                    <Button size={"sm"}
+                                            onClick={() => handleEdit(dto.id)}
+                                    >
                                         <FontAwesomeIcon icon={faPenToSquare}/>
-                                    </button>
-                                </div>
-                            </Fragment>
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
                         )
-                    })
-                }
-            </div>
+                    }
+                </TableBody>
+            </Table>
             <Modals isOpen={isOpen}
                     onOpenChange={onOpenChange}
                     onCancel={closeModal}

@@ -8,7 +8,20 @@ import MenuQueryDto from "../../../lib/models/menu/MenuQueryDto";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
-import {Button, DateInput, Select, SelectItem, Spinner, useDisclosure} from "@nextui-org/react";
+import {
+    Button,
+    DateInput,
+    Select,
+    SelectItem,
+    Spinner,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
+    useDisclosure
+} from "@nextui-org/react";
 import Modals from "../../../components/CustomModal";
 import {CalendarDate, getLocalTimeZone} from "@internationalized/date";
 import MenuItemDto from "../../../lib/models/menu/MenuItemDto";
@@ -445,58 +458,46 @@ export default function MenuComponent() {
                         color={"success"}
                 />
             </div>
-            <div className={"grid grid-cols-5 w-full"}>
-                {
-                    menuHeaders.map((header) => (
-                        <Fragment key={header}>
-                            <div className={"font-extrabold gird-style text-center"}>
-                                {header}
-                            </div>
-                        </Fragment>
-                    ))
-                }
-                <Fragment key={"header_delete"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Delete
-                    </div>
-                </Fragment>
-                <Fragment key={"header_edit"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Edit
-                    </div>
-                </Fragment>
-                {
-                    (menu.value.resultDto as MenuDto[]).map((menuDto) => {
-
-                        const targetedDate = new Date(menuDto.date);
-
-                        return (
-                            <Fragment key={menuDto.id}>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {menuDto.id}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {`${targetedDate.getFullYear()}-${targetedDate.getMonth() + 1}-${targetedDate.getDate()}`}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {menuDto.menuItem.name}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    <button onClick={() => handleDelete(menuDto.id)}>
-                                        <FontAwesomeIcon icon={faTrash}
-                                                         id={menuDto.id.toString()}/>
-                                    </button>
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    <button onClick={() => handleEdit(menuDto.id)}>
-                                        <FontAwesomeIcon icon={faPenToSquare}/>
-                                    </button>
-                                </div>
-                            </Fragment>
+            <Table>
+                <TableHeader>
+                    {
+                        menuHeaders.map(tableHeader =>
+                            <TableColumn
+                                key={tableHeader.key}>{tableHeader.label}
+                            </TableColumn>
                         )
-                    })
-                }
-            </div>
+                    }
+                </TableHeader>
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        menu.value.resultDto.map((dto) => {
+                            const targetedDate = new Date(dto.date);
+                            return (
+                                <TableRow key={dto.id}>
+                                    <TableCell>{dto.id}</TableCell>
+                                    <TableCell>{`${targetedDate.getFullYear()}-${targetedDate.getMonth() + 1}-${targetedDate.getDate()}`}</TableCell>
+                                    <TableCell>{dto.menuItem.name}</TableCell>
+                                    <TableCell width={"30px"}>
+                                        <Button size={"sm"}
+                                                onClick={() => handleDelete(dto.id)}
+                                        >
+                                            <FontAwesomeIcon icon={faTrash}
+                                                             id={dto.id.toString()}/>
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell width={"30px"}>
+                                        <Button size={"sm"}
+                                                onClick={() => handleEdit(dto.id)}
+                                        >
+                                            <FontAwesomeIcon icon={faPenToSquare}/>
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })
+                    }
+                </TableBody>
+            </Table>
             <Modals isOpen={isOpen}
                     onOpenChange={onOpenChange}
                     onCancel={() => editModal ? cancelEdition() : cancelCreation()}

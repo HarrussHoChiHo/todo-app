@@ -3,7 +3,19 @@ interface IUnitDto {
     name: string;
 }
 
-export const unitHeaders = ["ID", "Name"];
+export const unitHeaders = [{
+    key  : "id",
+    label: "ID"
+}, {
+    key  : "name",
+    label: "Name"
+}, {
+    key  : "delete",
+    label: "Delete"
+}, {
+    key  : "edit",
+    label: "Edit"
+}];
 
 class UnitDto implements IUnitDto {
     id: number;

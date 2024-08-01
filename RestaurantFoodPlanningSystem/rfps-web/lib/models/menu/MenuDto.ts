@@ -6,7 +6,22 @@ interface IMenuDto {
     menuItem: MenuItemDto;
 }
 
-export const menuHeaders = ["ID", "Date", "Item"];
+export const menuHeaders = [{
+    key  : "id",
+    label: "ID"
+}, {
+    key  : "date",
+    label: "Date"
+}, {
+    key  : "item",
+    label: "Item"
+}, {
+    key  : "delete",
+    label: "Delete"
+}, {
+    key  : "edit",
+    label: "Edit"
+}];
 
 class MenuDto implements IMenuDto {
     date: Date;

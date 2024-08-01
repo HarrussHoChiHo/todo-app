@@ -7,7 +7,20 @@ import IngredientDto, {ingredientHeaders} from "../../../lib/models/ingredient/I
 import IngredientQueryDto from "../../../lib/models/ingredient/IngredientQueryDto";
 import TypeDto from "../../../lib/models/type/TypeDto";
 import UnitDto from "../../../lib/models/unit/UnitDto";
-import {Button, Input, Select, SelectItem, Spinner, useDisclosure} from "@nextui-org/react";
+import {
+    Button,
+    Input,
+    Select,
+    SelectItem,
+    Spinner,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
+    useDisclosure
+} from "@nextui-org/react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -660,9 +673,6 @@ export default function IngredientComponent() {
 
     return (
         <>
-            {
-                user?.role.includes("Manager")
-                    ? (
                         <div className={"w-full flex flex-row justify-end p-2"}>
                             <Button variant={"solid"}
                                     startContent={<FontAwesomeIcon icon={faFolderPlus}/>}
@@ -672,77 +682,47 @@ export default function IngredientComponent() {
                                     
                             />
                         </div>
-                    )
-                    : (
-                        <>
-                        </>
-                    )
-            }
-
-            <div className={"grid grid-cols-7 w-full"}>
-                {
-                    ingredientHeaders.map((header) => (
-                        <Fragment key={header}>
-                            <div className={"font-extrabold gird-style text-center"}>
-                                {header}
-                            </div>
-                        </Fragment>
-                    ))
-                }
-                <Fragment key={"header_delete"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Delete
-                    </div>
-                </Fragment>
-                <Fragment key={"header_edit"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Edit
-                    </div>
-                </Fragment>
-                {
-                    ingredient.value.resultDto.map((ingredDto, index) => (
-                        <Fragment key={ingredDto.id}>
-                            <div className={"p-4 gird-style text-center"}>
-                                {ingredDto.id}
-                            </div>
-                            <div className={"p-4 gird-style text-center"}>
-                                {ingredDto.name}
-                            </div>
-                            <div className={"p-4 gird-style text-center"}>
-                                {ingredDto.quantity}
-                            </div>
-                            <div className={"p-4 gird-style text-center"}>
-                                {ingredDto.unit.name}
-                            </div>
-                            <div className={"p-4 gird-style text-center"}>
-                                {ingredDto.type.name}
-                            </div>
-                            {
-                                user?.role.includes("Manager")
-                                    ? (
-                                        <>
-                                            <div className={"p-4 gird-style text-center"}>
-                                                <button onClick={() => handleDelete(ingredDto.id)}>
-                                                    <FontAwesomeIcon icon={faTrash}
-                                                                     id={ingredDto.id.toString()}/>
-                                                </button>
-                                            </div>
-                                            <div className={"p-4 gird-style text-center"}>
-                                                <button onClick={() => handleEdit(ingredDto.id)}>
-                                                    <FontAwesomeIcon icon={faPenToSquare}/>
-                                                </button>
-                                            </div>
-                                        </>
-                                    )
-                                    : (
-                                        <>
-                                        </>
-                                    )
-                            }
-                        </Fragment>
-                    ))
-                }
-            </div>
+            <Table>
+                <TableHeader>
+                    {
+                        ingredientHeaders.map(tableHeader =>
+                            <TableColumn
+                                key={tableHeader.key}>{tableHeader.label}
+                            </TableColumn>
+                        )
+                    }
+                </TableHeader>
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        ingredient.value.resultDto.map((dto) => {
+                            return (
+                                <TableRow key={dto.id}>
+                                    <TableCell>{dto.id}</TableCell>
+                                    <TableCell>{dto.name}</TableCell>
+                                    <TableCell>{dto.quantity}</TableCell>
+                                    <TableCell>{dto.unit.name}</TableCell>
+                                    <TableCell>{dto.type.name}</TableCell>
+                                    <TableCell width={"30px"}>
+                                        <Button size={"sm"}
+                                                onClick={() => handleDelete(dto.id)}
+                                        >
+                                            <FontAwesomeIcon icon={faTrash}
+                                                             id={dto.id.toString()}/>
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell width={"30px"}>
+                                        <Button size={"sm"}
+                                                onClick={() => handleEdit(dto.id)}
+                                        >
+                                            <FontAwesomeIcon icon={faPenToSquare}/>
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })
+                    }
+                </TableBody>
+            </Table>
             <Modals isOpen={isOpen}
                     onOpenChange={onOpenChange}
                     onCancel={() => editModal

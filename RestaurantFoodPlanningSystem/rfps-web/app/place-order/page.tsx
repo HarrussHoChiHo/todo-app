@@ -100,7 +100,7 @@ export default function OrderComponent() {
                 const createRes = await createOrder();
 
                 if (!createRes) {
-                    throw new Error("Failed to create order.");
+                    throw new Error("Failed to create place-order.");
                 }
 
                 if (!createRes.isSuccess) {
@@ -110,7 +110,7 @@ export default function OrderComponent() {
                 setSelectedItems([]);
                 setOrderPlacementDto(undefined);
                 setValid(true);
-                showToast("Successfully create a new order");
+                showToast("Successfully create a new place-order");
         })().catch(error => {
             if (error instanceof Error) {
                 showToast(error.message);

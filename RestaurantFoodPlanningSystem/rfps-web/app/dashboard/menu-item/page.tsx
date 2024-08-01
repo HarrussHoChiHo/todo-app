@@ -1,7 +1,18 @@
 "use client"
 import React, {Fragment, useEffect, useState} from "react";
 import MenuItemDto, {menuItemHeaders} from "../../../lib/models/menu/MenuItemDto";
-import {Button, Input, Spinner, useDisclosure} from "@nextui-org/react";
+import {
+    Button,
+    Input,
+    Spinner,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
+    useDisclosure
+} from "@nextui-org/react";
 import HttpServices from "../../../lib/HttpServices";
 import {useAuth} from "../../AuthContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -333,51 +344,42 @@ export default function MenuItemComponent() {
                         color={"success"}
                 />
             </div>
-            <div className={"grid grid-cols-4 w-full"}>
-                {
-                    menuItemHeaders.map((header) => (
-                        <Fragment key={header}>
-                            <div className={"font-extrabold gird-style text-center"}>
-                                {header}
-                            </div>
-                        </Fragment>
-                    ))
-                }
-                <Fragment key={"header_delete"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Delete
-                    </div>
-                </Fragment>
-                <Fragment key={"header_edit"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Edit
-                    </div>
-                </Fragment>
-                {
-                    (menuItem.value.resultDto as MenuItemDto[]).map((menuItemDto) => {
-                        return (
-                            <Fragment key={`${menuItemDto.name}${menuItemDto.id}`}>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {menuItemDto.id}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {menuItemDto.name}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    <button onClick={() => handleDelete(menuItemDto.id)}>
-                                        <FontAwesomeIcon icon={faTrash}/>
-                                    </button>
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    <button onClick={() => handleEdit(menuItemDto.id)}>
-                                        <FontAwesomeIcon icon={faPenToSquare}/>
-                                    </button>
-                                </div>
-                            </Fragment>
+            <Table>
+                <TableHeader>
+                    {
+                        menuItemHeaders.map(tableHeader =>
+                            <TableColumn
+                                key={tableHeader.key}>{tableHeader.label}
+                            </TableColumn>
                         )
-                    })
-                }
-            </div>
+                    }
+                </TableHeader>
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        menuItem.value.resultDto.map((dto) =>
+                            <TableRow key={dto.id}>
+                                <TableCell>{dto.id}</TableCell>
+                                <TableCell>{dto.name}</TableCell>
+                                <TableCell width={"30px"}>
+                                    <Button size={"sm"}
+                                            onClick={() => handleDelete(dto.id)}
+                                    >
+                                        <FontAwesomeIcon icon={faTrash}
+                                                         id={dto.id.toString()}/>
+                                    </Button>
+                                </TableCell>
+                                <TableCell width={"30px"}>
+                                    <Button size={"sm"}
+                                            onClick={() => handleEdit(dto.id)}
+                                    >
+                                        <FontAwesomeIcon icon={faPenToSquare}/>
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        )
+                    }
+                </TableBody>
+            </Table>
             <Modals isOpen={isOpen}
                     onOpenChange={onOpenChange}
                     onCancel={() => editModal ? cancelEdition() : cancelCreation()}

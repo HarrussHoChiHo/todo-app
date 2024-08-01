@@ -9,7 +9,28 @@ interface IIngredientDto {
     type: TypeDto
 }
 
-export const ingredientHeaders = ["ID", "Name", "Quantity", "Unit", "Type"];
+export const ingredientHeaders = [{
+    key  : "id",
+    label: "ID"
+}, {
+    key  : "name",
+    label: "Name"
+}, {
+    key  : "quantity",
+    label: "Quantity"
+}, {
+    key  : "unit",
+    label: "Unit"
+}, {
+    key  : "type",
+    label: "Type"
+}, {
+    key  : "delete",
+    label: "Delete"
+}, {
+    key  : "edit",
+    label: "Edit"
+}];
 
 class IngredientDto implements IIngredientDto {
     id: number;

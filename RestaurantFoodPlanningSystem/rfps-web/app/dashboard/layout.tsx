@@ -11,19 +11,16 @@ const DashboardLayout = ({children}: {
 }) => {
     const {
         token,
-        logout,
         user
     } = useAuth();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
+    
     useEffect(() => {
         if (!token || !user) {
-            router.push("/login");
-        } else if (!user.role.includes("Manager")) {
-            router.push("/order")
-        } else {
-            setIsLoading(false);
+            router.push("/");
         }
+        setIsLoading(false);
     }, [router]);
 
     return (

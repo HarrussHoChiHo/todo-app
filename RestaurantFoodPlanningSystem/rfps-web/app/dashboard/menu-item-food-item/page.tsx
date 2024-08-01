@@ -6,7 +6,17 @@ import HttpServices from "../../../lib/HttpServices";
 import {useAuth} from "../../AuthContext";
 import {toast} from "react-toastify";
 import MenuItemFoodItemQueryDto from "../../../lib/models/menuitemfooditem/MenuItemFoodItemQueryDto";
-import {Button, Input, Select, SelectItem, Spinner, useDisclosure} from "@nextui-org/react";
+import {
+    Button,
+    Input,
+    Select,
+    SelectItem,
+    Spinner, Table,
+    TableBody, TableCell,
+    TableColumn,
+    TableHeader, TableRow,
+    useDisclosure
+} from "@nextui-org/react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -15,6 +25,7 @@ import Modals from "../../../components/CustomModal";
 import MenuItemDto from "../../../lib/models/menu/MenuItemDto";
 import IngredientDto from "../../../lib/models/ingredient/IngredientDto";
 import IngredientQueryDto from "../../../lib/models/ingredient/IngredientQueryDto";
+import {unitHeaders} from "../../../lib/models/unit/UnitDto";
 
 export default function MenuItemFoodItemComponent() {
     const menuItemFoodItemAPI: string = "/DataManagement/menu-item-food-item";
@@ -615,56 +626,39 @@ export default function MenuItemFoodItemComponent() {
                         color={"success"}
                 />
             </div>
-            <div className={"grid grid-cols-5 w-full"}>
-                {
-                    mifiHeaders.map((header) => (
-                        <Fragment key={header}>
-                            <div className={"font-extrabold gird-style text-center"}>
-                                {header}
-                            </div>
-                        </Fragment>
-                    ))
-                }
-                <Fragment key={"header_delete"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Delete
-                    </div>
-                </Fragment>
-                <Fragment key={"header_edit"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Edit
-                    </div>
-                </Fragment>
-                {
-                    menuItemFoodItem.value.resultDto.map((menuItemFoodItemDto) => {
-                        return (
-                            <Fragment key={`${menuItemFoodItemDto.menuItem_Id}${menuItemFoodItemDto.foodItem_Id}`}>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {menuItemFoodItemDto.menuItem.name}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {menuItemFoodItemDto.foodItem.name}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    {menuItemFoodItemDto.consumption}
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    <button
-                                        onClick={() => handleDelete(menuItemFoodItemDto.menuItem_Id, menuItemFoodItemDto.foodItem_Id)}>
+            <Table>
+                <TableHeader>
+                    {
+                        mifiHeaders.map(tableHeader => <TableColumn
+                            key={tableHeader.key}>{tableHeader.label}</TableColumn>)
+                    }
+                </TableHeader>
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        menuItemFoodItem.value.resultDto.map((dto) =>
+                            <TableRow key={dto.menuItem.name}>
+                                <TableCell>{dto.menuItem.name}</TableCell>
+                                <TableCell>{dto.foodItem.name}</TableCell>
+                                <TableCell>{dto.consumption}</TableCell>
+                                <TableCell width={"30px"}>
+                                    <Button size={"sm"}
+                                            onClick={() => handleDelete(dto.menuItem_Id, dto.foodItem_Id)}
+                                    >
                                         <FontAwesomeIcon icon={faTrash}/>
-                                    </button>
-                                </div>
-                                <div className={"p-4 gird-style text-center"}>
-                                    <button
-                                        onClick={() => handleEdit(menuItemFoodItemDto.menuItem_Id, menuItemFoodItemDto.foodItem_Id)}>
+                                    </Button>
+                                </TableCell>
+                                <TableCell width={"30px"}>
+                                    <Button size={"sm"}
+                                            onClick={() => handleEdit(dto.menuItem_Id, dto.foodItem_Id)}
+                                    >
                                         <FontAwesomeIcon icon={faPenToSquare}/>
-                                    </button>
-                                </div>
-                            </Fragment>
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
                         )
-                    })
-                }
-            </div>
+                    }
+                </TableBody>
+            </Table>
             <Modals isOpen={isOpen}
                     onOpenChange={onOpenChange}
                     onCancel={() => editModal ? cancelEdition() : cancelCreation()}

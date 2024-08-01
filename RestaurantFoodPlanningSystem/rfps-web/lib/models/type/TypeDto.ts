@@ -3,7 +3,19 @@ interface ITypeDto {
     name: string;
 }
 
-export const typeHeaders = ["ID", "Name"];
+export const typeHeaders = [{
+    key  : "id",
+    label: "ID"
+}, {
+    key  : "name",
+    label: "Name"
+}, {
+    key  : "delete",
+    label: "Delete"
+}, {
+    key  : "edit",
+    label: "Edit"
+}];
 
 class TypeDto implements ITypeDto {
     id: number;

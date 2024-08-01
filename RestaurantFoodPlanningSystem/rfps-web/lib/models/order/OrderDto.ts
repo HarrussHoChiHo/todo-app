@@ -6,7 +6,22 @@ interface IOrderDto {
     orderItems: OrderItemDto[];
 }
 
-export const orderHeaders = ["ID", "Cancelled?", "Items"];
+export const orderHeaders = [{
+    key  : "id",
+    label: "ID"
+}, {
+    key  : "cancelled",
+    label: "Cancelled?"
+}, {
+    key  : "items",
+    label: "Items"
+}, {
+    key  : "delete",
+    label: "Delete"
+}, {
+    key  : "edit",
+    label: "Edit"
+}];
 
 class OrderDto implements IOrderDto {
     id: number;

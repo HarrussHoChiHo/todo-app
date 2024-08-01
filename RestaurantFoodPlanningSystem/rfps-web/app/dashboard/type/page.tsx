@@ -4,7 +4,18 @@ import HttpServices from "../../../lib/HttpServices";
 import {useAuth} from "../../AuthContext";
 import React, {Fragment, useEffect, useState} from "react";
 import UnitDto from "../../../lib/models/unit/UnitDto";
-import {Button, Input, Spinner, useDisclosure} from "@nextui-org/react";
+import {
+    Button,
+    Input,
+    Spinner,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
+    useDisclosure
+} from "@nextui-org/react";
 import TypeDto, {typeHeaders} from "../../../lib/models/type/TypeDto";
 import TypeQueryDto from "../../../lib/models/type/TypeQueryDto";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -322,51 +333,42 @@ export default function TypeComponent() {
                             color={"success"}
                     />
                 </div>
-                <div className={"grid grid-cols-4 w-full"}>
-                    {
-                        typeHeaders.map((header) => (
-                            <Fragment key={header}>
-                                <div className={"font-extrabold gird-style text-center"}>
-                                    {header}
-                                </div>
-                            </Fragment>
-                        ))
-                    }
-                    <Fragment key={"header_delete"}>
-                        <div className={"font-extrabold gird-style text-center"}>
-                            Delete
-                        </div>
-                    </Fragment>
-                    <Fragment key={"header_edit"}>
-                        <div className={"font-extrabold gird-style text-center"}>
-                            Edit
-                        </div>
-                    </Fragment>
-                    {
-                        type.value.resultDto.map((typeDto) => {
-                            return (
-                                <Fragment key={typeDto.id}>
-                                    <div className={"p-4 gird-style text-center"}>
-                                        {typeDto.id}
-                                    </div>
-                                    <div className={"p-4 gird-style text-center"}>
-                                        {typeDto.name}
-                                    </div>
-                                    <div className={"p-4 gird-style text-center"}>
-                                        <button onClick={() => handleDelete(typeDto.id)}>
-                                            <FontAwesomeIcon icon={faTrash}/>
-                                        </button>
-                                    </div>
-                                    <div className={"p-4 gird-style text-center"}>
-                                        <button onClick={() => handleEdit(typeDto.id)}>
-                                            <FontAwesomeIcon icon={faPenToSquare}/>
-                                        </button>
-                                    </div>
-                                </Fragment>
+                <Table>
+                    <TableHeader>
+                        {
+                            typeHeaders.map(tableHeader =>
+                                <TableColumn
+                                    key={tableHeader.key}>{tableHeader.label}
+                                </TableColumn>
                             )
-                        })
-                    }
-                </div>
+                        }
+                    </TableHeader>
+                    <TableBody emptyContent={"No rows to display."}>
+                        {
+                            type.value.resultDto.map((dto) =>
+                                <TableRow key={dto.id}>
+                                    <TableCell>{dto.id}</TableCell>
+                                    <TableCell>{dto.name}</TableCell>
+                                    <TableCell  width={"30px"}>
+                                        <Button size={"sm"}
+                                                onClick={() => handleDelete(dto.id)}
+                                        >
+                                            <FontAwesomeIcon icon={faTrash}
+                                                             id={dto.id.toString()}/>
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell  width={"30px"}>
+                                        <Button size={"sm"}
+                                                onClick={() => handleEdit(dto.id)}
+                                        >
+                                            <FontAwesomeIcon icon={faPenToSquare}/>
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        }
+                    </TableBody>
+                </Table>
                 <Modals isOpen={isOpen}
                         onOpenChange={onOpenChange}
                         onCancel={closeModal}

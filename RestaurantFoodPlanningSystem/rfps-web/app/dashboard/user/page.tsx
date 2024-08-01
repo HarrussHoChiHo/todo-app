@@ -7,7 +7,20 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import RoleDto from "../../../lib/models/RoleDto";
-import {Button, Input, Select, SelectItem, Spinner, useDisclosure} from "@nextui-org/react";
+import {
+    Button,
+    Input,
+    Select,
+    SelectItem,
+    Spinner,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
+    useDisclosure
+} from "@nextui-org/react";
 import Modals from "../../../components/CustomModal";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import UserQueryDto from "../../../lib/models/user/UserQueryDto";
@@ -468,56 +481,41 @@ export default function Page() {
                         color={"success"}
                 />
             </div>
-            <div className={"grid grid-cols-6 w-full"}>
-                {
-                    userHeaders.map((header) => (
-                        <Fragment key={header}>
-                            <div className={"font-extrabold gird-style text-center"}>
-                                {header}
-                            </div>
-                        </Fragment>
-                    ))
-                }
-                <Fragment key={"header_delete"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Delete
-                    </div>
-                </Fragment>
-                <Fragment key={"header_edit"}>
-                    <div className={"font-extrabold gird-style text-center"}>
-                        Edit
-                    </div>
-                </Fragment>
-                {
-                    (jsonObj.value.resultDto as UserDto[]).map((userDto) => (
-                        <Fragment key={userDto.id}>
-                            <div className={"p-4 gird-style text-center"}>
-                                {userDto.id}
-                            </div>
-                            <div className={"p-4 gird-style text-center"}>
-                                {userDto.userName}
-                            </div>
-                            <div className={"p-4 gird-style text-center"}>
-                                {userDto.password}
-                            </div>
-                            <div className={"p-4 gird-style text-center"}>
-                                {userDto.role.join(", ")}
-                            </div>
-                            <div className={"p-4 gird-style text-center"}>
-                                <button onClick={() => handleDelete(userDto.id)}>
-                                    <FontAwesomeIcon icon={faTrash}
-                                                     id={userDto.id.toString()}/>
-                                </button>
-                            </div>
-                            <div className={"p-4 gird-style text-center"}>
-                                <button onClick={() => handleEdit(userDto.id)}>
-                                    <FontAwesomeIcon icon={faPenToSquare}/>
-                                </button>
-                            </div>
-                        </Fragment>
-                    ))
-                }
-            </div>
+            <Table>
+                <TableHeader>
+                    {
+                        userHeaders.map(tableHeader => <TableColumn
+                            key={tableHeader.key}>{tableHeader.label}</TableColumn>)
+                    }
+                </TableHeader>
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        jsonObj.value.resultDto.map((userDto) =>
+                            <TableRow key={userDto.id}>
+                                <TableCell>{userDto.id}</TableCell>
+                                <TableCell>{userDto.userName}</TableCell>
+                                <TableCell>{userDto.password}</TableCell>
+                                <TableCell>{userDto.role.join(", ")}</TableCell>
+                                <TableCell  width={"30px"}>
+                                    <Button size={"sm"}
+                                            onClick={() => handleDelete(userDto.id)}
+                                    >
+                                        <FontAwesomeIcon icon={faTrash}
+                                                         id={userDto.id.toString()}/>
+                                    </Button>
+                                </TableCell>
+                                <TableCell  width={"30px"}>
+                                    <Button size={"sm"}
+                                            onClick={() => handleEdit(userDto.id)}
+                                    >
+                                        <FontAwesomeIcon icon={faPenToSquare}/>
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        )
+                    }
+                </TableBody>
+            </Table>
             <Modals isOpen={isOpen}
                     onOpenChange={onOpenChange}
                     onCancel={() => editModal ? cancelEdition() : cancelCreation()}

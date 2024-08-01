@@ -3,7 +3,19 @@ interface IMenuItemDto {
     name: string;
 }
 
-export const menuItemHeaders = ["ID", "Name"];
+export const menuItemHeaders = [{
+    key  : "id",
+    label: "ID"
+}, {
+    key  : "name",
+    label: "Name"
+}, {
+    key  : "delete",
+    label: "Delete"
+}, {
+    key  : "edit",
+    label: "Edit"
+}];
 
 class MenuItemDto implements IMenuItemDto {
     id: number;
