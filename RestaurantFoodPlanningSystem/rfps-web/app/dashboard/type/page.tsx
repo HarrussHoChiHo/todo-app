@@ -16,7 +16,7 @@ import {
     TableRow,
     useDisclosure
 } from "@nextui-org/react";
-import TypeDto, {typeHeaders} from "../../../lib/models/type/TypeDto";
+import TypeDto, {typeHeaders, typeHeadersStaff} from "../../../lib/models/type/TypeDto";
 import TypeQueryDto from "../../../lib/models/type/TypeQueryDto";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
@@ -24,10 +24,14 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import Modals from "../../../components/CustomModal";
 import {toast} from "react-toastify";
+import typeDto from "../../../lib/models/type/TypeDto";
 
 export default function TypeComponent() {
     const httpServices = new HttpServices();
-    const {token} = useAuth();
+    const {
+        token,
+        user
+    } = useAuth();
     const typeAPI: string = "/DataManagement/type";
     const [type, setType] = useState<BasicDto<TypeDto>>({
         error    : "",
@@ -272,24 +276,77 @@ export default function TypeComponent() {
         if (editModal) {
             return (
                 <>
-                    <Input label={"Name"}
-                           type={"text"}
-                           defaultValue={editObj.name}
-                           isRequired={true}
-                           onChange={(event) => updateName(event.target.value)}
+                    <Input
+                        label={"Name"}
+                        type={"text"}
+                        defaultValue={editObj.name}
+                        isRequired={true}
+                        onChange={(event) => updateName(event.target.value)}
                     />
                 </>
             )
         } else {
             return (
                 <>
-                    <Input label={"Name"}
-                           type={"text"}
-                           isRequired={true}
-                           onChange={(event) => createNewName(event.target.value)}
+                    <Input
+                        label={"Name"}
+                        type={"text"}
+                        isRequired={true}
+                        onChange={(event) => createNewName(event.target.value)}
                     />
                 </>
             )
+        }
+    }
+
+    const generateOptionalFields = () => {
+        if (user?.role.includes("Manager")) {
+            return (
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        type.value.resultDto.map((dto) =>
+                            <TableRow key={dto.id}>
+                                <TableCell>{dto.id}</TableCell>
+                                <TableCell>{dto.name}</TableCell>
+                                <TableCell width={"30px"}>
+                                    <Button
+                                        size={"sm"}
+                                        onClick={() => handleDelete(dto.id)}
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faTrash}
+                                            id={dto.id.toString()}
+                                        />
+                                    </Button>
+                                </TableCell>
+                                <TableCell width={"30px"}>
+                                    <Button
+                                        size={"sm"}
+                                        onClick={() => handleEdit(dto.id)}
+                                    >
+                                        <FontAwesomeIcon icon={faPenToSquare} />
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        )
+                    }
+                </TableBody>
+
+            );
+        } else {
+            return (
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        type.value.resultDto.map((dto) =>
+                            <TableRow key={dto.id}>
+                                <TableCell>{dto.id}</TableCell>
+                                <TableCell>{dto.name}</TableCell>
+                            </TableRow>
+                        )
+                    }
+                </TableBody>
+
+            );
         }
     }
 
@@ -319,68 +376,63 @@ export default function TypeComponent() {
     }, []);
 
     if (isLoading) {
-        return <Spinner/>;
+        return <Spinner />;
     }
 
     return (
         <>
-            <>
-                <div className={"w-full flex flex-row justify-end p-2"}>
-                    <Button variant={"solid"}
-                            startContent={<FontAwesomeIcon icon={faFolderPlus}/>}
-                            className={"w-3/12"}
-                            onClick={handleCreate}
-                            color={"success"}
+            {
+                user?.role.includes("Manager")
+                ? (<div className={"w-full flex flex-row justify-end p-2"}>
+                    <Button
+                        variant={"solid"}
+                        startContent={<FontAwesomeIcon icon={faFolderPlus} />}
+                        className={"w-3/12"}
+                        onClick={handleCreate}
+                        color={"success"}
                     />
-                </div>
-                <Table>
-                    <TableHeader>
-                        {
-                            typeHeaders.map(tableHeader =>
-                                <TableColumn
-                                    key={tableHeader.key}>{tableHeader.label}
-                                </TableColumn>
-                            )
-                        }
-                    </TableHeader>
-                    <TableBody emptyContent={"No rows to display."}>
-                        {
-                            type.value.resultDto.map((dto) =>
-                                <TableRow key={dto.id}>
-                                    <TableCell>{dto.id}</TableCell>
-                                    <TableCell>{dto.name}</TableCell>
-                                    <TableCell  width={"30px"}>
-                                        <Button size={"sm"}
-                                                onClick={() => handleDelete(dto.id)}
-                                        >
-                                            <FontAwesomeIcon icon={faTrash}
-                                                             id={dto.id.toString()}/>
-                                        </Button>
-                                    </TableCell>
-                                    <TableCell  width={"30px"}>
-                                        <Button size={"sm"}
-                                                onClick={() => handleEdit(dto.id)}
-                                        >
-                                            <FontAwesomeIcon icon={faPenToSquare}/>
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            )
-                        }
-                    </TableBody>
-                </Table>
-                <Modals isOpen={isOpen}
-                        onOpenChange={onOpenChange}
-                        onCancel={closeModal}
-                        onConfirm={() => editModal ? confirmEdition() : confirmCreation()}
-                        header={editModal ? "Edit" : "Create"}
-                        hideCloseButton={false}
-                >
+                </div>)
+                : (<></>)
+            }
+            <Table>
+                <TableHeader>
                     {
-                        renderContent()
+                        user?.role.includes("Manager")
+                        ?
+                        typeHeaders.map(tableHeader =>
+                            <TableColumn
+                                key={tableHeader.key}
+                            >{tableHeader.label}
+                            </TableColumn>
+                        )
+                        : typeHeadersStaff.map(tableHeader =>
+                            <TableColumn
+                                key={tableHeader.key}
+                            >{tableHeader.label}
+                            </TableColumn>
+                        )
                     }
-                </Modals>
-            </>
+                </TableHeader>
+                {
+                    generateOptionalFields()
+                }
+            </Table>
+            <Modals
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                onCancel={closeModal}
+                onConfirm={() => editModal
+                                 ? confirmEdition()
+                                 : confirmCreation()}
+                header={editModal
+                        ? "Edit"
+                        : "Create"}
+                hideCloseButton={false}
+            >
+                {
+                    renderContent()
+                }
+            </Modals>
         </>
     )
 }

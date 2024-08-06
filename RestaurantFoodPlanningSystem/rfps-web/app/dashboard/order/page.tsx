@@ -15,9 +15,9 @@ import {
     TableColumn,
     TableHeader,
     TableRow,
-    useDisclosure
+    useDisclosure, user
 } from "@nextui-org/react";
-import OrderDto, {orderHeaders} from "../../../lib/models/order/OrderDto";
+import OrderDto, {orderHeaders, orderHeadersStaff} from "../../../lib/models/order/OrderDto";
 import OrderQueryDto from "../../../lib/models/order/OrderQueryDto";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -25,11 +25,13 @@ import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import Modals from "../../../components/CustomModal";
 import OrderItemDto from "../../../lib/models/order/OrderItemDto";
 import {toast} from "react-toastify";
-import {unitHeaders} from "../../../lib/models/unit/UnitDto";
 
 export default function OrderComponent() {
     const httpServices = new HttpServices();
-    const {token} = useAuth();
+    const {
+        token,
+        user
+    } = useAuth();
     const orderAPI: string = "/DataManagement/order";
     const orderItemAPI: string = "/DataManagement/order-item";
     const {
@@ -74,33 +76,33 @@ export default function OrderComponent() {
 
     const handleDelete = (id: number) => {
         (async () => {
-                const serverRes = await deleteOrder(id);
+            const serverRes = await deleteOrder(id);
 
-                if (!serverRes) {
-                    throw new Error("Failed to retrieve place-order.");
-                }
+            if (!serverRes) {
+                throw new Error("Failed to retrieve place-order.");
+            }
 
-                if (!serverRes.isSuccess) {
-                    throw new Error(`Fail - ${serverRes.error}`);
-                }
+            if (!serverRes.isSuccess) {
+                throw new Error(`Fail - ${serverRes.error}`);
+            }
 
-                const retrieveRes = await retrieveOrder({
-                    id        : null,
-                    isCanceled: null
-                });
+            const retrieveRes = await retrieveOrder({
+                id        : null,
+                isCanceled: null
+            });
 
-                if (!retrieveRes) {
-                    throw new Error("Failed to retrieve updated place-order");
-                }
+            if (!retrieveRes) {
+                throw new Error("Failed to retrieve updated place-order");
+            }
 
-                if (!retrieveRes.isSuccess) {
-                    throw new Error(`Fail - ${retrieveRes.error}`);
-                }
-                
-                setOrder(retrieveRes);
+            if (!retrieveRes.isSuccess) {
+                throw new Error(`Fail - ${retrieveRes.error}`);
+            }
 
-                setEditObj(serverRes.value.resultDto[0]);
-                setIsCanceled(`${serverRes.value.resultDto[0].isCanceled}`);
+            setOrder(retrieveRes);
+
+            setEditObj(serverRes.value.resultDto[0]);
+            setIsCanceled(`${serverRes.value.resultDto[0].isCanceled}`);
         })().catch(error => {
             if (error instanceof Error) {
                 showToast(error.message);
@@ -217,7 +219,7 @@ export default function OrderComponent() {
                 const serverRes = await Promise.all(promiseList);
 
                 const failedServerRes = serverRes.filter(res => !res!.isSuccess);
-                
+
                 if (failedServerRes.length > 0) {
                     throw new Error("Failed to update place-order item");
                 }
@@ -287,15 +289,22 @@ export default function OrderComponent() {
     const renderContent = () => {
         return (
             <>
-                <Select label={"Order Status"}
-                        selectionMode={"single"}
-                        selectedKeys={[isCanceled]}
-                        onSelectionChange={(option) => updateStatus(Array.from(option, opt => opt.toString()))}
+                <Select
+                    label={"Order Status"}
+                    selectionMode={"single"}
+                    selectedKeys={[isCanceled]}
+                    onSelectionChange={(option) => updateStatus(Array.from(option, opt => opt.toString()))}
                 >
-                    <SelectItem key={"false"} value={"false"}>
+                    <SelectItem
+                        key={"false"}
+                        value={"false"}
+                    >
                         {"Not Canceled"}
                     </SelectItem>
-                    <SelectItem key={"true"} value={"true"}>
+                    <SelectItem
+                        key={"true"}
+                        value={"true"}
+                    >
                         {"Canceled"}
                     </SelectItem>
                 </Select>
@@ -303,8 +312,9 @@ export default function OrderComponent() {
                     editObj.orderItems.map(iorder =>
                         <Fragment key={iorder.id}>
                             <div className={"flex flex-row w-full"}>
-                                <Checkbox defaultSelected
-                                          onValueChange={(checked) => updateOrderItemList(checked, iorder.id)}
+                                <Checkbox
+                                    defaultSelected
+                                    onValueChange={(checked) => updateOrderItemList(checked, iorder.id)}
                                 >
                                     {iorder.menuItem.name}
                                 </Checkbox>
@@ -316,25 +326,17 @@ export default function OrderComponent() {
         )
     }
 
-    if (isLoading) {
-        return <Spinner/>;
-    }
-
-    return (
-        <>
-            <Table>
-                <TableHeader>
-                    {
-                        orderHeaders.map(tableHeader => <TableColumn
-                            key={tableHeader.key}>{tableHeader.label}</TableColumn>)
-                    }
-                </TableHeader>
+    const generateOptionalFields = () => {
+        if (user?.role.includes("Manager")) {
+            return (
                 <TableBody emptyContent={"No rows to display."}>
                     {
                         order.value.resultDto.map((dto) =>
                             <TableRow key={dto.id}>
                                 <TableCell>{dto.id}</TableCell>
-                                <TableCell>{dto.isCanceled ? "Yes" : "No"}</TableCell>
+                                <TableCell>{dto.isCanceled
+                                            ? "Yes"
+                                            : "No"}</TableCell>
                                 <TableCell>
                                     {
                                         <ol>
@@ -349,31 +351,90 @@ export default function OrderComponent() {
                                     }
                                 </TableCell>
                                 <TableCell width={"30px"}>
-                                    <Button size={"sm"}
-                                            onClick={() => handleDelete(dto.id)}
+                                    <Button
+                                        size={"sm"}
+                                        onClick={() => handleDelete(dto.id)}
                                     >
-                                        <FontAwesomeIcon icon={faTrash}
-                                                         id={dto.id.toString()}/>
+                                        <FontAwesomeIcon
+                                            icon={faTrash}
+                                            id={dto.id.toString()}
+                                        />
                                     </Button>
                                 </TableCell>
                                 <TableCell width={"30px"}>
-                                    <Button size={"sm"}
-                                            onClick={() => handleEdit(dto.id)}
+                                    <Button
+                                        size={"sm"}
+                                        onClick={() => handleEdit(dto.id)}
                                     >
-                                        <FontAwesomeIcon icon={faPenToSquare}/>
+                                        <FontAwesomeIcon icon={faPenToSquare} />
                                     </Button>
                                 </TableCell>
                             </TableRow>
                         )
                     }
                 </TableBody>
+            );
+        } else {
+            return (
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        order.value.resultDto.map((dto) =>
+                            <TableRow key={dto.id}>
+                                <TableCell>{dto.id}</TableCell>
+                                <TableCell>{dto.isCanceled
+                                            ? "Yes"
+                                            : "No"}</TableCell>
+                                <TableCell>
+                                    {
+                                        <ol>
+                                            {
+                                                dto.orderItems.map(item =>
+                                                    <li key={item.id}>
+                                                        {item.menuItem.name}
+                                                    </li>
+                                                )
+                                            }
+                                        </ol>
+                                    }
+                                </TableCell>
+                            </TableRow>
+                        )
+                    }
+                </TableBody>
+            );
+        }
+    }
+
+    if (isLoading) {
+        return <Spinner />;
+    }
+
+    return (
+        <>
+            <Table>
+                <TableHeader>
+                    {
+                        user?.role.includes("Manager")
+                        ?
+                        orderHeaders.map(tableHeader => <TableColumn
+                            key={tableHeader.key}
+                        >{tableHeader.label}</TableColumn>)
+                        : orderHeadersStaff.map(tableHeader => <TableColumn
+                            key={tableHeader.key}
+                        >{tableHeader.label}</TableColumn>)
+                    }
+                </TableHeader>
+                {
+                    generateOptionalFields()
+                }
             </Table>
-            <Modals isOpen={isOpen}
-                    onOpenChange={onOpenChange}
-                    onCancel={cancelEdition}
-                    onConfirm={confirmEdition}
-                    header={"Edit"}
-                    hideCloseButton={false}
+            <Modals
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                onCancel={cancelEdition}
+                onConfirm={confirmEdition}
+                header={"Edit"}
+                hideCloseButton={false}
             >
                 {
                     renderContent()

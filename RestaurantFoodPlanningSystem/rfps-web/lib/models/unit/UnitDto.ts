@@ -17,6 +17,14 @@ export const unitHeaders = [{
     label: "Edit"
 }];
 
+export const unitHeadersStaff = [{
+    key  : "id",
+    label: "ID"
+}, {
+    key  : "name",
+    label: "Name"
+}];
+
 class UnitDto implements IUnitDto {
     id: number;
     name: string;

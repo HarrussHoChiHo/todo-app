@@ -1,6 +1,6 @@
 "use client"
 import React, {Fragment, useEffect, useState} from "react";
-import MenuItemDto, {menuItemHeaders} from "../../../lib/models/menu/MenuItemDto";
+import MenuItemDto, {menuItemHeaders, menuItemHeadersStaff} from "../../../lib/models/menu/MenuItemDto";
 import {
     Button,
     Input,
@@ -30,19 +30,22 @@ export default function MenuItemComponent() {
             value    : {
                 amount   : 0,
                 resultDto: [{
-                    id                 : 0,
-                    name               : ""
+                    id  : 0,
+                    name: ""
                 }]
             }
         });
 
 
     const httpServices = new HttpServices();
-    const {token} = useAuth();
+    const {
+        token,
+        user
+    } = useAuth();
     const [editObj, setEditObj] = useState<MenuItemDto>(
         {
-            id               : 0,
-            name             : ""
+            id  : 0,
+            name: ""
         }
     );
     const [editModal, setEditModal] = useState(true);
@@ -73,7 +76,7 @@ export default function MenuItemComponent() {
             }
 
             setMenuItem(server_res);
-            
+
             setIsLoading(false);
         })().catch(error => {
             if (error instanceof Error) {
@@ -214,8 +217,8 @@ export default function MenuItemComponent() {
     const insertName = (name: string) => {
         const {id} = editObj;
         setEditObj({
-            id               : id,
-            name             : name
+            id  : id,
+            name: name
         });
     }
 
@@ -311,49 +314,30 @@ export default function MenuItemComponent() {
         if (editModal) {
             return (
                 <>
-                    <Input label={"Name"}
-                           placeholder={editObj.name}
-                           defaultValue={editObj.name}
-                           onValueChange={(name) => insertName(name)}
+                    <Input
+                        label={"Name"}
+                        placeholder={editObj.name}
+                        defaultValue={editObj.name}
+                        onValueChange={(name) => insertName(name)}
                     />
                 </>
             )
         } else {
             return (
-                <Input label={"Name"}
-                       placeholder={"Insert a name"}
-                       onInput={(event) => createName(event.currentTarget.value)}
-                       onValueChange={(value) => createName(value)}
-                       onChange={(value) => createName(value.target.value)}
+                <Input
+                    label={"Name"}
+                    placeholder={"Insert a name"}
+                    onInput={(event) => createName(event.currentTarget.value)}
+                    onValueChange={(value) => createName(value)}
+                    onChange={(value) => createName(value.target.value)}
                 />
             )
         }
     }
 
-    if (isLoading) {
-        return <Spinner/>;
-    }
-
-    return (
-        <>
-            <div className={"w-full flex flex-row justify-end p-2"}>
-                <Button variant={"solid"}
-                        startContent={<FontAwesomeIcon icon={faFolderPlus}/>}
-                        onClick={handleCreate}
-                        className={"w-3/12"}
-                        color={"success"}
-                />
-            </div>
-            <Table>
-                <TableHeader>
-                    {
-                        menuItemHeaders.map(tableHeader =>
-                            <TableColumn
-                                key={tableHeader.key}>{tableHeader.label}
-                            </TableColumn>
-                        )
-                    }
-                </TableHeader>
+    const generateOptionalFields = () => {
+        if (user?.role.includes("Manager")) {
+            return (
                 <TableBody emptyContent={"No rows to display."}>
                     {
                         menuItem.value.resultDto.map((dto) =>
@@ -361,31 +345,100 @@ export default function MenuItemComponent() {
                                 <TableCell>{dto.id}</TableCell>
                                 <TableCell>{dto.name}</TableCell>
                                 <TableCell width={"30px"}>
-                                    <Button size={"sm"}
-                                            onClick={() => handleDelete(dto.id)}
+                                    <Button
+                                        size={"sm"}
+                                        onClick={() => handleDelete(dto.id)}
                                     >
-                                        <FontAwesomeIcon icon={faTrash}
-                                                         id={dto.id.toString()}/>
+                                        <FontAwesomeIcon
+                                            icon={faTrash}
+                                            id={dto.id.toString()}
+                                        />
                                     </Button>
                                 </TableCell>
                                 <TableCell width={"30px"}>
-                                    <Button size={"sm"}
-                                            onClick={() => handleEdit(dto.id)}
+                                    <Button
+                                        size={"sm"}
+                                        onClick={() => handleEdit(dto.id)}
                                     >
-                                        <FontAwesomeIcon icon={faPenToSquare}/>
+                                        <FontAwesomeIcon icon={faPenToSquare} />
                                     </Button>
                                 </TableCell>
                             </TableRow>
                         )
                     }
                 </TableBody>
+            );
+        } else {
+            return (
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        menuItem.value.resultDto.map((dto) =>
+                            <TableRow key={dto.id}>
+                                <TableCell>{dto.id}</TableCell>
+                                <TableCell>{dto.name}</TableCell>
+                            </TableRow>
+                        )
+                    }
+                </TableBody>
+            );
+        }
+    }
+
+    if (isLoading) {
+        return <Spinner />;
+    }
+
+    return (
+        <>
+            {
+                user?.role.includes("Manager")
+                ? (<div className={"w-full flex flex-row justify-end p-2"}>
+                    <Button
+                        variant={"solid"}
+                        startContent={<FontAwesomeIcon icon={faFolderPlus} />}
+                        onClick={handleCreate}
+                        className={"w-3/12"}
+                        color={"success"}
+                    />
+                </div>)
+                : (<></>)
+            }
+            <Table>
+                <TableHeader>
+                    {
+                        user?.role.includes("Manager")
+                        ?
+                        menuItemHeaders.map(tableHeader =>
+                            <TableColumn
+                                key={tableHeader.key}
+                            >{tableHeader.label}
+                            </TableColumn>
+                        )
+                        : menuItemHeadersStaff.map(tableHeader =>
+                            <TableColumn
+                                key={tableHeader.key}
+                            >{tableHeader.label}
+                            </TableColumn>
+                        )
+                    }
+                </TableHeader>
+                {
+                    generateOptionalFields()
+                }
             </Table>
-            <Modals isOpen={isOpen}
-                    onOpenChange={onOpenChange}
-                    onCancel={() => editModal ? cancelEdition() : cancelCreation()}
-                    onConfirm={() => editModal ? confirmEdition() : confirmCreation()}
-                    header={editModal ? "Edit" : "Create"}
-                    hideCloseButton={false}
+            <Modals
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                onCancel={() => editModal
+                                ? cancelEdition()
+                                : cancelCreation()}
+                onConfirm={() => editModal
+                                 ? confirmEdition()
+                                 : confirmCreation()}
+                header={editModal
+                        ? "Edit"
+                        : "Create"}
+                hideCloseButton={false}
             >
                 {
                     renderContent()

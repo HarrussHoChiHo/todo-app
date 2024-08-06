@@ -43,3 +43,14 @@ export const mifiHeaders = [{
     key  : "edit",
     label: "Edit"
 }];
+
+export const mifiHeadersStaff = [{
+    key  : "menuItem",
+    label: "Menu Item"
+}, {
+    key  : "foodItem",
+    label: "Food Item?"
+}, {
+    key  : "consumption",
+    label: "Consumption"
+}];

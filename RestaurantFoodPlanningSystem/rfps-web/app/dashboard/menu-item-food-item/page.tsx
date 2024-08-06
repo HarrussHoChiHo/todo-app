@@ -1,7 +1,10 @@
 "use client"
 
 import React, {Fragment, useEffect, useState} from "react";
-import MenuItemFoodItemDto, {mifiHeaders} from "../../../lib/models/menuitemfooditem/MenuItemFoodItemDto";
+import MenuItemFoodItemDto, {
+    mifiHeaders,
+    mifiHeadersStaff
+} from "../../../lib/models/menuitemfooditem/MenuItemFoodItemDto";
 import HttpServices from "../../../lib/HttpServices";
 import {useAuth} from "../../AuthContext";
 import {toast} from "react-toastify";
@@ -32,25 +35,28 @@ export default function MenuItemFoodItemComponent() {
     const menuItemAPI: string = "/DataManagement/menu-item";
     const foodItemAPI: string = "/DataManagement/food-item";
     const httpServices = new HttpServices();
-    const {token} = useAuth();
+    const {
+        token,
+        user
+    } = useAuth();
     const [editObj, setEditObj] = useState<MenuItemFoodItemDto>(
         {
             foodItem   : {
-                id                   : 0,
-                name                 : "",
-                quantity             : 0,
-                unit                 : {
+                id      : 0,
+                name    : "",
+                quantity: 0,
+                unit    : {
                     id  : 0,
                     name: ""
                 },
-                type                 : {
+                type    : {
                     id  : 0,
                     name: ""
                 }
             },
             menuItem   : {
-                id                 : 0,
-                name               : ""
+                id  : 0,
+                name: ""
             },
             consumption: 0,
             foodItem_Id: 0,
@@ -74,22 +80,22 @@ export default function MenuItemFoodItemComponent() {
             resultDto: [{
                 consumption: 0,
                 foodItem   : {
-                    id                   : 0,
-                    name                 : "",
-                    quantity             : 0,
-                    unit                 : {
+                    id      : 0,
+                    name    : "",
+                    quantity: 0,
+                    unit    : {
                         id  : 0,
                         name: ""
                     },
-                    type                 : {
+                    type    : {
                         id  : 0,
                         name: ""
                     }
                 },
                 foodItem_Id: 0,
                 menuItem   : {
-                    id                 : 0,
-                    name               : ""
+                    id  : 0,
+                    name: ""
                 },
                 menuItem_Id: 0
             }]
@@ -101,8 +107,8 @@ export default function MenuItemFoodItemComponent() {
         value    : {
             amount   : 0,
             resultDto: [{
-                id                 : 0,
-                name               : ""
+                id  : 0,
+                name: ""
             }]
         }
     });
@@ -112,14 +118,14 @@ export default function MenuItemFoodItemComponent() {
         value    : {
             amount   : 0,
             resultDto: [{
-                id                   : 0,
-                name                 : "",
-                quantity             : 0,
-                unit                 : {
+                id      : 0,
+                name    : "",
+                quantity: 0,
+                unit    : {
                     id  : 0,
                     name: ""
                 },
-                type                 : {
+                type    : {
                     id  : 0,
                     name: ""
                 }
@@ -416,7 +422,7 @@ export default function MenuItemFoodItemComponent() {
 
     const confirmCreation = () => {
         (async () => {
-            
+
             const creation_res = await createMenuItemFoodItem(mifiQueryDto);
 
             if (!creation_res) {
@@ -537,27 +543,31 @@ export default function MenuItemFoodItemComponent() {
                     <Select
                         label={"Food Item"}
                         selectionMode={"single"}
-                        selectedKeys={editObj.foodItem_Id === 0 ? "" : editObj.foodItem_Id.toString()}
+                        selectedKeys={editObj.foodItem_Id === 0
+                                      ? ""
+                                      : editObj.foodItem_Id.toString()}
                         onSelectionChange={(selection) => updateFoodItem(Array.from(selection)[0] as number)}
                     >
                         {
                             foodItem.value.resultDto.map(value =>
-                                <SelectItem key={value.id}
-                                            value={value.id}
-                                            textValue={value.name}
+                                <SelectItem
+                                    key={value.id}
+                                    value={value.id}
+                                    textValue={value.name}
                                 >
                                     {value.name}
                                 </SelectItem>
                             )
                         }
                     </Select>
-                    <Input label={"Consumption"}
-                           type={"number"}
-                           min={1}
-                           isRequired={true}
-                           isInvalid={invalidConsumption}
-                           defaultValue={editObj.consumption?.toString()}
-                           onChange={(event) => updateConsumption(parseInt(event.target.value))}
+                    <Input
+                        label={"Consumption"}
+                        type={"number"}
+                        min={1}
+                        isRequired={true}
+                        isInvalid={invalidConsumption}
+                        defaultValue={editObj.consumption?.toString()}
+                        onChange={(event) => updateConsumption(parseInt(event.target.value))}
                     />
                 </>
             )
@@ -567,14 +577,17 @@ export default function MenuItemFoodItemComponent() {
                     <Select
                         label={"Menu Item"}
                         selectionMode={"single"}
-                        value={mifiQueryDto.menuItem_Id ? mifiQueryDto.menuItem_Id.toString() : ""}
+                        value={mifiQueryDto.menuItem_Id
+                               ? mifiQueryDto.menuItem_Id.toString()
+                               : ""}
                         onSelectionChange={(selection) => createMenuItem(Array.from(selection)[0] as number)}
                     >
                         {
                             menuItem.value.resultDto.map(value =>
-                                <SelectItem key={value.id}
-                                            value={value.id}
-                                            textValue={value.name}
+                                <SelectItem
+                                    key={value.id}
+                                    value={value.id}
+                                    textValue={value.name}
                                 >
                                     {value.name}
                                 </SelectItem>
@@ -584,55 +597,42 @@ export default function MenuItemFoodItemComponent() {
                     <Select
                         label={"Food Item"}
                         selectionMode={"single"}
-                        value={mifiQueryDto.foodItem_Id ? mifiQueryDto.foodItem_Id.toString() : ""}
+                        value={mifiQueryDto.foodItem_Id
+                               ? mifiQueryDto.foodItem_Id.toString()
+                               : ""}
                         onSelectionChange={(selection) => createFoodItem(Array.from(selection)[0] as number)}
                     >
                         {
                             foodItem.value.resultDto.map(value =>
-                                <SelectItem key={value.id}
-                                            value={value.id}
-                                            textValue={value.name}
+                                <SelectItem
+                                    key={value.id}
+                                    value={value.id}
+                                    textValue={value.name}
                                 >
                                     {value.name}
                                 </SelectItem>
                             )
                         }
                     </Select>
-                    <Input label={"Consumption"}
-                           type={"number"}
-                           min={1}
-                           isRequired={true}
-                           isInvalid={invalidConsumption}
-                           value={mifiQueryDto.consumption ? mifiQueryDto.consumption?.toString() : ""}
-                           onChange={(event) => createConsumption(parseInt(event.target.value))}
+                    <Input
+                        label={"Consumption"}
+                        type={"number"}
+                        min={1}
+                        isRequired={true}
+                        isInvalid={invalidConsumption}
+                        value={mifiQueryDto.consumption
+                               ? mifiQueryDto.consumption?.toString()
+                               : ""}
+                        onChange={(event) => createConsumption(parseInt(event.target.value))}
                     />
                 </>
             )
         }
-
     }
 
-    if (isLoading) {
-        return <Spinner/>;
-    }
-
-    return (
-        <>
-            <div className={"w-full flex flex-row justify-end p-2"}>
-                <Button variant={"solid"}
-                        startContent={<FontAwesomeIcon icon={faFolderPlus}/>}
-                        onClick={handleCreate}
-                        className={"w-3/12"}
-                        color={"success"}
-                />
-            </div>
-            <Table>
-                <TableHeader>
-                    {
-                        mifiHeaders.map(tableHeader => <TableColumn
-                            key={tableHeader.key}>{tableHeader.label}</TableColumn>)
-                    }
-                </TableHeader>
+    const generateOptionalFields = () => {
+        if (user?.role.includes("Manager")) {
+            return (
                 <TableBody emptyContent={"No rows to display."}>
                     {
                         menuItemFoodItem.value.resultDto.map((dto) =>
@@ -641,30 +641,92 @@ export default function MenuItemFoodItemComponent() {
                                 <TableCell>{dto.foodItem.name}</TableCell>
                                 <TableCell>{dto.consumption}</TableCell>
                                 <TableCell width={"30px"}>
-                                    <Button size={"sm"}
-                                            onClick={() => handleDelete(dto.menuItem_Id, dto.foodItem_Id)}
+                                    <Button
+                                        size={"sm"}
+                                        onClick={() => handleDelete(dto.menuItem_Id, dto.foodItem_Id)}
                                     >
-                                        <FontAwesomeIcon icon={faTrash}/>
+                                        <FontAwesomeIcon icon={faTrash} />
                                     </Button>
                                 </TableCell>
                                 <TableCell width={"30px"}>
-                                    <Button size={"sm"}
-                                            onClick={() => handleEdit(dto.menuItem_Id, dto.foodItem_Id)}
+                                    <Button
+                                        size={"sm"}
+                                        onClick={() => handleEdit(dto.menuItem_Id, dto.foodItem_Id)}
                                     >
-                                        <FontAwesomeIcon icon={faPenToSquare}/>
+                                        <FontAwesomeIcon icon={faPenToSquare} />
                                     </Button>
                                 </TableCell>
                             </TableRow>
                         )
                     }
                 </TableBody>
+            );
+        } else {
+            return (
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        menuItemFoodItem.value.resultDto.map((dto) =>
+                            <TableRow key={dto.menuItem.name}>
+                                <TableCell>{dto.menuItem.name}</TableCell>
+                                <TableCell>{dto.foodItem.name}</TableCell>
+                                <TableCell>{dto.consumption}</TableCell>
+                            </TableRow>
+                        )
+                    }
+                </TableBody>
+            );
+        }
+    }
+
+    if (isLoading) {
+        return <Spinner />;
+    }
+
+    return (
+        <>
+            {
+                user?.role.includes("Manager")
+                ? (<div className={"w-full flex flex-row justify-end p-2"}>
+                    <Button
+                        variant={"solid"}
+                        startContent={<FontAwesomeIcon icon={faFolderPlus} />}
+                        onClick={handleCreate}
+                        className={"w-3/12"}
+                        color={"success"}
+                    />
+                </div>)
+                : (<></>)
+            }
+            <Table>
+                <TableHeader>
+                    {
+                        user?.role.includes("Manager")
+                        ?
+                        mifiHeaders.map(tableHeader => <TableColumn
+                            key={tableHeader.key}
+                        >{tableHeader.label}</TableColumn>)
+                        : mifiHeadersStaff.map(tableHeader => <TableColumn
+                            key={tableHeader.key}
+                        >{tableHeader.label}</TableColumn>)
+                    }
+                </TableHeader>
+                {
+                    generateOptionalFields()
+                }
             </Table>
-            <Modals isOpen={isOpen}
-                    onOpenChange={onOpenChange}
-                    onCancel={() => editModal ? cancelEdition() : cancelCreation()}
-                    onConfirm={() => editModal ? confirmEdition() : confirmCreation()}
-                    header={editModal ? "Edit" : "Create"}
-                    hideCloseButton={false}
+            <Modals
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                onCancel={() => editModal
+                                ? cancelEdition()
+                                : cancelCreation()}
+                onConfirm={() => editModal
+                                 ? confirmEdition()
+                                 : confirmCreation()}
+                header={editModal
+                        ? "Edit"
+                        : "Create"}
+                hideCloseButton={false}
             >
                 {
                     renderContent()

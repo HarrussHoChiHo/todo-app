@@ -5,7 +5,7 @@ import React, {Fragment, useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
-import UnitDto, {unitHeaders} from "../../../lib/models/unit/UnitDto";
+import UnitDto, {unitHeaders, unitHeadersStaff} from "../../../lib/models/unit/UnitDto";
 import UnitQueryDto from "../../../lib/models/unit/UnitQueryDto";
 import {
     Button,
@@ -25,7 +25,10 @@ import {toast} from "react-toastify";
 
 export default function UnitComponent() {
     const httpServices = new HttpServices();
-    const {token} = useAuth();
+    const {
+        token,
+        user
+    } = useAuth();
     const unitAPI: string = "/DataManagement/unit";
     const [unit, setUnit] = useState<BasicDto<UnitDto>>(
         {
@@ -293,52 +296,9 @@ export default function UnitComponent() {
         onClose();
     }
 
-    const renderContent = () => {
-        if (editModal) {
+    const generateOptionalFields = () => {
+        if (user?.role.includes("Manager")) {
             return (
-                <>
-                    <Input label={"Name"}
-                           type={"text"}
-                           defaultValue={editObj.name}
-                           isRequired={true}
-                           onChange={(event) => updateName(event.target.value)}
-                    />
-                </>
-            )
-        } else {
-            return (
-                <>
-                    <Input label={"Name"}
-                           type={"text"}
-                           isRequired={true}
-                           onChange={(event) => createNewName(event.target.value)}
-                    />
-                </>
-            )
-        }
-    }
-
-    if (isLoading) {
-        return <Spinner/>;
-    }
-
-    return (
-        <>
-            <div className={"w-full flex flex-row justify-end p-2"}>
-                <Button variant={"solid"}
-                        startContent={<FontAwesomeIcon icon={faFolderPlus}/>}
-                        className={"w-3/12"}
-                        onClick={handleCreate}
-                        color={"success"}
-                />
-            </div>
-            <Table>
-                <TableHeader>
-                    {
-                        unitHeaders.map(tableHeader => <TableColumn
-                            key={tableHeader.key}>{tableHeader.label}</TableColumn>)
-                    }
-                </TableHeader>
                 <TableBody emptyContent={"No rows to display."}>
                     {
                         unit.value.resultDto.map((dto) =>
@@ -346,31 +306,123 @@ export default function UnitComponent() {
                                 <TableCell>{dto.id}</TableCell>
                                 <TableCell>{dto.name}</TableCell>
                                 <TableCell width={"30px"}>
-                                    <Button size={"sm"}
-                                            onClick={() => handleDelete(dto.id)}
+                                    <Button
+                                        size={"sm"}
+                                        onClick={() => handleDelete(dto.id)}
                                     >
-                                        <FontAwesomeIcon icon={faTrash}
-                                                         id={dto.id.toString()}/>
+                                        <FontAwesomeIcon
+                                            icon={faTrash}
+                                            id={dto.id.toString()}
+                                        />
                                     </Button>
                                 </TableCell>
                                 <TableCell width={"30px"}>
-                                    <Button size={"sm"}
-                                            onClick={() => handleEdit(dto.id)}
+                                    <Button
+                                        size={"sm"}
+                                        onClick={() => handleEdit(dto.id)}
                                     >
-                                        <FontAwesomeIcon icon={faPenToSquare}/>
+                                        <FontAwesomeIcon icon={faPenToSquare} />
                                     </Button>
                                 </TableCell>
                             </TableRow>
                         )
                     }
                 </TableBody>
+            );
+        } else {
+            return (
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        unit.value.resultDto.map((dto) =>
+                            <TableRow key={dto.id}>
+                                <TableCell>{dto.id}</TableCell>
+                                <TableCell>{dto.name}</TableCell>
+                            </TableRow>
+                        )
+                    }
+                </TableBody>
+            );
+        }
+    }
+
+    const renderContent = () => {
+        if (editModal) {
+            return (
+                <>
+                    <Input
+                        label={"Name"}
+                        type={"text"}
+                        defaultValue={editObj.name}
+                        isRequired={true}
+                        onChange={(event) => updateName(event.target.value)}
+                    />
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <Input
+                        label={"Name"}
+                        type={"text"}
+                        isRequired={true}
+                        onChange={(event) => createNewName(event.target.value)}
+                    />
+                </>
+            )
+        }
+    }
+
+    if (isLoading) {
+        return <Spinner />;
+    }
+
+    return (
+        <>
+            {
+                user?.role.includes("Manager")
+                ? (<div className={"w-full flex flex-row justify-end p-2"}>
+                    <Button
+                        variant={"solid"}
+                        startContent={<FontAwesomeIcon icon={faFolderPlus} />}
+                        className={"w-3/12"}
+                        onClick={handleCreate}
+                        color={"success"}
+                    />
+                </div>)
+                : (<></>)
+            }
+            <Table>
+                <TableHeader>
+                    {
+                        user?.role.includes("Manager")
+                        ?
+                        unitHeaders.map(tableHeader =>
+                            <TableColumn
+                                key={tableHeader.key}
+                            >{tableHeader.label}</TableColumn>
+                        )
+                        : unitHeadersStaff.map(tableHeader =>
+                            <TableColumn
+                                key={tableHeader.key}
+                            >{tableHeader.label}</TableColumn>
+                        )
+                    }
+                </TableHeader>
+                {
+                    generateOptionalFields()
+                }
             </Table>
-            <Modals isOpen={isOpen}
-                    onOpenChange={onOpenChange}
-                    onCancel={closeModal}
-                    onConfirm={() => editModal ? confirmEdition() : confirmCreation()}
-                    header={editModal ? "Edit" : "Create"}
-                    hideCloseButton={false}
+            <Modals
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                onCancel={closeModal}
+                onConfirm={() => editModal
+                                 ? confirmEdition()
+                                 : confirmCreation()}
+                header={editModal
+                        ? "Edit"
+                        : "Create"}
+                hideCloseButton={false}
             >
                 {
                     renderContent()

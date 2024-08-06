@@ -23,6 +23,17 @@ export const orderHeaders = [{
     label: "Edit"
 }];
 
+export const orderHeadersStaff = [{
+    key  : "id",
+    label: "ID"
+}, {
+    key  : "cancelled",
+    label: "Cancelled?"
+}, {
+    key  : "items",
+    label: "Items"
+}];
+
 class OrderDto implements IOrderDto {
     id: number;
     isCanceled: boolean;

@@ -47,229 +47,261 @@ export default function HeaderComponent() {
         if (!user?.role.includes("Manager")) {
             return (
                 <>
-                    <NavbarContent className={"flex w-full"} justify={"center"}>
+                    <NavbarContent
+                        className={"flex w-full"}
+                        justify={"center"}
+                    >
                         <NavbarItem isActive={activeItem === "order"}>
-                            <Link href={"/dashboard/order"} color={"foreground"}>
+                            <Link
+                                href={"/dashboard/order"}
+                                color={"foreground"}
+                            >
                                 Order
                             </Link>
                         </NavbarItem>
-                        <Divider orientation="vertical"/>
+                        <Divider orientation="vertical" />
                         <Dropdown>
                             <NavbarItem>
                                 <DropdownTrigger>
-                                    <Button disableRipple
-                                            endContent={<FontAwesomeIcon icon={faCaretDown}/>}
-                                            className="p-0 bg-transparent data-[hover=true]:bg-transparent"
-                                            radius={"sm"}
-                                            variant={"light"}
+                                    <Button
+                                        disableRipple
+                                        endContent={<FontAwesomeIcon icon={faCaretDown} />}
+                                        className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                                        radius={"sm"}
+                                        variant={"light"}
                                     >
                                         Menu
                                     </Button>
                                 </DropdownTrigger>
                             </NavbarItem>
-                            <DropdownMenu selectionMode={"single"}
-                                          selectedKeys={[activeItem]}
+                            <DropdownMenu
+                                selectionMode={"single"}
+                                selectedKeys={[activeItem]}
                             >
-                                <DropdownItem key={"menu"} href={"/dashboard/menu"}>
+                                <DropdownItem
+                                    key={"menu"}
+                                    href={"/dashboard/menu"}
+                                >
                                     Menu Management
                                 </DropdownItem>
-                                <DropdownItem key={"menu-item"} href={"/dashboard/menu-item"}>
+                                <DropdownItem
+                                    key={"menu-item"}
+                                    href={"/dashboard/menu-item"}
+                                >
                                     Course Management
                                 </DropdownItem>
-                                <DropdownItem key={"menu-item-food-item"} href={"/dashboard/menu-item-food-item"}>
+                                <DropdownItem
+                                    key={"menu-item-food-item"}
+                                    href={"/dashboard/menu-item-food-item"}
+                                >
                                     Menu Item Food Item Management
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
-                        <Divider orientation="vertical"/>
+                        <Divider orientation="vertical" />
                         <Dropdown>
                             <NavbarItem>
                                 <DropdownTrigger>
-                                    <Button disableRipple
-                                            endContent={<FontAwesomeIcon icon={faCaretDown}/>}
-                                            className="p-0 bg-transparent data-[hover=true]:bg-transparent"
-                                            radius={"sm"}
-                                            variant={"light"}
+                                    <Button
+                                        disableRipple
+                                        endContent={<FontAwesomeIcon icon={faCaretDown} />}
+                                        className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                                        radius={"sm"}
+                                        variant={"light"}
                                     >
                                         Food
                                     </Button>
                                 </DropdownTrigger>
                             </NavbarItem>
-                            <DropdownMenu selectionMode={"single"}
-                                          selectedKeys={[activeItem]}
+                            <DropdownMenu
+                                selectionMode={"single"}
+                                selectedKeys={[activeItem]}
                             >
-                                <DropdownItem key={"ingredient"} href={"/dashboard/ingredient"}>
+                                <DropdownItem
+                                    key={"ingredient"}
+                                    href={"/dashboard/ingredient"}
+                                >
                                     Food Management
                                 </DropdownItem>
-                                <DropdownItem key={"unit"} href={"/dashboard/unit"}>
+                                <DropdownItem
+                                    key={"unit"}
+                                    href={"/dashboard/unit"}
+                                >
                                     Unit Management
                                 </DropdownItem>
-                                <DropdownItem key={"type"} href={"/dashboard/type"}>
+                                <DropdownItem
+                                    key={"type"}
+                                    href={"/dashboard/type"}
+                                >
                                     Type Management
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
-                        <Divider orientation="vertical"/>
+                    </NavbarContent>
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <NavbarContent
+                        className={"flex w-full"}
+                        justify={"center"}
+                    >
+                        <NavbarItem isActive={activeItem === "order"}>
+                            <Link
+                                href={"/dashboard/order"}
+                                color={"foreground"}
+                            >
+                                Order
+                            </Link>
+                        </NavbarItem>
+                        <Divider orientation="vertical" />
+                        <Dropdown>
+                            <NavbarItem>
+                                <DropdownTrigger>
+                                    <Button
+                                        disableRipple
+                                        endContent={<FontAwesomeIcon icon={faCaretDown} />}
+                                        className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                                        radius={"sm"}
+                                        variant={"light"}
+                                    >
+                                        Menu
+                                    </Button>
+                                </DropdownTrigger>
+                            </NavbarItem>
+                            <DropdownMenu
+                                selectionMode={"single"}
+                                selectedKeys={[activeItem]}
+                            >
+                                <DropdownItem
+                                    key={"menu"}
+                                    href={"/dashboard/menu"}
+                                >
+                                    Menu Management
+                                </DropdownItem>
+                                <DropdownItem
+                                    key={"menu-item"}
+                                    href={"/dashboard/menu-item"}
+                                >
+                                    Course Management
+                                </DropdownItem>
+                                <DropdownItem
+                                    key={"menu-item-food-item"}
+                                    href={"/dashboard/menu-item-food-item"}
+                                >
+                                    Menu Item Food Item Management
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Divider orientation="vertical" />
+                        <Dropdown>
+                            <NavbarItem>
+                                <DropdownTrigger>
+                                    <Button
+                                        disableRipple
+                                        endContent={<FontAwesomeIcon icon={faCaretDown} />}
+                                        className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                                        radius={"sm"}
+                                        variant={"light"}
+                                    >
+                                        Food
+                                    </Button>
+                                </DropdownTrigger>
+                            </NavbarItem>
+                            <DropdownMenu
+                                selectionMode={"single"}
+                                selectedKeys={[activeItem]}
+                            >
+                                <DropdownItem
+                                    key={"ingredient"}
+                                    href={"/dashboard/ingredient"}
+                                >
+                                    Food Management
+                                </DropdownItem>
+                                <DropdownItem
+                                    key={"unit"}
+                                    href={"/dashboard/unit"}
+                                >
+                                    Unit Management
+                                </DropdownItem>
+                                <DropdownItem
+                                    key={"type"}
+                                    href={"/dashboard/type"}
+                                >
+                                    Type Management
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Divider orientation="vertical" />
                         <NavbarItem isActive={activeItem === "user"}>
-                            <Link href={"/dashboard/user"} color={"foreground"}>
+                            <Link
+                                href={"/dashboard/user"}
+                                color={"foreground"}
+                            >
                                 User
                             </Link>
                         </NavbarItem>
                     </NavbarContent>
                 </>
-            );
+            )
         }
-
-        return (
-            <>
-                <NavbarContent className={"flex w-full"} justify={"center"}>
-                    <NavbarItem isActive={activeItem === "order"}>
-                        <Link href={"/dashboard/order"} color={"foreground"}>
-                            Order
-                        </Link>
-                    </NavbarItem>
-                    <Divider orientation="vertical"/>
-                    <Dropdown>
-                        <NavbarItem>
-                            <DropdownTrigger>
-                                <Button disableRipple
-                                        endContent={<FontAwesomeIcon icon={faCaretDown}/>}
-                                        className="p-0 bg-transparent data-[hover=true]:bg-transparent"
-                                        radius={"sm"}
-                                        variant={"light"}
-                                >
-                                    Menu
-                                </Button>
-                            </DropdownTrigger>
-                        </NavbarItem>
-                        <DropdownMenu selectionMode={"single"}
-                                      selectedKeys={[activeItem]}
-                        >
-                            <DropdownItem key={"menu"} href={"/dashboard/menu"}>
-                                Menu Management
-                            </DropdownItem>
-                            <DropdownItem key={"menu-item"} href={"/dashboard/menu-item"}>
-                                Course Management
-                            </DropdownItem>
-                            <DropdownItem key={"menu-item-food-item"} href={"/dashboard/menu-item-food-item"}>
-                                Menu Item Food Item Management
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
-                    <Divider orientation="vertical"/>
-                    <Dropdown>
-                        <NavbarItem>
-                            <DropdownTrigger>
-                                <Button disableRipple
-                                        endContent={<FontAwesomeIcon icon={faCaretDown}/>}
-                                        className="p-0 bg-transparent data-[hover=true]:bg-transparent"
-                                        radius={"sm"}
-                                        variant={"light"}
-                                >
-                                    Food
-                                </Button>
-                            </DropdownTrigger>
-                        </NavbarItem>
-                        <DropdownMenu selectionMode={"single"}
-                                      selectedKeys={[activeItem]}
-                        >
-                            <DropdownItem key={"ingredient"} href={"/dashboard/ingredient"}>
-                                Food Management
-                            </DropdownItem>
-                            <DropdownItem key={"unit"} href={"/dashboard/unit"}>
-                                Unit Management
-                            </DropdownItem>
-                            <DropdownItem key={"type"} href={"/dashboard/type"}>
-                                Type Management
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
-                    <Divider orientation="vertical"/>
-                    <NavbarItem isActive={activeItem === "user"}>
-                        <Link href={"/dashboard/user"} color={"foreground"}>
-                            User
-                        </Link>
-                    </NavbarItem>
-                </NavbarContent>
-            </>
-        )
     }
 
     const generateNavBarBrand = () => {
-        let navBarBrand;
-        if (user?.role.includes("Manager")) {
-            navBarBrand = (
-                <NavbarBrand className={"flex-col pt-4 pb-4"}>
-                    <span className="font-bold text-inherit underline">{user?.userName}</span>
-                    <Button endContent={<FontAwesomeIcon icon={faDoorOpen}/>}
-                            className={"w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
-                            onPress={handleLogOut}
-                    >
-                        Log out
-                    </Button>
-                    {
-                        // pathName.includes("place-order") ?
-                        //     (
-                        //         <Button
-                        //             href={"/dashboard"}
-                        //             as={Link}
-                        //             className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
-                        //         >
-                        //             Go to Dashboard
-                        //         </Button>
-                        //     ) :
-                        //     (
-                        //         <Button endContent={<FontAwesomeIcon icon={faPenNib}/>}
-                        //                 onPress={handlePlaceOrder}
-                        //                 className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
-                        //         >
-                        //             Place Order
-                        //         </Button>
-                        //     )
-                    }
-                    <Button endContent={<FontAwesomeIcon icon={faPenNib}/>}
-                            onPress={handlePlaceOrder}
-                            className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
-                    >
-                        Place Order
-                    </Button>
-                </NavbarBrand>
-            );
-        } else {
-            navBarBrand = (
-                <div className={"flex flex-row justify-end items-end w-full"}>
-                    <NavbarBrand className={"flex-col pt-4 pb-4 max-w-fit"}>
-                        <span className="font-bold text-inherit underline">{user?.userName}</span>
-                        <Button endContent={<FontAwesomeIcon icon={faDoorOpen}/>}
-                                className={"w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
-                                onPress={handleLogOut}
-                        >
-                            Log out
-                        </Button>
-                        <Button endContent={<FontAwesomeIcon icon={faPenNib}/>}
-                                onPress={handlePlaceOrder}
-                                className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
-                        >
-                            Place Order
-                        </Button>
-                    </NavbarBrand>
-                </div>);
-        }
-
-
-        return navBarBrand;
+        return (
+            <NavbarBrand className={"flex-col pt-4 pb-4"}>
+                <span className="font-bold text-inherit underline">{user?.userName}</span>
+                <Button
+                    endContent={<FontAwesomeIcon icon={faDoorOpen} />}
+                    className={"w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
+                    onPress={handleLogOut}
+                >
+                    Log out
+                </Button>
+                {
+                    // pathName.includes("place-order") ?
+                    //     (
+                    //         <Button
+                    //             href={"/dashboard"}
+                    //             as={Link}
+                    //             className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
+                    //         >
+                    //             Go to Dashboard
+                    //         </Button>
+                    //     ) :
+                    //     (
+                    //         <Button endContent={<FontAwesomeIcon icon={faPenNib}/>}
+                    //                 onPress={handlePlaceOrder}
+                    //                 className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
+                    //         >
+                    //             Place Order
+                    //         </Button>
+                    //     )
+                }
+                <Button
+                    endContent={<FontAwesomeIcon icon={faPenNib} />}
+                    onPress={handlePlaceOrder}
+                    className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
+                >
+                    Place Order
+                </Button>
+            </NavbarBrand>
+        );
     }
 
     return (
-        <Navbar position={"static"}
-                isBordered={true}
-                maxWidth={"full"}
-                height={"max-content"}
-                className={"m-0 p-0"}
+        <Navbar
+            position={"static"}
+            isBordered={true}
+            maxWidth={"full"}
+            height={"max-content"}
+            className={"m-0 p-0"}
         >
-            <Image src={"/MenuMaster.png"}
-                   width={"110px"}
-                   height={"110px"}
+            <Image
+                src={"/MenuMaster.png"}
+                width={"110px"}
+                height={"110px"}
             />
             {
                 generateNavBarContent()

@@ -32,6 +32,23 @@ export const ingredientHeaders = [{
     label: "Edit"
 }];
 
+export const ingredientHeadersStaff = [{
+    key  : "id",
+    label: "ID"
+}, {
+    key  : "name",
+    label: "Name"
+}, {
+    key  : "quantity",
+    label: "Quantity"
+}, {
+    key  : "unit",
+    label: "Unit"
+}, {
+    key  : "type",
+    label: "Type"
+}];
+
 class IngredientDto implements IIngredientDto {
     id: number;
     name: string;

@@ -17,6 +17,14 @@ export const typeHeaders = [{
     label: "Edit"
 }];
 
+export const typeHeadersStaff = [{
+    key  : "id",
+    label: "ID"
+}, {
+    key  : "name",
+    label: "Name"
+}];
+
 class TypeDto implements ITypeDto {
     id: number;
     name: string;

@@ -3,7 +3,7 @@
 import HttpServices from "../../../lib/HttpServices";
 import {useAuth} from "../../AuthContext";
 import React, {Fragment, useEffect, useState} from "react";
-import MenuDto, {menuHeaders} from "../../../lib/models/menu/MenuDto";
+import MenuDto, {menuHeaders, menuHeadersStaff} from "../../../lib/models/menu/MenuDto";
 import MenuQueryDto from "../../../lib/models/menu/MenuQueryDto";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -30,7 +30,10 @@ import {toast} from "react-toastify";
 
 export default function MenuComponent() {
     const httpServices = new HttpServices();
-    const {token} = useAuth();
+    const {
+        token,
+        user
+    } = useAuth();
     const {
         isOpen,
         onOpen,
@@ -53,7 +56,7 @@ export default function MenuComponent() {
                 }]
             }
         });
-    
+
     const [editObj, setEditObj] = useState<MenuDto>(
         {
             date    : new Date(),
@@ -216,7 +219,7 @@ export default function MenuComponent() {
     }
 
     const createDate = (date: CalendarDate) => {
-       setNewDate(date.toDate(getLocalTimeZone()).toUTCString());
+        setNewDate(date.toDate(getLocalTimeZone()).toUTCString());
     }
 
     const createMenuItem = (menuItemId: number) => {
@@ -390,11 +393,12 @@ export default function MenuComponent() {
         if (editModal) {
             return (
                 <>
-                    <DateInput label={"Date"}
-                               defaultValue={new CalendarDate(new Date(editObj.date).getFullYear(), new Date(editObj.date).getMonth() + 1, new Date(editObj.date).getDate())}
-                               placeholderValue={new CalendarDate(new Date(editObj.date).getFullYear(), new Date(editObj.date).getMonth() + 1, new Date(editObj.date).getDate())}
-                               className={"max-w-xs"}
-                               onChange={(value) => updateDate(value)}
+                    <DateInput
+                        label={"Date"}
+                        defaultValue={new CalendarDate(new Date(editObj.date).getFullYear(), new Date(editObj.date).getMonth() + 1, new Date(editObj.date).getDate())}
+                        placeholderValue={new CalendarDate(new Date(editObj.date).getFullYear(), new Date(editObj.date).getMonth() + 1, new Date(editObj.date).getDate())}
+                        className={"max-w-xs"}
+                        onChange={(value) => updateDate(value)}
                     />
                     <Select
                         label={"Menu Item"}
@@ -404,9 +408,10 @@ export default function MenuComponent() {
                     >
                         {
                             menuItemDto.map(value =>
-                                <SelectItem key={value.id}
-                                            value={value.id}
-                                            textValue={value.name}
+                                <SelectItem
+                                    key={value.id}
+                                    value={value.id}
+                                    textValue={value.name}
                                 >
                                     {value.name}
                                 </SelectItem>
@@ -418,10 +423,11 @@ export default function MenuComponent() {
         } else {
             return (
                 <>
-                    <DateInput label={"Date"}
-                               placeholderValue={new CalendarDate(new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate())}
-                               className={"max-w-xs"}
-                               onChange={(value) => createDate(value)}
+                    <DateInput
+                        label={"Date"}
+                        placeholderValue={new CalendarDate(new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate())}
+                        className={"max-w-xs"}
+                        onChange={(value) => createDate(value)}
                     />
                     <Select
                         label={"Menu Item"}
@@ -430,9 +436,10 @@ export default function MenuComponent() {
                     >
                         {
                             menuItemDto.map(value =>
-                                <SelectItem key={value.id}
-                                            value={value.id}
-                                            textValue={value.name}
+                                <SelectItem
+                                    key={value.id}
+                                    value={value.id}
+                                    textValue={value.name}
                                 >
                                     {value.name}
                                 </SelectItem>
@@ -444,30 +451,9 @@ export default function MenuComponent() {
         }
     }
 
-    if (isLoading) {
-        return <Spinner/>;
-    }
-
-    return (
-        <>
-            <div className={"w-full flex flex-row justify-end p-2"}>
-                <Button variant={"solid"}
-                        startContent={<FontAwesomeIcon icon={faFolderPlus}/>}
-                        onClick={handleCreate}
-                        className={"w-3/12"}
-                        color={"success"}
-                />
-            </div>
-            <Table>
-                <TableHeader>
-                    {
-                        menuHeaders.map(tableHeader =>
-                            <TableColumn
-                                key={tableHeader.key}>{tableHeader.label}
-                            </TableColumn>
-                        )
-                    }
-                </TableHeader>
+    const generateOptionalFields = () => {
+        if (user?.role.includes("Manager")) {
+            return (
                 <TableBody emptyContent={"No rows to display."}>
                     {
                         menu.value.resultDto.map((dto) => {
@@ -478,18 +464,22 @@ export default function MenuComponent() {
                                     <TableCell>{`${targetedDate.getFullYear()}-${targetedDate.getMonth() + 1}-${targetedDate.getDate()}`}</TableCell>
                                     <TableCell>{dto.menuItem.name}</TableCell>
                                     <TableCell width={"30px"}>
-                                        <Button size={"sm"}
-                                                onClick={() => handleDelete(dto.id)}
+                                        <Button
+                                            size={"sm"}
+                                            onClick={() => handleDelete(dto.id)}
                                         >
-                                            <FontAwesomeIcon icon={faTrash}
-                                                             id={dto.id.toString()}/>
+                                            <FontAwesomeIcon
+                                                icon={faTrash}
+                                                id={dto.id.toString()}
+                                            />
                                         </Button>
                                     </TableCell>
                                     <TableCell width={"30px"}>
-                                        <Button size={"sm"}
-                                                onClick={() => handleEdit(dto.id)}
+                                        <Button
+                                            size={"sm"}
+                                            onClick={() => handleEdit(dto.id)}
                                         >
-                                            <FontAwesomeIcon icon={faPenToSquare}/>
+                                            <FontAwesomeIcon icon={faPenToSquare} />
                                         </Button>
                                     </TableCell>
                                 </TableRow>
@@ -497,18 +487,86 @@ export default function MenuComponent() {
                         })
                     }
                 </TableBody>
-            </Table>
-            <Modals isOpen={isOpen}
+            );
+        } else {
+            return (
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        menu.value.resultDto.map((dto) => {
+                            const targetedDate = new Date(dto.date);
+                            return (
+                                <TableRow key={dto.id}>
+                                    <TableCell>{dto.id}</TableCell>
+                                    <TableCell>{`${targetedDate.getFullYear()}-${targetedDate.getMonth() + 1}-${targetedDate.getDate()}`}</TableCell>
+                                    <TableCell>{dto.menuItem.name}</TableCell>
+                                </TableRow>
+                            )
+                        })
+                    }
+                </TableBody>
+            );
+        }
+    }
+
+    if (isLoading) {
+        return <Spinner />;
+    }
+
+    return (
+        <>
+            {
+                user?.role.includes("Manager")
+                ? (<div className={"w-full flex flex-row justify-end p-2"}>
+                    <Button
+                        variant={"solid"}
+                        startContent={<FontAwesomeIcon icon={faFolderPlus} />}
+                        onClick={handleCreate}
+                        className={"w-3/12"}
+                        color={"success"}
+                    />
+                </div>)
+                : (<></>)
+            }
+                <Table>
+                    <TableHeader>
+                        {
+                            user?.role.includes("Manager")
+                            ?
+                            menuHeaders.map(tableHeader =>
+                                <TableColumn
+                                    key={tableHeader.key}
+                                >{tableHeader.label}
+                                </TableColumn>
+                            )
+                            : menuHeadersStaff.map(tableHeader =>
+                                <TableColumn
+                                    key={tableHeader.key}
+                                >{tableHeader.label}
+                                </TableColumn>)
+                        }
+                    </TableHeader>
+                    {
+                        generateOptionalFields()
+                    }
+                </Table>
+                <Modals
+                    isOpen={isOpen}
                     onOpenChange={onOpenChange}
-                    onCancel={() => editModal ? cancelEdition() : cancelCreation()}
-                    onConfirm={() => editModal ? confirmEdition() : confirmCreation()}
-                    header={editModal ? "Edit" : "Create"}
+                    onCancel={() => editModal
+                                    ? cancelEdition()
+                                    : cancelCreation()}
+                    onConfirm={() => editModal
+                                     ? confirmEdition()
+                                     : confirmCreation()}
+                    header={editModal
+                            ? "Edit"
+                            : "Create"}
                     hideCloseButton={false}
-            >
-                {
-                    renderContent()
-                }
-            </Modals>
+                >
+                    {
+                        renderContent()
+                    }
+                </Modals>
         </>
     );
 }

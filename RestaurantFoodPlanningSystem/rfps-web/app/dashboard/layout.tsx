@@ -19,11 +19,9 @@ const DashboardLayout = ({children}: {
     useEffect(() => {
         if (!token || !user) {
             router.push("/");
+            return;
         }
         
-        // if (!user?.role.includes("Manager")){
-        //     router.push("/place-order")
-        // }
         setIsLoading(false);
     }, [router]);
 

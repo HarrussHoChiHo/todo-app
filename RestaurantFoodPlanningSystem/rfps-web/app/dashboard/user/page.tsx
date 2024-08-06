@@ -25,10 +25,12 @@ import Modals from "../../../components/CustomModal";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons/faFolderPlus";
 import UserQueryDto from "../../../lib/models/user/UserQueryDto";
 import {toast} from "react-toastify";
+import {useRouter} from "next/navigation";
 
 export default function Page() {
     const httpServices = new HttpServices();
-    const {token} = useAuth();
+    const {token,user} = useAuth();
+    const router = useRouter();
     const [jsonObj, setJsonObj] = useState<BasicDto<UserDto>>({
         error    : "",
         isSuccess: false,
@@ -370,6 +372,12 @@ export default function Page() {
     }
 
     useEffect(() => {
+
+        if (!user?.role.includes("Manager")){
+            router.push("/dashboard");
+            return;
+        }
+        
         (async () => {
             const server_res = await retrieveAllUser();
 

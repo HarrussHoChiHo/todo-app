@@ -23,6 +23,17 @@ export const menuHeaders = [{
     label: "Edit"
 }];
 
+export const menuHeadersStaff = [{
+    key  : "id",
+    label: "ID"
+}, {
+    key  : "date",
+    label: "Date"
+}, {
+    key  : "item",
+    label: "Item"
+}];
+
 class MenuDto implements IMenuDto {
     date: Date;
     id: number;

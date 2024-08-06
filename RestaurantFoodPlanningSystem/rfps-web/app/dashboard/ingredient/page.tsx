@@ -2,8 +2,8 @@
 
 import HttpServices from "../../../lib/HttpServices";
 import {useAuth} from "../../AuthContext";
-import React, {Fragment, useEffect, useState} from "react";
-import IngredientDto, {ingredientHeaders} from "../../../lib/models/ingredient/IngredientDto";
+import React, {useEffect, useState} from "react";
+import IngredientDto, {ingredientHeaders, ingredientHeadersStaff} from "../../../lib/models/ingredient/IngredientDto";
 import IngredientQueryDto from "../../../lib/models/ingredient/IngredientQueryDto";
 import TypeDto from "../../../lib/models/type/TypeDto";
 import UnitDto from "../../../lib/models/unit/UnitDto";
@@ -397,7 +397,7 @@ export default function IngredientComponent() {
             setIsInvalid(true);
             return;
         }
-        
+
         const {
             id,
             name,
@@ -519,21 +519,23 @@ export default function IngredientComponent() {
         if (editModal) {
             return (
                 <>
-                    <Input label={"Name"}
-                           type={"text"}
-                           defaultValue={editObj.name}
-                           isRequired={true}
-                           value={editObj.name.toString()}
-                           onChange={(event) => updateName(event.target.value)}
+                    <Input
+                        label={"Name"}
+                        type={"text"}
+                        defaultValue={editObj.name}
+                        isRequired={true}
+                        value={editObj.name.toString()}
+                        onChange={(event) => updateName(event.target.value)}
                     />
-                    <Input label={"Quantity"}
-                           type={"number"}
-                           min={0}
-                           isInvalid={isInvalid}
-                           defaultValue={editObj.quantity.toString()}
-                           value={editObj.quantity.toString()}
-                           isRequired={true}
-                           onChange={(event) => updateQuantity(event.target.value)}
+                    <Input
+                        label={"Quantity"}
+                        type={"number"}
+                        min={0}
+                        isInvalid={isInvalid}
+                        defaultValue={editObj.quantity.toString()}
+                        value={editObj.quantity.toString()}
+                        isRequired={true}
+                        onChange={(event) => updateQuantity(event.target.value)}
                     />
                     <Select
                         label={"Units"}
@@ -544,7 +546,10 @@ export default function IngredientComponent() {
                     >
                         {
                             units.map(value =>
-                                <SelectItem key={value.id} value={value.id}>
+                                <SelectItem
+                                    key={value.id}
+                                    value={value.id}
+                                >
                                     {value.name}
                                 </SelectItem>
                             )
@@ -559,7 +564,10 @@ export default function IngredientComponent() {
                     >
                         {
                             types.map(value =>
-                                <SelectItem key={value.id} value={value.id}>
+                                <SelectItem
+                                    key={value.id}
+                                    value={value.id}
+                                >
                                     {value.name}
                                 </SelectItem>
                             )
@@ -570,17 +578,19 @@ export default function IngredientComponent() {
         } else {
             return (
                 <>
-                    <Input label={"Name"}
-                           type={"text"}
-                           isRequired={true}
-                           onChange={(event) => createNewName(event.target.value)}
+                    <Input
+                        label={"Name"}
+                        type={"text"}
+                        isRequired={true}
+                        onChange={(event) => createNewName(event.target.value)}
                     />
-                    <Input label={"Quantity"}
-                           type={"number"}
-                           min={0}
-                           isInvalid={isInvalid}
-                           isRequired={true}
-                           onChange={(event) => createNewQuantity(parseInt(event.target.value))}
+                    <Input
+                        label={"Quantity"}
+                        type={"number"}
+                        min={0}
+                        isInvalid={isInvalid}
+                        isRequired={true}
+                        onChange={(event) => createNewQuantity(parseInt(event.target.value))}
                     />
                     <Select
                         label={"Units"}
@@ -590,7 +600,10 @@ export default function IngredientComponent() {
                     >
                         {
                             units.map(value =>
-                                <SelectItem key={value.id} value={value.name}>
+                                <SelectItem
+                                    key={value.id}
+                                    value={value.name}
+                                >
                                     {value.name}
                                 </SelectItem>
                             )
@@ -604,7 +617,10 @@ export default function IngredientComponent() {
                     >
                         {
                             types.map(value =>
-                                <SelectItem key={value.id} value={value.name}>
+                                <SelectItem
+                                    key={value.id}
+                                    value={value.name}
+                                >
                                     {value.name}
                                 </SelectItem>
                             )
@@ -612,6 +628,65 @@ export default function IngredientComponent() {
                     </Select>
                 </>
             )
+        }
+    }
+
+    const generateOptionalFields = () => {
+        if (user?.role.includes("Manager")) {
+            return (
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        ingredient.value.resultDto.map((dto) => {
+                            return (
+                                <TableRow key={dto.id}>
+                                    <TableCell>{dto.id}</TableCell>
+                                    <TableCell>{dto.name}</TableCell>
+                                    <TableCell>{dto.quantity}</TableCell>
+                                    <TableCell>{dto.unit.name}</TableCell>
+                                    <TableCell>{dto.type.name}</TableCell>
+                                    <TableCell width={"30px"}>
+                                        <Button
+                                            size={"sm"}
+                                            onClick={() => handleDelete(dto.id)}
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faTrash}
+                                                id={dto.id.toString()}
+                                            />
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell width={"30px"}>
+                                        <Button
+                                            size={"sm"}
+                                            onClick={() => handleEdit(dto.id)}
+                                        >
+                                            <FontAwesomeIcon icon={faPenToSquare} />
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })
+                    }
+                </TableBody>
+            );
+        } else {
+            return (
+                <TableBody emptyContent={"No rows to display."}>
+                    {
+                        ingredient.value.resultDto.map((dto) => {
+                            return (
+                                <TableRow key={dto.id}>
+                                    <TableCell>{dto.id}</TableCell>
+                                    <TableCell>{dto.name}</TableCell>
+                                    <TableCell>{dto.quantity}</TableCell>
+                                    <TableCell>{dto.unit.name}</TableCell>
+                                    <TableCell>{dto.type.name}</TableCell>
+                                </TableRow>
+                            )
+                        })
+                    }
+                </TableBody>
+            );
         }
     }
 
@@ -668,78 +743,67 @@ export default function IngredientComponent() {
     }, []);
 
     if (isLoading) {
-        return <Spinner/>;
+        return <Spinner />;
     }
 
     return (
         <>
-                        <div className={"w-full flex flex-row justify-end p-2"}>
-                            <Button variant={"solid"}
-                                    startContent={<FontAwesomeIcon icon={faFolderPlus}/>}
-                                    className={"w-3/12"}
-                                    onClick={handleCreate}
-                                    color={"success"}
-                                    
-                            />
-                        </div>
-            <Table>
-                <TableHeader>
-                    {
-                        ingredientHeaders.map(tableHeader =>
-                            <TableColumn
-                                key={tableHeader.key}>{tableHeader.label}
-                            </TableColumn>
-                        )
-                    }
-                </TableHeader>
-                <TableBody emptyContent={"No rows to display."}>
-                    {
-                        ingredient.value.resultDto.map((dto) => {
-                            return (
-                                <TableRow key={dto.id}>
-                                    <TableCell>{dto.id}</TableCell>
-                                    <TableCell>{dto.name}</TableCell>
-                                    <TableCell>{dto.quantity}</TableCell>
-                                    <TableCell>{dto.unit.name}</TableCell>
-                                    <TableCell>{dto.type.name}</TableCell>
-                                    <TableCell width={"30px"}>
-                                        <Button size={"sm"}
-                                                onClick={() => handleDelete(dto.id)}
-                                        >
-                                            <FontAwesomeIcon icon={faTrash}
-                                                             id={dto.id.toString()}/>
-                                        </Button>
-                                    </TableCell>
-                                    <TableCell width={"30px"}>
-                                        <Button size={"sm"}
-                                                onClick={() => handleEdit(dto.id)}
-                                        >
-                                            <FontAwesomeIcon icon={faPenToSquare}/>
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
+            {
+                user?.role.includes("Manager")
+                ? (<div className={"w-full flex flex-row justify-end p-2"}>
+                    <Button
+                        variant={"solid"}
+                        startContent={<FontAwesomeIcon icon={faFolderPlus} />}
+                        className={"w-3/12"}
+                        onClick={handleCreate}
+                        color={"success"}
+
+                    />
+                </div>)
+                : (<></>)
+            }
+                <Table>
+                    <TableHeader>
+                        {
+                            user?.role.includes("Manager")
+                            ?
+                            ingredientHeaders.map(tableHeader =>
+                                <TableColumn
+                                    key={tableHeader.key}
+                                >{tableHeader.label}
+                                </TableColumn>
                             )
-                        })
+                            : ingredientHeadersStaff.map(tableHeader =>
+                                <TableColumn
+                                    key={tableHeader.key}
+                                >{tableHeader.label}
+                                </TableColumn>
+                            )
+
+                        }
+                    </TableHeader>
+                    {
+                        generateOptionalFields()
                     }
-                </TableBody>
-            </Table>
-            <Modals isOpen={isOpen}
+                </Table>
+                <Modals
+                    isOpen={isOpen}
                     onOpenChange={onOpenChange}
                     onCancel={() => editModal
-                        ? cancelEdition()
-                        : cancelCreation()}
+                                    ? cancelEdition()
+                                    : cancelCreation()}
                     onConfirm={() => editModal
-                        ? confirmEdition()
-                        : confirmCreation()}
+                                     ? confirmEdition()
+                                     : confirmCreation()}
                     header={editModal
-                        ? "Edit"
-                        : "Create"}
+                            ? "Edit"
+                            : "Create"}
                     hideCloseButton={false}
-            >
-                {
-                    renderContent()
-                }
-            </Modals>
+                >
+                    {
+                        renderContent()
+                    }
+                </Modals>
 
         </>
     );

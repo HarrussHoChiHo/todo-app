@@ -17,6 +17,14 @@ export const menuItemHeaders = [{
     label: "Edit"
 }];
 
+export const menuItemHeadersStaff = [{
+    key  : "id",
+    label: "ID"
+}, {
+    key  : "name",
+    label: "Name"
+}];
+
 class MenuItemDto implements IMenuItemDto {
     id: number;
     name: string;
