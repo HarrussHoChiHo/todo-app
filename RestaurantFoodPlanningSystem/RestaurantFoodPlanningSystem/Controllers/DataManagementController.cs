@@ -653,7 +653,7 @@ public class DataManagementController(
     /// </summary>
     /// <param name="queryDto">This object contains the id of a menu item, the id of a food item, and the consumption</param>
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
-    [Authorize(Policy = "ManagerOnly")]
+    [Authorize(Policy = "StaffAndManager")]
     [HttpPost("menu-item-food-item/read")]
     public async Task<ActionResult<Result<DbOperationResult<MenuItemFoodItemResultDto>>>> ReadMenuItemFoodItem(
         MenuItemFoodItemQueryDto queryDto)
@@ -759,7 +759,7 @@ public class DataManagementController(
     /// </summary>
     /// <param name="queryDto">This object contains the id of an order and the flag of cancellation</param>
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
-    [Authorize(Policy = "ManagerOnly")]
+    [Authorize(Policy = "StaffAndManager")]
     [HttpPost("order/read")]
     public async Task<ActionResult<Result<DbOperationResult<OrderResultDto>>>> ReadOrder(OrderQueryDto queryDto)
     {
@@ -863,7 +863,7 @@ public class DataManagementController(
     /// </summary>
     /// <param name="queryDto">This object contains the id of an order item, the id of an order, and the id of a menu item</param>
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
-    [Authorize(Policy = "ManagerOnly")]
+    [Authorize(Policy = "StaffAndManager")]
     [HttpPost("order-item/read")]
     public async Task<ActionResult<DbOperationResult<OrderItemResultDto>>> ReadOrder(OrderItemQueryDto queryDto)
     {
