@@ -391,7 +391,10 @@ export default function UnitComponent() {
                 </div>)
                 : (<></>)
             }
-            <Table>
+            <Table
+                aria-label={"Unit"}
+                topContent={<h1 className={"w-full text-center"}>Unit Management</h1>}
+            >
                 <TableHeader>
                     {
                         user?.role.includes("Manager")

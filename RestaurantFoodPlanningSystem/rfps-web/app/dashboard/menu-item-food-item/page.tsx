@@ -14,10 +14,13 @@ import {
     Input,
     Select,
     SelectItem,
-    Spinner, Table,
-    TableBody, TableCell,
+    Spinner,
+    Table,
+    TableBody,
+    TableCell,
     TableColumn,
-    TableHeader, TableRow,
+    TableHeader,
+    TableRow,
     useDisclosure
 } from "@nextui-org/react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -28,7 +31,6 @@ import Modals from "../../../components/CustomModal";
 import MenuItemDto from "../../../lib/models/menu/MenuItemDto";
 import IngredientDto from "../../../lib/models/ingredient/IngredientDto";
 import IngredientQueryDto from "../../../lib/models/ingredient/IngredientQueryDto";
-import {unitHeaders} from "../../../lib/models/unit/UnitDto";
 
 export default function MenuItemFoodItemComponent() {
     const menuItemFoodItemAPI: string = "/DataManagement/menu-item-food-item";
@@ -697,7 +699,10 @@ export default function MenuItemFoodItemComponent() {
                 </div>)
                 : (<></>)
             }
-            <Table>
+            <Table
+                aria-label={"Stock"}
+                topContent={<h1 className={"w-full text-center"}>Stock Management</h1>}
+            >
                 <TableHeader>
                     {
                         user?.role.includes("Manager")

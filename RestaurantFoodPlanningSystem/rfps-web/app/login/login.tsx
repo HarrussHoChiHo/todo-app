@@ -9,6 +9,7 @@ import {useAuth} from "../AuthContext";
 import UserDto from "../../lib/models/user/UserDto";
 import {Image} from "@nextui-org/image";
 import {Input} from "@nextui-org/react";
+import {toast} from "react-toastify";
 
 interface LoginProps {
     closeLoginPage: (state: boolean) => void;
@@ -21,8 +22,6 @@ const LoginComponent = ({closeLoginPage}: LoginProps) => {
     const [hidden, setHidden] = useState(true);
     const api = new HttpServices();
     const {
-        token,
-        user,
         login
     } = useAuth();
 
@@ -33,23 +32,23 @@ const LoginComponent = ({closeLoginPage}: LoginProps) => {
                 r.json().then(res => {
                     login(res.value.token, (res as LoginDto<UserDto>).value.resultDto[0]);
                     closeLoginPage(false);
-                    
                     router.refresh();
+                }).catch(error => {
+                    if (error instanceof Error) {
+                        showToast(error.message);
+                    } else {
+                        showToast("Service crashed");
+                    }
                 });
-
             } else {
                 setHidden(false);
             }
         });
     }
 
-    // useEffect(() => {
-    //     if (token && user && user.role.includes("Manager")) {
-    //         router.push("/dashboard/user");
-    //     } else if (token && user && !user.role.includes("Manager")) {
-    //         router.push("/place-order");
-    //     }
-    // }, [router, token]);
+    const showToast = (message: string) => {
+        toast(message);
+    }
     
     return (
             <div className={"w-[95%] h-[90%] flex flex-col justify-center items-center bg-gray-100"}>

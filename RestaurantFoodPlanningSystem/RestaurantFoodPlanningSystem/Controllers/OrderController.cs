@@ -9,7 +9,6 @@ using Application.Dtos.Order;
 using Application.Dtos.OrderHandling;
 using Application.Dtos.OrderItem;
 using Application.ResponseDto;
-using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -26,7 +25,7 @@ public class OrderController(
     /// <summary>
     /// Place an order
     /// </summary>
-    /// <param name="OrderPlacementQueryDto">This object contains the object "OrderQueryDto" and a list of "OrderItemQueryDto"</param>
+    /// <param name="queryDto">This object contains the object "OrderQueryDto" and a list of "OrderItemQueryDto"</param>
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "StaffAndManager")]
     [HttpPost("place-order")]
@@ -207,25 +206,5 @@ public class OrderController(
             logger.LogError(JsonConvert.SerializeObject(e));
             return HandlerResult(Result<string>.Failure(e.Message));
         }
-    }
-
-    private async void UpdateQuantity(OrderItemResultDto item)
-    {
-        MenuItemFoodItemQueryDto
-            menuItemFoodItemQueryDto =
-                new
-                    MenuItemFoodItemQueryDto();
-
-        menuItemFoodItemQueryDto.MenuItem_Id = item.MenuItem.Id;
-
-        DbOperationResult<MenuItemFoodItemResultDto> mifiDto = await menuItemFoodItem.Read(menuItemFoodItemQueryDto);
-
-        mifiDto.resultDto.ForEach(
-                                  mifi =>
-                                  {
-                                      FoodItemQueryDto fiQueryDto = new FoodItemQueryDto();
-                                      fiQueryDto.Id       = mifi.MenuItem_Id;
-                                      fiQueryDto.Quantity = fiQueryDto.Quantity - mifi.Consumption;
-                                  });
     }
 }

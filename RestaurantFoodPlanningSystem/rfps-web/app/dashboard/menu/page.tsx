@@ -527,7 +527,10 @@ export default function MenuComponent() {
                 </div>)
                 : (<></>)
             }
-                <Table>
+            <Table
+                aria-label={"Menu"}
+                topContent={<h1 className={"w-full text-center"}>Menu Management</h1>}
+            >
                     <TableHeader>
                         {
                             user?.role.includes("Manager")

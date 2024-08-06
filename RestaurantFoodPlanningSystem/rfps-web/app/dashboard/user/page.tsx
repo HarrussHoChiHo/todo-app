@@ -489,7 +489,10 @@ export default function Page() {
                         color={"success"}
                 />
             </div>
-            <Table>
+            <Table
+                aria-label={"User"}
+                topContent={<h1 className={"w-full text-center"}>User Management</h1>}
+            >
                 <TableHeader>
                     {
                         userHeaders.map(tableHeader => <TableColumn

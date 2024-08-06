@@ -762,7 +762,10 @@ export default function IngredientComponent() {
                 </div>)
                 : (<></>)
             }
-                <Table>
+            <Table
+                aria-label={"Food Item"}
+                topContent={<h1 className={"w-full text-center"}>Food Management</h1>}
+            >
                     <TableHeader>
                         {
                             user?.role.includes("Manager")

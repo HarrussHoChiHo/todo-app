@@ -1,15 +1,15 @@
 "use client"
 
-import {Button} from "@nextui-org/react";
+import {Button, Spinner} from "@nextui-org/react";
 import LoginComponent from "./login/login";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Image} from "@nextui-org/image";
 import {useAuth} from "./AuthContext";
 import {useRouter} from "next/navigation";
 
 export default function Home() {
     const [showLoginPage, setShowLoginPage] = useState(false);
-    
+    const [isLoading, setIsLoading] = useState(true);
     
     const hideLoginPage = (state: boolean) => {
         setShowLoginPage(state);
@@ -21,14 +21,22 @@ export default function Home() {
     const router = useRouter();
     
     useEffect(() => {
-        if (!token || !user) {
-            router.push("/");
-        } else if (!user.role.includes("Manager")) {
-            router.push("/place-order");
-        } else {
-            router.push("/dashboard");
+        if (token && user){
+            if (!user?.role.includes("Manager")) {
+                router.push("/place-order");
+                return;
+            } else {
+                router.push("/dashboard");
+                return;
+            }
         }
+        
+        setIsLoading(false);
     }, [router, token]);
+    
+    if (isLoading){
+        return <Spinner />; 
+    }
     
     return (
         <>
@@ -50,7 +58,7 @@ export default function Home() {
                 showLoginPage && <div
                     className={"size-full fixed z-10 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none inset-0 focus:outline-none"}
                 >
-                    <LoginComponent closeLoginPage={hideLoginPage}/>
+                    <LoginComponent closeLoginPage={hideLoginPage} />
                 </div>
             }
         </>

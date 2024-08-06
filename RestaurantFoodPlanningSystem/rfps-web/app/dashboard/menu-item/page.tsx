@@ -403,7 +403,10 @@ export default function MenuItemComponent() {
                 </div>)
                 : (<></>)
             }
-            <Table>
+            <Table
+                aria-label={"Course"}
+                topContent={<h1 className={"w-full text-center"}>Course Management</h1>}
+            >
                 <TableHeader>
                     {
                         user?.role.includes("Manager")

@@ -20,7 +20,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCaretDown, faDoorOpen, faPenNib} from "@fortawesome/free-solid-svg-icons";
 import {Image} from "@nextui-org/image";
 
-export default function HeaderComponent() {
+interface HeaderProps {
+    setLoading: (loading : boolean) => void;
+}
+
+const HeaderComponent = ({setLoading} : HeaderProps) => {
     const [activeItem, setActiveItem] = useState("");
     const pathName = usePathname();
     const router = useRouter();
@@ -34,6 +38,7 @@ export default function HeaderComponent() {
     }, [pathName]);
 
     const handleLogOut = () => {
+        setLoading(true);
         logout();
         router.push("/");
     }
@@ -94,7 +99,7 @@ export default function HeaderComponent() {
                                     key={"menu-item-food-item"}
                                     href={"/dashboard/menu-item-food-item"}
                                 >
-                                    Menu Item Food Item Management
+                                    Stock Management
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
@@ -190,7 +195,7 @@ export default function HeaderComponent() {
                                     key={"menu-item-food-item"}
                                     href={"/dashboard/menu-item-food-item"}
                                 >
-                                    Menu Item Food Item Management
+                                    Stock Management
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
@@ -312,3 +317,5 @@ export default function HeaderComponent() {
         </Navbar>
     );
 }
+
+export default HeaderComponent;

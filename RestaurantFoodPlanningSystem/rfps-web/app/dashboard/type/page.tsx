@@ -24,7 +24,6 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
 import Modals from "../../../components/CustomModal";
 import {toast} from "react-toastify";
-import typeDto from "../../../lib/models/type/TypeDto";
 
 export default function TypeComponent() {
     const httpServices = new HttpServices();
@@ -394,7 +393,10 @@ export default function TypeComponent() {
                 </div>)
                 : (<></>)
             }
-            <Table>
+            <Table
+                aria-label={"Type"}
+                topContent={<h1 className={"w-full text-center"}>Type Management</h1>}
+            >
                 <TableHeader>
                     {
                         user?.role.includes("Manager")

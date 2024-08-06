@@ -15,7 +15,7 @@ import {
     TableColumn,
     TableHeader,
     TableRow,
-    useDisclosure, user
+    useDisclosure
 } from "@nextui-org/react";
 import OrderDto, {orderHeaders, orderHeadersStaff} from "../../../lib/models/order/OrderDto";
 import OrderQueryDto from "../../../lib/models/order/OrderQueryDto";
@@ -411,7 +411,10 @@ export default function OrderComponent() {
 
     return (
         <>
-            <Table>
+            <Table
+                aria-label={"Order"}
+                topContent={<h1 className={"w-full text-center"}>Order Management</h1>}
+            >
                 <TableHeader>
                     {
                         user?.role.includes("Manager")
