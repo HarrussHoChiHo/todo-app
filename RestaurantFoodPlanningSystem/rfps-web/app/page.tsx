@@ -16,10 +16,9 @@ export default function Home() {
     }
     const {
         token,
-            user
+        user
     } = useAuth();
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(true);
     
     useEffect(() => {
         if (!token || !user) {
@@ -29,11 +28,11 @@ export default function Home() {
         } else {
             router.push("/dashboard");
         }
-    }, [router]);
+    }, [router, token]);
     
     return (
         <>
-            <div className={"flex flex-col items-center justify-center h-screen w-screen bg-gradient-to-r from-emerald-300 to-indigo-400"}>
+            <div className={"flex flex-col items-center justify-center size-full min-h-dvh bg-gradient-to-r from-emerald-300 to-indigo-400"}>
                 <Image src={"/MenuMaster.png"}
                        width={"250px"}
                        height={"250px"}

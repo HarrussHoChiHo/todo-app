@@ -20,6 +20,10 @@ const DashboardLayout = ({children}: {
         if (!token || !user) {
             router.push("/");
         }
+        
+        // if (!user?.role.includes("Manager")){
+        //     router.push("/place-order")
+        // }
         setIsLoading(false);
     }, [router]);
 

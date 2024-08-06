@@ -95,7 +95,7 @@ public class DataManagementController(
     /// </summary>
     /// <param name="queryDto">This object contains the name and id of a unit</param>
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
-    [Authorize(Policy = "ManagerOnly")]
+    [Authorize(Policy = "StaffAndManager")]
     [HttpPost("unit/read")]
     public async Task<ActionResult<Result<DbOperationResult<UnitResultDto>>>> ReadUnit(UnitQueryDto queryDto)
     {
@@ -205,7 +205,7 @@ public class DataManagementController(
     /// </summary>
     /// <param name="queryDto">This object contains the name and id of a food category</param>
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
-    [Authorize(Policy = "ManagerOnly")]
+    [Authorize(Policy = "StaffAndManager")]
     [HttpPost("type/read")]
     public async Task<ActionResult<Result<DbOperationResult<TypeResultDto>>>> ReadType(TypeQueryDto queryDto)
     {
@@ -317,7 +317,7 @@ public class DataManagementController(
     /// </summary>
     /// <param name="queryDto">This object contains: id,  name, quantity, the id of type, and the id of unit</param>
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
-    [Authorize(Policy = "ManagerOnly")]
+    [Authorize(Policy = "StaffAndManager")]
     [HttpPost("food-item/read")]
     public async Task<ActionResult<Result<DbOperationResult<FoodItemResultDto>>>> ReadFoodItem(
         FoodItemQueryDto queryDto)
@@ -430,7 +430,7 @@ public class DataManagementController(
     /// </summary>
     /// <param name="queryDto">This object contains the id and name of a menu item</param>
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
-    [Authorize(Policy = "ManagerOnly")]
+    [Authorize(Policy = "StaffAndManager")]
     [HttpPost("menu-item/read")]
     public async Task<ActionResult<Result<DbOperationResult<MenuItemResultDto>>>> ReadMenuItem(
         MenuItemQueryDto queryDto)

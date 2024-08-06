@@ -33,7 +33,8 @@ const LoginComponent = ({closeLoginPage}: LoginProps) => {
                 r.json().then(res => {
                     login(res.value.token, (res as LoginDto<UserDto>).value.resultDto[0]);
                     closeLoginPage(false);
-                    router.push("/dashboard");
+                    
+                    router.refresh();
                 });
 
             } else {
@@ -42,13 +43,13 @@ const LoginComponent = ({closeLoginPage}: LoginProps) => {
         });
     }
 
-    useEffect(() => {
-        if (token && user && user.role.includes("Manager")) {
-            router.push("/dashboard/user");
-        } else if (token && user && !user.role.includes("Manager")) {
-            router.push("/dashboard/menu");
-        }
-    }, [router, token]);
+    // useEffect(() => {
+    //     if (token && user && user.role.includes("Manager")) {
+    //         router.push("/dashboard/user");
+    //     } else if (token && user && !user.role.includes("Manager")) {
+    //         router.push("/place-order");
+    //     }
+    // }, [router, token]);
     
     return (
             <div className={"w-[95%] h-[90%] flex flex-col justify-center items-center bg-gray-100"}>

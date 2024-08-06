@@ -24,9 +24,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-        <body className={`bg-gradient-to-r from-emerald-300 to-indigo-400 size-full box-border ${inter.className}`}>
+        <body className={`${inter.className} bg-gradient-to-r from-emerald-300 to-indigo-400 size-full min-h-dvh box-border`}>
         <Providers>
-            {children}
+                {children}
         </Providers>
         </body>
         </html>

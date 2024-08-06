@@ -45,9 +45,81 @@ export default function HeaderComponent() {
     const generateNavBarContent = () => {
 
         if (!user?.role.includes("Manager")) {
-            return (<></>);
+            return (
+                <>
+                    <NavbarContent className={"flex w-full"} justify={"center"}>
+                        <NavbarItem isActive={activeItem === "order"}>
+                            <Link href={"/dashboard/order"} color={"foreground"}>
+                                Order
+                            </Link>
+                        </NavbarItem>
+                        <Divider orientation="vertical"/>
+                        <Dropdown>
+                            <NavbarItem>
+                                <DropdownTrigger>
+                                    <Button disableRipple
+                                            endContent={<FontAwesomeIcon icon={faCaretDown}/>}
+                                            className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                                            radius={"sm"}
+                                            variant={"light"}
+                                    >
+                                        Menu
+                                    </Button>
+                                </DropdownTrigger>
+                            </NavbarItem>
+                            <DropdownMenu selectionMode={"single"}
+                                          selectedKeys={[activeItem]}
+                            >
+                                <DropdownItem key={"menu"} href={"/dashboard/menu"}>
+                                    Menu Management
+                                </DropdownItem>
+                                <DropdownItem key={"menu-item"} href={"/dashboard/menu-item"}>
+                                    Course Management
+                                </DropdownItem>
+                                <DropdownItem key={"menu-item-food-item"} href={"/dashboard/menu-item-food-item"}>
+                                    Menu Item Food Item Management
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Divider orientation="vertical"/>
+                        <Dropdown>
+                            <NavbarItem>
+                                <DropdownTrigger>
+                                    <Button disableRipple
+                                            endContent={<FontAwesomeIcon icon={faCaretDown}/>}
+                                            className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                                            radius={"sm"}
+                                            variant={"light"}
+                                    >
+                                        Food
+                                    </Button>
+                                </DropdownTrigger>
+                            </NavbarItem>
+                            <DropdownMenu selectionMode={"single"}
+                                          selectedKeys={[activeItem]}
+                            >
+                                <DropdownItem key={"ingredient"} href={"/dashboard/ingredient"}>
+                                    Food Management
+                                </DropdownItem>
+                                <DropdownItem key={"unit"} href={"/dashboard/unit"}>
+                                    Unit Management
+                                </DropdownItem>
+                                <DropdownItem key={"type"} href={"/dashboard/type"}>
+                                    Type Management
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Divider orientation="vertical"/>
+                        <NavbarItem isActive={activeItem === "user"}>
+                            <Link href={"/dashboard/user"} color={"foreground"}>
+                                User
+                            </Link>
+                        </NavbarItem>
+                    </NavbarContent>
+                </>
+            );
         }
-        
+
         return (
             <>
                 <NavbarContent className={"flex w-full"} justify={"center"}>
@@ -136,25 +208,31 @@ export default function HeaderComponent() {
                         Log out
                     </Button>
                     {
-                        pathName.includes("place-order") ?
-                            (
-                                <Button
-                                    href={"/dashboard"}
-                                    as={Link}
-                                    className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
-                                >
-                                    Go to Dashboard
-                                </Button>
-                            ) :
-                            (
-                                <Button endContent={<FontAwesomeIcon icon={faPenNib}/>}
-                                        onPress={handlePlaceOrder}
-                                        className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
-                                >
-                                    Place Order
-                                </Button>
-                            )
+                        // pathName.includes("place-order") ?
+                        //     (
+                        //         <Button
+                        //             href={"/dashboard"}
+                        //             as={Link}
+                        //             className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
+                        //         >
+                        //             Go to Dashboard
+                        //         </Button>
+                        //     ) :
+                        //     (
+                        //         <Button endContent={<FontAwesomeIcon icon={faPenNib}/>}
+                        //                 onPress={handlePlaceOrder}
+                        //                 className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
+                        //         >
+                        //             Place Order
+                        //         </Button>
+                        //     )
                     }
+                    <Button endContent={<FontAwesomeIcon icon={faPenNib}/>}
+                            onPress={handlePlaceOrder}
+                            className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
+                    >
+                        Place Order
+                    </Button>
                 </NavbarBrand>
             );
         } else {
@@ -167,6 +245,12 @@ export default function HeaderComponent() {
                                 onPress={handleLogOut}
                         >
                             Log out
+                        </Button>
+                        <Button endContent={<FontAwesomeIcon icon={faPenNib}/>}
+                                onPress={handlePlaceOrder}
+                                className={"mt-1 w-[125px] h-[25px] bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"}
+                        >
+                            Place Order
                         </Button>
                     </NavbarBrand>
                 </div>);
@@ -193,6 +277,6 @@ export default function HeaderComponent() {
             {
                 generateNavBarBrand()
             }
-            </Navbar>
-        );
+        </Navbar>
+    );
 }
