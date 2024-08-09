@@ -32,7 +32,7 @@ export const mifiHeaders = [{
     label: "Menu Item"
 }, {
     key  : "foodItem",
-    label: "Food Item?"
+    label: "Food Item"
 }, {
     key  : "consumption",
     label: "Consumption"
@@ -49,7 +49,7 @@ export const mifiHeadersStaff = [{
     label: "Menu Item"
 }, {
     key  : "foodItem",
-    label: "Food Item?"
+    label: "Food Item"
 }, {
     key  : "consumption",
     label: "Consumption"

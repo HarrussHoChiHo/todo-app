@@ -231,12 +231,12 @@ export default function MenuItemComponent() {
     }
 
     const confirmEdition = () => {
-        const {id} = editObj;
+        const {id, name} = editObj;
 
         (async () => {
             const server_res = await updateMenuItem({
                 id  : id,
-                name: newName
+                name: name
             });
 
             if (!server_res) {
