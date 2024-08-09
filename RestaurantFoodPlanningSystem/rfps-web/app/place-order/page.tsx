@@ -206,7 +206,7 @@ export default function OrderComponent() {
                             color={"primary"}
                             onPress={ () => addSelectedOrderItem()}
                         >
-                            Add new courses
+                            Add to bucket
                         </Button>
                     </CardBody>
                     <Divider className={"mt-2 mb-2"}/>
