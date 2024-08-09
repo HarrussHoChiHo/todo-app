@@ -124,6 +124,10 @@ export default function OrderComponent() {
         toast(message);
     }
     
+    const showLoadingPage = (loading: boolean) => {
+        setIsLoading(loading);
+    }
+    
     useEffect(() => {
         if (!token || !user) {
             router.push("/login");
@@ -156,16 +160,15 @@ export default function OrderComponent() {
     if (isLoading) {
         return (
             <>
-                <div className={"w-dvw h-dvh flex flex-col items-center justify-center"}>
+                <div className={"min-h-dvh size-full flex flex-col items-center justify-center"}>
                     <Spinner/>
                 </div>
             </>
-
         );
     }
 
     return <>
-        <HeaderComponent/>
+        <HeaderComponent setLoading={showLoadingPage}/>
         <div className={"w-full flex flex-col items-center"}>
             <h1 className={"m-4"}>Place your order!!!!</h1>
             <div className={"w-1/2"}>

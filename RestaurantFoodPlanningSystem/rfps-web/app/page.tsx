@@ -13,6 +13,7 @@ export default function Home() {
     
     const hideLoginPage = (state: boolean) => {
         setShowLoginPage(state);
+        setIsLoading(!state);
     }
     const {
         token,
@@ -35,7 +36,13 @@ export default function Home() {
     }, [router, token]);
     
     if (isLoading){
-        return <Spinner />; 
+        return (
+            <>
+                <div className={"min-h-dvh size-full flex flex-col items-center justify-center"}>
+                    <Spinner/>
+                </div>
+            </> 
+        ); 
     }
     
     return (
