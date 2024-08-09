@@ -72,6 +72,7 @@ export default function MenuComponent() {
     const [isLoading, setIsLoading] = useState(true);
     const [newMenuItemId, setNewMenuItemId] = useState(0);
     const [newDate, setNewDate] = useState("");
+    const [isInvalid, setIsInvalid] = useState(false);
     const menuAPI: string = "/DataManagement/menu";
     const menuItemAPI: string = "/DataManagement/menu-item";
     let menuQueryDto: MenuQueryDto =
@@ -182,6 +183,9 @@ export default function MenuComponent() {
     }
 
     const updateMenuItem = (selectedOption: number) => {
+        if (!selectedOption) {
+            return;
+        }
         const {
             id,
             date
@@ -200,15 +204,24 @@ export default function MenuComponent() {
 
     const updateDate = (date: CalendarDate) => {
         try {
-            const {
-                id,
-                menuItem
-            } = editObj;
-            setEditObj({
-                id      : id,
-                menuItem: menuItem,
-                date    : date.toDate(getLocalTimeZone())
-            });
+            const tempDate = date.toDate(getLocalTimeZone()).getUTCDate();
+            const nowDate = new Date();
+
+            if (tempDate >= nowDate.getUTCDate()) {
+                const {
+                    id,
+                    menuItem
+                } = editObj;
+                setEditObj({
+                    id      : id,
+                    menuItem: menuItem,
+                    date    : date.toDate(getLocalTimeZone())
+                });
+                setIsInvalid(false);
+            } else {
+                setIsInvalid(true);
+            }
+
         } catch (error) {
             if (error instanceof Error) {
                 showToast(error.message);
@@ -219,7 +232,14 @@ export default function MenuComponent() {
     }
 
     const createDate = (date: CalendarDate) => {
-        setNewDate(date.toDate(getLocalTimeZone()).toUTCString());
+        const tempDate = date.toDate(getLocalTimeZone()).getUTCDate();
+        const nowDate = new Date();
+        if (tempDate >= nowDate.getUTCDate()) {
+            setNewDate(date.toDate(getLocalTimeZone()).toUTCString());
+            setIsInvalid(false);
+        } else {
+            setIsInvalid(true);
+        }
     }
 
     const createMenuItem = (menuItemId: number) => {
@@ -228,6 +248,15 @@ export default function MenuComponent() {
 
     const confirmCreation = () => {
         (async () => {
+
+            const tempDate = new Date(newDate);
+            const nowDate = new Date();
+
+            if (!(tempDate.getFullYear() >= nowDate.getFullYear() && (tempDate.getMonth() + 1) >= (nowDate.getMonth() + 1) && tempDate.getDate() >= nowDate.getDate())) {
+                setIsInvalid(true);
+                return;
+            }
+            
             const server_response = await insertMenu({
                 id         : null,
                 date       : newDate,
@@ -257,6 +286,7 @@ export default function MenuComponent() {
             }
 
             setMenu(retrieveMenuResponse!);
+            setIsInvalid(false);
             onClose()
         })().catch(error => {
             if (error instanceof Error) {
@@ -269,15 +299,24 @@ export default function MenuComponent() {
     }
 
     const cancelCreation = () => {
+        setIsInvalid(false);
         onClose();
     }
 
     const cancelEdition = () => {
+        setIsInvalid(false);
         onClose();
     }
 
     const confirmEdition = () => {
         const menuItemId = editObj.menuItem.id;
+        const tempDate = new Date(editObj.date);
+        const nowDate = new Date();
+
+        if (!(tempDate.getFullYear() >= nowDate.getFullYear() && (tempDate.getMonth() + 1) >= (nowDate.getMonth() + 1) && tempDate.getDate() >= nowDate.getDate())) {
+            setIsInvalid(true);
+            return;
+        }
 
         menuQueryDto = {
             id         : editObj.id,
@@ -310,7 +349,8 @@ export default function MenuComponent() {
                 throw new Error("Retrieve updated menu failed");
             }
 
-            setMenu(menuReadResponse!);
+            setMenu(menuReadResponse);
+            setIsInvalid(false);
             onClose();
         })().catch(error => {
             if (error instanceof Error) {
@@ -389,11 +429,11 @@ export default function MenuComponent() {
         }
     }
 
-    const generateDateString = (d : Date | string) => {
+    const generateDateString = (d: Date | string) => {
         const tempDate = new Date(d);
-        return `${tempDate.getMonth()+1}/${tempDate.getDate()}/${tempDate.getFullYear()}`;
+        return `${tempDate.getMonth() + 1}/${tempDate.getDate()}/${tempDate.getFullYear()}`;
     }
-    
+
     const generateEditSelectedItem = () => {
         return menuItemDto.map(value => {
                 if ((menu.value.resultDto.filter(m => m.menuItem.id === value.id && generateDateString(m.date) === generateDateString(editObj.date)).length === 0)) {
@@ -414,7 +454,7 @@ export default function MenuComponent() {
     const generateNewSelectedItem = () => {
         return menuItemDto.map(value => {
                 if ((menu.value.resultDto.filter(m => m.menuItem.id === value.id && generateDateString(m.date) === generateDateString(newDate))).length === 0) {
-                    
+
                     return (
                         <SelectItem
                             key={value.id}
@@ -438,6 +478,7 @@ export default function MenuComponent() {
                         defaultValue={new CalendarDate(new Date(editObj.date).getFullYear(), new Date(editObj.date).getMonth() + 1, new Date(editObj.date).getDate())}
                         placeholderValue={new CalendarDate(new Date(editObj.date).getFullYear(), new Date(editObj.date).getMonth() + 1, new Date(editObj.date).getDate())}
                         className={"max-w-xs"}
+                        isInvalid={isInvalid}
                         onChange={(value) => updateDate(value)}
                     />
                     <Select
@@ -459,6 +500,7 @@ export default function MenuComponent() {
                         label={"Date"}
                         placeholderValue={new CalendarDate(new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate())}
                         className={"max-w-xs"}
+                        isInvalid={isInvalid}
                         onChange={(value) => createDate(value)}
                     />
                     <Select
@@ -555,45 +597,45 @@ export default function MenuComponent() {
                 aria-label={"Menu"}
                 topContent={<h1 className={"w-full text-center"}>Menu Management</h1>}
             >
-                    <TableHeader>
-                        {
-                            user?.role.includes("Manager")
-                            ?
-                            menuHeaders.map(tableHeader =>
-                                <TableColumn
-                                    key={tableHeader.key}
-                                >{tableHeader.label}
-                                </TableColumn>
-                            )
-                            : menuHeadersStaff.map(tableHeader =>
-                                <TableColumn
-                                    key={tableHeader.key}
-                                >{tableHeader.label}
-                                </TableColumn>)
-                        }
-                    </TableHeader>
+                <TableHeader>
                     {
-                        generateOptionalFields()
+                        user?.role.includes("Manager")
+                        ?
+                        menuHeaders.map(tableHeader =>
+                            <TableColumn
+                                key={tableHeader.key}
+                            >{tableHeader.label}
+                            </TableColumn>
+                        )
+                        : menuHeadersStaff.map(tableHeader =>
+                            <TableColumn
+                                key={tableHeader.key}
+                            >{tableHeader.label}
+                            </TableColumn>)
                     }
-                </Table>
-                <Modals
-                    isOpen={isOpen}
-                    onOpenChange={onOpenChange}
-                    onCancel={() => editModal
-                                    ? cancelEdition()
-                                    : cancelCreation()}
-                    onConfirm={() => editModal
-                                     ? confirmEdition()
-                                     : confirmCreation()}
-                    header={editModal
-                            ? "Edit"
-                            : "Create"}
-                    hideCloseButton={false}
-                >
-                    {
-                        renderContent()
-                    }
-                </Modals>
+                </TableHeader>
+                {
+                    generateOptionalFields()
+                }
+            </Table>
+            <Modals
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                onCancel={() => editModal
+                                ? cancelEdition()
+                                : cancelCreation()}
+                onConfirm={() => editModal
+                                 ? confirmEdition()
+                                 : confirmCreation()}
+                header={editModal
+                        ? "Edit"
+                        : "Create"}
+                hideCloseButton={false}
+            >
+                {
+                    renderContent()
+                }
+            </Modals>
         </>
     );
 }
