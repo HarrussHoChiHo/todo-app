@@ -25,14 +25,12 @@ export default function Home() {
         if (token && user){
             if (!user?.role.includes("Manager")) {
                 router.push("/place-order");
-                return;
             } else {
                 router.push("/dashboard");
-                return;
             }
+        } else {
+            setIsLoading(false);
         }
-        
-        setIsLoading(false);
     }, [router, token]);
     
     if (isLoading){

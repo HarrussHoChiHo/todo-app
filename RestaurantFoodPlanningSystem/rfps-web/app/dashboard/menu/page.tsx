@@ -281,7 +281,7 @@ export default function MenuComponent() {
 
         menuQueryDto = {
             id         : editObj.id,
-            date       : editObj.date.toUTCString(),
+            date       : new Date(editObj.date).toUTCString(),
             menuItem_Id: menuItemId
         };
 
@@ -389,6 +389,46 @@ export default function MenuComponent() {
         }
     }
 
+    const generateDateString = (d : Date | string) => {
+        const tempDate = new Date(d);
+        return `${tempDate.getMonth()+1}/${tempDate.getDate()}/${tempDate.getFullYear()}`;
+    }
+    
+    const generateEditSelectedItem = () => {
+        return menuItemDto.map(value => {
+                if ((menu.value.resultDto.filter(m => m.menuItem.id === value.id && generateDateString(m.date) === generateDateString(editObj.date)).length === 0)) {
+                    return (
+                        <SelectItem
+                            key={value.id}
+                            value={value.id}
+                            textValue={value.name}
+                        >
+                            {value.name}
+                        </SelectItem>
+                    );
+                }
+            }
+        ).filter(obj => obj !== undefined);
+    }
+
+    const generateNewSelectedItem = () => {
+        return menuItemDto.map(value => {
+                if ((menu.value.resultDto.filter(m => m.menuItem.id === value.id && generateDateString(m.date) === generateDateString(newDate))).length === 0) {
+                    
+                    return (
+                        <SelectItem
+                            key={value.id}
+                            value={value.id}
+                            textValue={value.name}
+                        >
+                            {value.name}
+                        </SelectItem>
+                    );
+                }
+            }
+        ).filter(obj => obj !== undefined);
+    }
+
     const renderContent = () => {
         if (editModal) {
             return (
@@ -407,15 +447,7 @@ export default function MenuComponent() {
                         onSelectionChange={(selection) => updateMenuItem(Array.from(selection)[0] as number)}
                     >
                         {
-                            menuItemDto.map(value =>
-                                <SelectItem
-                                    key={value.id}
-                                    value={value.id}
-                                    textValue={value.name}
-                                >
-                                    {value.name}
-                                </SelectItem>
-                            )
+                            generateEditSelectedItem()
                         }
                     </Select>
                 </>
@@ -435,15 +467,7 @@ export default function MenuComponent() {
                         onSelectionChange={(selection) => createMenuItem(Array.from(selection)[0] as number)}
                     >
                         {
-                            menuItemDto.map(value =>
-                                <SelectItem
-                                    key={value.id}
-                                    value={value.id}
-                                    textValue={value.name}
-                                >
-                                    {value.name}
-                                </SelectItem>
-                            )
+                            generateNewSelectedItem()
                         }
                     </Select>
                 </>

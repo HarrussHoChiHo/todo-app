@@ -80,7 +80,8 @@ namespace Application.BusinessLogic.MenuLogic
                                                      || menuQuery.MenuItem_Id == null)
                                               )
                                    .Include(menu => menu.MenuItem)
-                                   .OrderBy(menu => menu.Date)
+                                   .OrderByDescending(menu => menu.Date)
+                                   .ThenBy(menu => menu.Id)
                                    .ProjectTo<MenuResultDto>(_mapper.ConfigurationProvider)
                                    .ToList();
             }
@@ -93,7 +94,8 @@ namespace Application.BusinessLogic.MenuLogic
                                                      || menuQuery.MenuItem_Id == null)
                                               )
                                    .Include(menu => menu.MenuItem)
-                                   .OrderBy(menu => menu.Date)
+                                   .OrderByDescending(menu => menu.Date)
+                                   .ThenBy(menu => menu.Id)
                                    .ProjectTo<MenuResultDto>(_mapper.ConfigurationProvider)
                                    .ToList();
             }
