@@ -39,6 +39,7 @@ export default function OrderComponent() {
         }
     });
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
+    const [addedOrderItems, setAddedOrderItems] = useState<string[]>([])
     const [valid, setValid] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
     const menuAPI: string = "/DataManagement/menu";
@@ -73,15 +74,20 @@ export default function OrderComponent() {
         }
     }
 
-    const updateOrder = async function (selectedMenuItemId: string[]) {
+    const updateOrder = function (selectedMenuItemId: string[]) {
         setSelectedItems(selectedMenuItemId);
         setValid(true);
+    }
+    
+    const addSelectedOrderItem = function () {
+        setAddedOrderItems([...addedOrderItems,...selectedItems]);
+        setSelectedItems([]);
         setOrderPlacementDto({
             order     : {
                 id        : null,
                 isCanceled: false
             },
-            orderItems: selectedMenuItemId.map(id => new OrderItemQueryDto(null, null, parseInt(id)))
+            orderItems: addedOrderItems.map(id => new OrderItemQueryDto(null, null, parseInt(id)))
         });
     }
 
@@ -193,14 +199,23 @@ export default function OrderComponent() {
                                 )
                             }
                         </Select>
+                        <Divider className={"mt-2 mb-2"}/>
+                        <Button
+                            size={"lg"}
+                            variant={"solid"}
+                            color={"primary"}
+                            onPress={ () => addSelectedOrderItem()}
+                        >
+                            Add new courses
+                        </Button>
                     </CardBody>
                     <Divider className={"mt-2 mb-2"}/>
                     <CardBody>
                         <p className={"text-small text-default-500 p-4"}>Selected Courses:</p>
                         {
-                            selectedItems.length > 0 ? <ol className={"list-decimal list-inside ps-4"}>
+                            addedOrderItems.length > 0 ? <ol className={"list-decimal list-inside ps-4"}>
                                     {
-                                        selectedItems.map((id, index) =>
+                                        addedOrderItems.map((id, index) =>
                                             <li key={index}>
                                                 {
                                                     menu.value.resultDto.filter(item => item.menuItem.id.toString() === id)[0].menuItem.name
