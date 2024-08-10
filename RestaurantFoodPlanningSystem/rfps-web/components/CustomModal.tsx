@@ -8,6 +8,7 @@ interface ModalProps {
     onConfirm: () => void;
     hideCloseButton: boolean;
     header: string;
+    isDisabled?: boolean;
     children: React.ReactNode;
 }
 
@@ -18,6 +19,7 @@ export default function Modals({
                                    onConfirm,
                                    hideCloseButton,
                                    header,
+                                   isDisabled = false,
                                    children
                                }: ModalProps) {
 
@@ -41,7 +43,9 @@ export default function Modals({
                                 Cancel
                             </Button>
                             <Button color="primary"
-                                    onPress={onConfirm}>
+                                    onPress={onConfirm}
+                                    isDisabled={isDisabled}
+                            >
                                 Confirm
                             </Button>
                         </ModalFooter>

@@ -631,6 +631,7 @@ export default function MenuComponent() {
                         ? "Edit"
                         : "Create"}
                 hideCloseButton={false}
+                isDisabled={isInvalid}
             >
                 {
                     renderContent()
