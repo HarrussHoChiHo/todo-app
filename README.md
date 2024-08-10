@@ -467,7 +467,7 @@ Restaurant Food Planning System
    	<tr>
    	  <td>POST</td>
    	  <td>api/DataManagement/order/creation</td>
-   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "isCanceled": "&lt;integer&gt;"<br/>}</pre></td>
+   	  <td><pre>{<br/>  "id": "&lt;integer&gt;",<br/>  "isCanceled": "&lt;integer&gt;"<br/> "pageNumber": "&lt;integer&gt;"<br/> "limit": "&lt;integer&gt;"<br/>}</pre></td>
    	  <td><pre>None</pre></td>
    	</tr>
    	<tr>
