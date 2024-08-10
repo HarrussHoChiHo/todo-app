@@ -6,6 +6,7 @@ import React, {Fragment, useEffect, useState} from "react";
 import {
     Button,
     Checkbox,
+    Pagination,
     Select,
     SelectItem,
     Spinner,
@@ -18,7 +19,7 @@ import {
     useDisclosure
 } from "@nextui-org/react";
 import OrderDto, {orderHeaders, orderHeadersStaff} from "../../../lib/models/order/OrderDto";
-import OrderQueryDto from "../../../lib/models/order/OrderQueryDto";
+import {OrderQueryDto, OrderQueryPerPageDto} from "../../../lib/models/order/OrderQueryDto";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {faPenToSquare} from "@fortawesome/free-solid-svg-icons/faPenToSquare";
@@ -72,8 +73,12 @@ export default function OrderComponent() {
     const [isCanceled, setIsCanceled] = useState("false");
     const [isLoading, setIsLoading] = useState(true);
     const [orderItemList, setOrderItemList] = useState<number[]>([]);
-
-
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const [displayOrders, setDisplayOrders] = useState<OrderDto[]>([]);
+    const [orderPerPage, setOrderPerPage] = useState<Map<number, OrderDto[]>>(new Map());
+    const itemsPerPage = 5;
+    
     const handleDelete = (id: number) => {
         (async () => {
             const serverRes = await deleteOrder(id);
@@ -88,7 +93,9 @@ export default function OrderComponent() {
 
             const retrieveRes = await retrieveOrder({
                 id        : null,
-                isCanceled: null
+                isCanceled: null,
+                pageNumber: currentPage,
+                limit     : itemsPerPage
             });
 
             if (!retrieveRes) {
@@ -98,7 +105,11 @@ export default function OrderComponent() {
             if (!retrieveRes.isSuccess) {
                 throw new Error(`Fail - ${retrieveRes.error}`);
             }
-
+            
+            const newMap = new Map(orderPerPage);
+            newMap.set(currentPage, retrieveRes.value.resultDto);
+            setOrderPerPage(newMap);
+            
             setOrder(retrieveRes);
 
             setEditObj(serverRes.value.resultDto[0]);
@@ -112,11 +123,17 @@ export default function OrderComponent() {
         });
     }
 
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    }
+    
     const handleEdit = (id: number) => {
         (async () => {
             const serverRes = await retrieveOrder({
                 id        : id,
-                isCanceled: null
+                isCanceled: null,
+                pageNumber: null,
+                limit     : null
             });
 
             if (!serverRes) {
@@ -126,7 +143,7 @@ export default function OrderComponent() {
             if (!serverRes.isSuccess) {
                 throw new Error(`Fail - ${serverRes.error}`);
             }
-
+            
             setEditObj(serverRes.value.resultDto[0]);
             setIsCanceled(`${serverRes.value.resultDto[0].isCanceled}`);
             onOpen();
@@ -139,12 +156,11 @@ export default function OrderComponent() {
         });
     }
 
-
     const updateStatus = (status: string[]) => {
         setIsCanceled(status[0]);
     }
 
-    const retrieveOrder = async (orderQueryDto: OrderQueryDto) => {
+    const retrieveOrder = async (orderQueryDto: OrderQueryPerPageDto) => {
         try {
             const server_res = await (await httpServices.callAPI(`${orderAPI}/read`, orderQueryDto, "POST", token)).json();
             return server_res as BasicDto<OrderDto>;
@@ -226,7 +242,9 @@ export default function OrderComponent() {
 
                 const retrieveServerRes = await retrieveOrder({
                     id        : null,
-                    isCanceled: null
+                    isCanceled: null,
+                    pageNumber: currentPage,
+                    limit     : itemsPerPage
                 });
 
                 if (!retrieveServerRes) {
@@ -236,6 +254,11 @@ export default function OrderComponent() {
                 if (!retrieveServerRes.isSuccess) {
                     throw new Error(`Fail - ${retrieveServerRes.error}`);
                 }
+
+                const newMap = new Map(orderPerPage);
+                newMap.set(currentPage, retrieveServerRes.value.resultDto);
+                setOrderPerPage(newMap);
+                
                 setOrder(retrieveServerRes);
                 onClose();
             }
@@ -256,11 +279,55 @@ export default function OrderComponent() {
         }
     }
 
+    const showToast = (message: string) => {
+        toast(message);
+    }
+
+    // useEffect(() => {
+    //     (async () => {
+    //         const retrieveResult = await retrieveOrder({
+    //             id        : null,
+    //             isCanceled: null,
+    //             pageNumber: currentPage,
+    //             limit     : itemsPerPage
+    //         });
+    //
+    //         if (!retrieveResult) {
+    //             throw new Error("Failed to retrieve place-order.");
+    //         }
+    //
+    //         if (!retrieveResult.isSuccess) {
+    //             throw new Error(`Fail - ${retrieveResult.error}`);
+    //         }
+    //
+    //         setOrder(retrieveResult);
+    //
+    //         setIsLoading(false);
+    //     })().catch(error => {
+    //         if (error instanceof Error) {
+    //             showToast(error.message);
+    //         } else {
+    //             showToast("Service crashed");
+    //         }
+    //     });
+    // }, []);
+
+    useEffect(() => {
+        setTotalPages(Math.ceil(order.value.amount / itemsPerPage));
+        const items = orderPerPage.get(currentPage);
+        console.log(items);
+        if (items){
+            setDisplayOrders(items);
+        }
+    }, [order]);
+
     useEffect(() => {
         (async () => {
             const retrieveResult = await retrieveOrder({
                 id        : null,
-                isCanceled: null
+                isCanceled: null,
+                pageNumber: currentPage,
+                limit     : itemsPerPage
             });
 
             if (!retrieveResult) {
@@ -270,8 +337,13 @@ export default function OrderComponent() {
             if (!retrieveResult.isSuccess) {
                 throw new Error(`Fail - ${retrieveResult.error}`);
             }
-
+            
+            const newMap = new Map(orderPerPage);
+            newMap.set(currentPage, retrieveResult.value.resultDto);
+            setOrderPerPage(newMap);
+            
             setOrder(retrieveResult);
+
             setIsLoading(false);
         })().catch(error => {
             if (error instanceof Error) {
@@ -280,12 +352,8 @@ export default function OrderComponent() {
                 showToast("Service crashed");
             }
         });
-    }, []);
-
-    const showToast = (message: string) => {
-        toast(message);
-    }
-
+    }, [currentPage]);
+    
     const renderContent = () => {
         return (
             <>
@@ -331,7 +399,7 @@ export default function OrderComponent() {
             return (
                 <TableBody emptyContent={"No rows to display."}>
                     {
-                        order.value.resultDto.map((dto) =>
+                        displayOrders.map((dto) =>
                             <TableRow key={dto.id}>
                                 <TableCell>{dto.id}</TableCell>
                                 <TableCell>{dto.isCanceled
@@ -378,7 +446,7 @@ export default function OrderComponent() {
             return (
                 <TableBody emptyContent={"No rows to display."}>
                     {
-                        order.value.resultDto.map((dto) =>
+                        displayOrders.map((dto) =>
                             <TableRow key={dto.id}>
                                 <TableCell>{dto.id}</TableCell>
                                 <TableCell>{dto.isCanceled
@@ -414,6 +482,16 @@ export default function OrderComponent() {
             <Table
                 aria-label={"Order"}
                 topContent={<h1 className={"w-full text-center"}>Order Management</h1>}
+                bottomContent={
+                    <div className={"flex w-full justify-center"}>
+                        <Pagination
+                            showControls={true}
+                            showShadow={true}
+                            total={totalPages}
+                            initialPage={currentPage}
+                            onChange={handlePageChange}
+                        />
+                    </div>}
             >
                 <TableHeader>
                     {
@@ -431,6 +509,7 @@ export default function OrderComponent() {
                     generateOptionalFields()
                 }
             </Table>
+
             <Modals
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
