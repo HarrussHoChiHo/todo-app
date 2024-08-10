@@ -761,7 +761,7 @@ public class DataManagementController(
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "StaffAndManager")]
     [HttpPost("order/read")]
-    public async Task<ActionResult<Result<DbOperationResult<OrderResultDto>>>> ReadOrder(OrderQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<OrderResultDto>>>> ReadOrder(OrderQueryPerPageDto queryDto)
     {
         try
         {

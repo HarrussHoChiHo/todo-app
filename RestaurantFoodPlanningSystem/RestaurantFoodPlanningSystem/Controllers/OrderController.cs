@@ -136,7 +136,7 @@ public class OrderController(
                                         });
 
             response.orderResDto = await order.Read(
-                                                    new OrderQueryDto()
+                                                    new OrderQueryPerPageDto()
                                                     {
                                                         Id = orderInsertion.resultDto.First()
                                                                            .Id

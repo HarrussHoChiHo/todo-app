@@ -45,7 +45,7 @@ namespace Application.BusinessLogic.OrderLogic
                           .Select(
                                   o => new Order()
                                        {
-                                           Id = o.Id,
+                                           Id         = o.Id,
                                            IsCanceled = orderQuery.IsCanceled ?? o.IsCanceled,
                                            OrderItems = o.OrderItems
                                        })
@@ -62,23 +62,50 @@ namespace Application.BusinessLogic.OrderLogic
             return result;
         }
 
-        public async Task<DbOperationResult<OrderResultDto>> Read(OrderQueryDto orderQuery)
+        public async Task<DbOperationResult<OrderResultDto>> Read(OrderQueryPerPageDto orderQuery)
         {
             DbOperationResult<OrderResultDto> result = new DbOperationResult<OrderResultDto>();
 
-            List<OrderResultDto> orderResultDtos = _context
-                                                   .Order
-                                                   .Where(
-                                                                order =>
-                                                                    (order.Id == orderQuery.Id || orderQuery.Id == null)
-                                                                 && (order.IsCanceled      == orderQuery.IsCanceled
-                                                                  || orderQuery.IsCanceled == null))
-                                                   .Include(order => order.OrderItems)
-                                                   .OrderBy(o => o.Id)
-                                                   .ProjectTo<OrderResultDto>(_mapper.ConfigurationProvider)
-                                                   .ToList();
+            List<OrderResultDto> orderResultDtos = new List<OrderResultDto>();
 
-            result.amount    = orderResultDtos.Count;
+            int pageNumber = orderQuery.PageNumber ?? 0;
+            int limit      = orderQuery.Limit      ?? 0;
+
+            if (pageNumber == 0 && limit == 0)
+            {
+                orderResultDtos = _context
+                                  .Order
+                                  .Where(
+                                         order =>
+                                             (order.Id == orderQuery.Id || orderQuery.Id == null)
+                                          && (order.IsCanceled      == orderQuery.IsCanceled
+                                           || orderQuery.IsCanceled == null))
+                                  .Include(order => order.OrderItems)
+                                  .OrderBy(o => o.Id)
+                                  .ProjectTo<OrderResultDto>(_mapper.ConfigurationProvider)
+                                  .ToList();
+                result.amount = orderResultDtos.Count;
+            }
+            else
+            {
+                IOrderedQueryable<Order> query = _context
+                                                 .Order
+                                                 .Where(
+                                                        order =>
+                                                            (order.Id == orderQuery.Id || orderQuery.Id == null)
+                                                         && (order.IsCanceled      == orderQuery.IsCanceled
+                                                          || orderQuery.IsCanceled == null))
+                                                 .Include(order => order.OrderItems)
+                                                 .OrderBy(o => o.Id);
+                result.amount = query.Count();
+                
+                orderResultDtos = query
+                                  .Skip((pageNumber - 1) * limit)
+                                  .Take(limit)
+                                  .ProjectTo<OrderResultDto>(_mapper.ConfigurationProvider)
+                                  .ToList();
+            }
+            
             result.resultDto = orderResultDtos;
 
             return result;
