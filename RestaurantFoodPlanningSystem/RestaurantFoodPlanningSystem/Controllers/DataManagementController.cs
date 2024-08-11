@@ -374,8 +374,7 @@ public class DataManagementController(
     /// <returns name="ActionResult">Http Response with object "Result"</returns>
     [Authorize(Policy = "ManagerOnly")]
     [HttpPost("menu-item/creation")]
-    public async Task<ActionResult<Result<DbOperationResult<MenuItemResultDto>>>> CreateMenuItem(
-        MenuItemQueryDto queryDto)
+    public async Task<ActionResult<Result<DbOperationResult<MenuItemResultDto>>>> CreateMenuItem(MenuItemQueryDto queryDto)
     {
         try
         {

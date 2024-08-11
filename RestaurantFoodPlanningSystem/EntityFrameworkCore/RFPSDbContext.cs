@@ -230,6 +230,11 @@ public class RFPSDbContext : IdentityDbContext<User, Role, int>
             .HasIndex(u => u.UserName)
             .IsUnique();
 
+        modelBuilder
+            .Entity<MenuItem>()
+            .HasIndex(mi => mi.Name)
+            .IsUnique();
+        
         /* END: Define Unique Columns */
 
         /* BEG: Define constraints */

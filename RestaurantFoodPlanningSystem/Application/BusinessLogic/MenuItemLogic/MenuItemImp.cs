@@ -20,8 +20,15 @@ namespace Application.BusinessLogic.MenuItemLogic
         {
             DbOperationResult<MenuItemResultDto> result = new DbOperationResult<MenuItemResultDto>();
 
-            MenuItem menuItem = _mapper.Map<MenuItem>(menuItemQuery);
+            bool exists = await _context.MenuItem.AnyAsync(m => m.Name.Equals(menuItemQuery.Name));
 
+            if (exists)
+            {
+                throw new Exception("The name is not allowed to be duplicated.");
+            }
+            
+            MenuItem menuItem = _mapper.Map<MenuItem>(menuItemQuery);
+            
             _context.MenuItem.Add(menuItem);
 
             result.amount = await _context.SaveChangesAsync();
@@ -37,6 +44,13 @@ namespace Application.BusinessLogic.MenuItemLogic
         {
             DbOperationResult<MenuItemResultDto> result = new DbOperationResult<MenuItemResultDto>();
 
+            bool exists = await _context.MenuItem.AnyAsync(m => m.Name.Equals(menuItemQuery.Name));
+
+            if (exists)
+            {
+                throw new Exception("The name is not allowed to be duplicated.");
+            }
+            
             MenuItem menuItem = _context
                                 .MenuItem
                                 .Where(x => x.Id == menuItemQuery.Id)

@@ -219,7 +219,7 @@ public class SeedData
                     Date        = DateTime.Parse("2024-06-22")
                 }
             ];
-            
+
             context.Menu.AddRange(menus);
             logger.LogDebug($"Menu insertion result: {await context.SaveChangesAsync()}");
         }
@@ -233,7 +233,7 @@ public class SeedData
             Menu menu = new Menu()
                         {
                             MenuItem_Id = 2,
-                            Date = localDate
+                            Date        = localDate
                         };
 
             context.Menu.Add(menu);
@@ -310,25 +310,27 @@ public class SeedData
                                     .MenuItem
                                     .Select(x => x.Id)
                                     .ToList();
-            
-            
+
+
             foreach (int id in orderIds)
             {
-               int items = Random.Shared.Next(
-                                   1,
-                                   4);
+                int items = Random.Shared.Next(
+                                               1,
+                                               4);
 
-               for (int i = 0; i < items; i++)
-               {
-                   orderItems.Add(
-                                  new OrderItem()
-                                  {
-                                      OrderId    = id,
-                                      MenuItemId = menuItemIds[Random.Shared.Next(0,3)]
-                                  });
-               }
+                for (int i = 0; i < items; i++)
+                {
+                    orderItems.Add(
+                                   new OrderItem()
+                                   {
+                                       OrderId = id,
+                                       MenuItemId = menuItemIds[Random.Shared.Next(
+                                                                                   0,
+                                                                                   3)]
+                                   });
+                }
             }
-            
+
 
             context.OrderItem.AddRange(orderItems);
             logger.LogDebug($"Order insertion result: {await context.SaveChangesAsync()}");

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EntityFrameworkCore.Migrations
 {
     /// <inheritdoc />
-    public partial class InitializeDatabase : Migration
+    public partial class InitializaDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -370,6 +370,12 @@ namespace EntityFrameworkCore.Migrations
                 name: "IX_Menu_MenuItem_Id",
                 table: "Menu",
                 column: "MenuItem_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MenuItem_Name",
+                table: "MenuItem",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuItemFoodItem_MenuItem_Id",

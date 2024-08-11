@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(RFPSDbContext))]
-    [Migration("20240702182544_InitializeDatabase")]
-    partial class InitializeDatabase
+    [Migration("20240811031412_InitializaDatabase")]
+    partial class InitializaDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -98,6 +98,9 @@ namespace EntityFrameworkCore.Migrations
                         .HasColumnOrder(1);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("MenuItem");
                 });
