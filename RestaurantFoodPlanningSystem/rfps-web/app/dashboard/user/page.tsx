@@ -559,7 +559,7 @@ export default function Page() {
                 header={"Confirm Deletion"}
                 hideCloseButton={false}
             >
-                <p>Are you sure you want to delete this order?</p>
+                <p>Are you sure you want to delete it?</p>
             </Modals>
         </>
     );

@@ -545,7 +545,7 @@ export default function OrderComponent() {
                 header={"Confirm Deletion"}
                 hideCloseButton={false}
             >
-                <p>Are you sure you want to delete this order?</p>
+                <p>Are you sure you want to delete it?</p>
             </Modals>
         </>
     );
