@@ -73,6 +73,8 @@ export default function MenuComponent() {
     const [newMenuItemId, setNewMenuItemId] = useState(0);
     const [newDate, setNewDate] = useState("");
     const [isInvalid, setIsInvalid] = useState(false);
+    const [isDeletionModalOpen, setDeletionModalOpen] = useState(false);
+    const [currentIdForDeletion, setCurrentIdForDeletion] = useState<number | null>(null);
     const menuAPI: string = "/DataManagement/menu";
     const menuItemAPI: string = "/DataManagement/menu-item";
     let menuQueryDto: MenuQueryDto =
@@ -116,35 +118,26 @@ export default function MenuComponent() {
         });
     }, []);
 
+    const isValidDate = (inputDate : CalendarDate) => {
+        const nowDate = new Date();
+        const tempDate = inputDate.toDate(getLocalTimeZone());
+        const nowDay = nowDate.getUTCDate();
+        const nowMonth = nowDate.getMonth() + 1;
+        const nowYear = nowDate.getUTCFullYear();
+        const tempDay = tempDate.getUTCDate();
+        const tempMonth = tempDate.getUTCMonth() + 1;
+        const tempYear = tempDate.getUTCFullYear();
+        
+        return tempDay >= nowDay && tempMonth >= nowMonth && tempYear >= nowYear;
+    }
+    
     const showToast = (message: string) => {
         toast(message);
     }
 
     const handleDelete = (id: number) => {
-        (async () => {
-            const server_res = await deleteMenu(id);
-
-            if (!server_res) {
-                throw new Error("Failed to delete menu.");
-            }
-
-            if (!server_res.isSuccess) {
-                throw new Error(`Fail - ${server_res.error}`);
-            }
-
-            const updatedList = await retrieveMenu({
-                id         : null,
-                date       : null,
-                menuItem_Id: null
-            });
-            setMenu(updatedList!);
-        })().catch(error => {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error("Service crashed.");
-            }
-        });
+        setCurrentIdForDeletion(id);
+        setDeletionModalOpen(true);
     }
 
     const handleEdit = (id: number) => {
@@ -204,10 +197,7 @@ export default function MenuComponent() {
 
     const updateDate = (date: CalendarDate) => {
         try {
-            const tempDate = date.toDate(getLocalTimeZone()).getUTCDate();
-            const nowDate = new Date();
-
-            if (tempDate >= nowDate.getUTCDate()) {
+            if (isValidDate(date)) {
                 const {
                     id,
                     menuItem
@@ -232,9 +222,7 @@ export default function MenuComponent() {
     }
 
     const createDate = (date: CalendarDate) => {
-        const tempDate = date.toDate(getLocalTimeZone()).getUTCDate();
-        const nowDate = new Date();
-        if (tempDate >= nowDate.getUTCDate()) {
+        if (isValidDate(date)) {
             setNewDate(date.toDate(getLocalTimeZone()).toUTCString());
             setIsInvalid(false);
         } else {
@@ -246,6 +234,39 @@ export default function MenuComponent() {
         setNewMenuItemId(menuItemId);
     }
 
+    const confirmDelete = () => {
+        (async () => {
+            if (!currentIdForDeletion){
+                throw new Error("Current ID for deletion is null.");
+            }
+            const server_res = await deleteMenu(currentIdForDeletion);
+
+            if (!server_res) {
+                throw new Error("Failed to delete menu.");
+            }
+
+            if (!server_res.isSuccess) {
+                throw new Error(`Fail - ${server_res.error}`);
+            }
+
+            const updatedList = await retrieveMenu({
+                id         : null,
+                date       : null,
+                menuItem_Id: null
+            });
+            setMenu(updatedList!);
+        })().catch(error => {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Service crashed.");
+            }
+        }).finally(() => {
+            setDeletionModalOpen(false);
+            setCurrentIdForDeletion(null);
+        });
+    }
+    
     const confirmCreation = () => {
         (async () => {
 
@@ -479,6 +500,7 @@ export default function MenuComponent() {
                         placeholderValue={new CalendarDate(new Date(editObj.date).getFullYear(), new Date(editObj.date).getMonth() + 1, new Date(editObj.date).getDate())}
                         className={"max-w-xs"}
                         isInvalid={isInvalid}
+                        errorMessage={"Please make sure the date is greater than or equal to today."}
                         onChange={(value) => updateDate(value)}
                     />
                     <Select
@@ -501,6 +523,7 @@ export default function MenuComponent() {
                         placeholderValue={new CalendarDate(new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate())}
                         className={"max-w-xs"}
                         isInvalid={isInvalid}
+                        errorMessage={"Please make sure the date is greater than or equal to today."}
                         onChange={(value) => createDate(value)}
                     />
                     <Select
@@ -636,6 +659,17 @@ export default function MenuComponent() {
                 {
                     renderContent()
                 }
+            </Modals>
+
+            <Modals
+                isOpen={isDeletionModalOpen}
+                onOpenChange={setDeletionModalOpen}
+                onCancel={() => setDeletionModalOpen(false)}
+                onConfirm={confirmDelete}
+                header={"Confirm Deletion"}
+                hideCloseButton={false}
+            >
+                <p>Are you sure you want to delete this order?</p>
             </Modals>
         </>
     );

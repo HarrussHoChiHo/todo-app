@@ -3,9 +3,9 @@ import React from "react";
 
 interface ModalProps {
     isOpen: boolean;
-    onOpenChange: () => void;
+    onOpenChange: (() => void) | ((isOpen: boolean) => void);
     onCancel: () => void;
-    onConfirm: () => void;
+    onConfirm: () => void | ((obj: any) => void);
     hideCloseButton: boolean;
     header: string;
     isDisabled?: boolean;

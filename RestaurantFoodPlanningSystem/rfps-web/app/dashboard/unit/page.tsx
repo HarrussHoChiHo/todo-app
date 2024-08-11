@@ -48,6 +48,8 @@ export default function UnitComponent() {
     });
     const [editModal, setEditModal] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
+    const [isDeletionModalOpen, setDeletionModalOpen] = useState(false);
+    const [currentIdForDeletion, setCurrentIdForDeletion] = useState<number | null>(null);
     const {
         isOpen,
         onOpen,
@@ -139,37 +141,8 @@ export default function UnitComponent() {
     }
 
     const handleDelete = (id: number) => {
-        (async () => {
-            const deleteRes = await deleteUnit(id);
-
-            if (!deleteRes) {
-                throw new Error("Failed to delete unit");
-            }
-
-            if (!deleteRes.isSuccess) {
-                throw new Error(`Fail - ${deleteRes.error}`);
-            }
-
-            const retrieveRes = await retrieveUnit({
-                id  : null,
-                name: null
-            });
-
-            if (!retrieveRes) {
-                throw new Error("Failed to retrieve updated unit list");
-            }
-
-            if (!retrieveRes.isSuccess) {
-                throw new Error(`Fail - ${retrieveRes.error}`);
-            }
-            setUnit(retrieveRes);
-        })().catch(error => {
-            if (error instanceof Error) {
-                showToast(error.message);
-            } else {
-                showToast("Service crashed");
-            }
-        });
+        setCurrentIdForDeletion(id);
+        setDeletionModalOpen(true);
     }
 
     const handleEdit = (id: number) => {
@@ -216,6 +189,47 @@ export default function UnitComponent() {
         setNewName(name);
     }
 
+    const confirmDelete = () => {
+        (async () => {
+            if(!currentIdForDeletion){
+                throw new Error("The current id for deletion is null");
+            }
+            
+            const deleteRes = await deleteUnit(currentIdForDeletion);
+
+            if (!deleteRes) {
+                throw new Error("Failed to delete unit");
+            }
+
+            if (!deleteRes.isSuccess) {
+                throw new Error(`Fail - ${deleteRes.error}`);
+            }
+
+            const retrieveRes = await retrieveUnit({
+                id  : null,
+                name: null
+            });
+
+            if (!retrieveRes) {
+                throw new Error("Failed to retrieve updated unit list");
+            }
+
+            if (!retrieveRes.isSuccess) {
+                throw new Error(`Fail - ${retrieveRes.error}`);
+            }
+            setUnit(retrieveRes);
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        }).finally(() => {
+            setDeletionModalOpen(false);
+            setCurrentIdForDeletion(null);
+        });
+    }
+    
     const confirmEdition = () => {
         (async () => {
             const updateRes = await updateUnit({
@@ -430,6 +444,16 @@ export default function UnitComponent() {
                 {
                     renderContent()
                 }
+            </Modals>
+            <Modals
+                isOpen={isDeletionModalOpen}
+                onOpenChange={setDeletionModalOpen}
+                onCancel={() => setDeletionModalOpen(false)}
+                onConfirm={confirmDelete}
+                header={"Confirm Deletion"}
+                hideCloseButton={false}
+            >
+                <p>Are you sure you want to delete this order?</p>
             </Modals>
         </>
     );

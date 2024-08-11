@@ -85,7 +85,9 @@ export default function IngredientComponent() {
     const [types, setTypes] = useState<TypeDto[]>([]);
     const [units, setUnits] = useState<UnitDto[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [isInvalid, setIsInvalid] = useState(false)
+    const [isInvalid, setIsInvalid] = useState(false);
+    const [isDeletionModalOpen, setDeletionModalOpen] = useState(false);
+    const [currentIdForDeletion, setCurrentIdForDeletion] = useState<number | null>(null);
 
     const foodItemAPI: string = "/DataManagement/food-item";
     const typeAPI: string = "/DataManagement/type";
@@ -185,41 +187,8 @@ export default function IngredientComponent() {
     }
 
     const handleDelete = (id: number) => {
-        (async () => {
-            const server_res = await deleteIngredient(id);
-
-            if (!server_res) {
-                throw new Error("Failed to delete ingredient.");
-            }
-
-            if (!server_res.isSuccess) {
-                throw new Error(`Fail - ${server_res.error}`);
-            }
-
-            const retrieveUpdatedIngredient = await retrieveIngredient({
-                id      : null,
-                name    : null,
-                type_Id : null,
-                unit_Id : null,
-                quantity: null
-            });
-
-            if (!retrieveUpdatedIngredient) {
-                throw new Error("Failed to retrieve ingredient after delete.");
-            }
-
-            if (!retrieveUpdatedIngredient.isSuccess) {
-                throw new Error(`Fail - ${retrieveUpdatedIngredient.error}`);
-            }
-
-            setIngredient(retrieveUpdatedIngredient!);
-        })().catch(error => {
-            if (error instanceof Error) {
-                showToast(error.message);
-            } else {
-                showToast("Service crashed.");
-            }
-        });
+        setCurrentIdForDeletion(id);
+        setDeletionModalOpen(true);
     }
 
     const handleEdit = (id: number) => {
@@ -302,6 +271,48 @@ export default function IngredientComponent() {
         });
     }
 
+    const confirmDelete = () => {
+        (async () => {
+            if (!currentIdForDeletion){
+                throw new Error("The current id for deletion is null.")
+            }
+            
+            const server_res = await deleteIngredient(currentIdForDeletion);
+
+            if (!server_res) {
+                throw new Error("Failed to delete ingredient.");
+            }
+
+            if (!server_res.isSuccess) {
+                throw new Error(`Fail - ${server_res.error}`);
+            }
+
+            const retrieveUpdatedIngredient = await retrieveIngredient({
+                id      : null,
+                name    : null,
+                type_Id : null,
+                unit_Id : null,
+                quantity: null
+            });
+
+            if (!retrieveUpdatedIngredient) {
+                throw new Error("Failed to retrieve ingredient after delete.");
+            }
+
+            if (!retrieveUpdatedIngredient.isSuccess) {
+                throw new Error(`Fail - ${retrieveUpdatedIngredient.error}`);
+            }
+
+            setIngredient(retrieveUpdatedIngredient!);
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed.");
+            }
+        }).finally(() => setDeletionModalOpen(false));
+    }
+    
     const confirmCreation = () => {
         (async () => {
             if (!newIngredient.quantity || newIngredient.quantity < 0) {
@@ -807,7 +818,16 @@ export default function IngredientComponent() {
                         renderContent()
                     }
                 </Modals>
-
+            <Modals
+                isOpen={isDeletionModalOpen}
+                onOpenChange={setDeletionModalOpen}
+                onCancel={() => setDeletionModalOpen(false)}
+                onConfirm={confirmDelete}
+                header={"Confirm Deletion"}
+                hideCloseButton={false}
+            >
+                <p>Are you sure you want to delete this order?</p>
+            </Modals>
         </>
     );
 }

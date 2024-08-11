@@ -55,7 +55,9 @@ export default function TypeComponent() {
         onClose,
         onOpenChange
     } = useDisclosure();
-    const [newName, setNewName] = useState<string>("")
+    const [newName, setNewName] = useState<string>("");
+    const [isDeletionModalOpen, setDeletionModalOpen] = useState(false);
+    const [currentIdForDeletion, setCurrentIdForDeletion] = useState<number | null>(null);
 
     const showToast = (message: string) => {
         toast(message);
@@ -114,37 +116,8 @@ export default function TypeComponent() {
     }
 
     const handleDelete = (id: number) => {
-        (async () => {
-            const deleteRes = await deleteType(id);
-
-            if (!deleteRes) {
-                throw new Error("Failed to delete type.");
-            }
-
-            if (!deleteRes.isSuccess) {
-                throw new Error(`Fail - ${deleteRes.error}`);
-            }
-            const retrieveRes = await retrieveType({
-                id  : null,
-                name: null
-            });
-
-            if (!retrieveRes) {
-                throw new Error("Failed to retrieve type after deletion.");
-            }
-
-            if (!retrieveRes.isSuccess) {
-                throw new Error(`Fail - ${retrieveRes.error}`);
-            }
-
-            setType(retrieveRes);
-        })().catch(error => {
-            if (error instanceof Error) {
-                showToast(error.message);
-            } else {
-                showToast("Service crashed");
-            }
-        });
+        setCurrentIdForDeletion(id);
+        setDeletionModalOpen(true);
     }
 
     const handleEdit = (id: number) => {
@@ -189,6 +162,47 @@ export default function TypeComponent() {
 
     const createNewName = (name: string) => {
         setNewName(name);
+    }
+
+    const confirmDelete = () => {
+        (async () => {
+            if (!currentIdForDeletion) {
+                throw new Error("The current id for deletion is null");
+            }
+
+            const deleteRes = await deleteType(currentIdForDeletion);
+
+            if (!deleteRes) {
+                throw new Error("Failed to delete type.");
+            }
+
+            if (!deleteRes.isSuccess) {
+                throw new Error(`Fail - ${deleteRes.error}`);
+            }
+            const retrieveRes = await retrieveType({
+                id  : null,
+                name: null
+            });
+
+            if (!retrieveRes) {
+                throw new Error("Failed to retrieve type after deletion.");
+            }
+
+            if (!retrieveRes.isSuccess) {
+                throw new Error(`Fail - ${retrieveRes.error}`);
+            }
+
+            setType(retrieveRes);
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed");
+            }
+        }).finally(() => {
+            setDeletionModalOpen(false);
+            setCurrentIdForDeletion(null);
+        });
     }
 
     const confirmEdition = () => {
@@ -434,6 +448,16 @@ export default function TypeComponent() {
                 {
                     renderContent()
                 }
+            </Modals>
+            <Modals
+                isOpen={isDeletionModalOpen}
+                onOpenChange={setDeletionModalOpen}
+                onCancel={() => setDeletionModalOpen(false)}
+                onConfirm={confirmDelete}
+                header={"Confirm Deletion"}
+                hideCloseButton={false}
+            >
+                <p>Are you sure you want to delete this order?</p>
             </Modals>
         </>
     )

@@ -53,6 +53,8 @@ export default function Page() {
     });
     const [editModal, setEditModal] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
+    const [isDeletionModalOpen, setDeletionModalOpen] = useState(false);
+    const [currentIdForDeletion, setCurrentIdForDeletion] = useState<number | null>(null);
     const [newData, setNewData] = useState({
         newName    : "",
         newPassword: "",
@@ -73,35 +75,8 @@ export default function Page() {
     }
 
     const handleDelete = (id: number) => {
-        (async () => {
-            const server_res = await (await httpServices.callAPI(`/User/${id}`, null, "DELETE", token)).json() as BasicDto<UserDto>;
-
-            if (!server_res) {
-                throw new Error("Failed to delete list");
-            }
-
-            if (!server_res.isSuccess) {
-                throw new Error(`Fail - ${server_res.error}`);
-            }
-
-            const updatedList = await (await httpServices.callAPI("/user", null, "GET", token)).json() as BasicDto<UserDto>;
-
-            if (!updatedList) {
-                throw new Error("Failed to retrieve updated list after deletion");
-            }
-
-            if (!updatedList.isSuccess) {
-                throw new Error(`Fail - ${updatedList.error}`);
-
-            }
-            setJsonObj(updatedList);
-        })().catch(error => {
-            if (error instanceof Error) {
-                showToast(error.message);
-            } else {
-                showToast("Service crashed")
-            }
-        });
+        setCurrentIdForDeletion(id);
+        setDeletionModalOpen(true);
     }
 
     const handleEdit = (id: number) => {
@@ -292,6 +267,44 @@ export default function Page() {
         onClose();
     }
 
+    const confirmDelete = () => {
+        (async () => {
+            if(!currentIdForDeletion){
+                throw new Error("The current id for deletion is null");
+            }
+            const server_res = await (await httpServices.callAPI(`/User/${currentIdForDeletion}`, null, "DELETE", token)).json() as BasicDto<UserDto>;
+
+            if (!server_res) {
+                throw new Error("Failed to delete list");
+            }
+
+            if (!server_res.isSuccess) {
+                throw new Error(`Fail - ${server_res.error}`);
+            }
+
+            const updatedList = await (await httpServices.callAPI("/user", null, "GET", token)).json() as BasicDto<UserDto>;
+
+            if (!updatedList) {
+                throw new Error("Failed to retrieve updated list after deletion");
+            }
+
+            if (!updatedList.isSuccess) {
+                throw new Error(`Fail - ${updatedList.error}`);
+
+            }
+            setJsonObj(updatedList);
+        })().catch(error => {
+            if (error instanceof Error) {
+                showToast(error.message);
+            } else {
+                showToast("Service crashed")
+            }
+        }).finally(() => {
+            setDeletionModalOpen(false);
+            setCurrentIdForDeletion(null);
+        });
+    }
+    
     const confirmEdition = () => {
         (async () => {
             const server_res = await updateUser();
@@ -537,6 +550,16 @@ export default function Page() {
                 {
                     renderContent()
                 }
+            </Modals>
+            <Modals
+                isOpen={isDeletionModalOpen}
+                onOpenChange={setDeletionModalOpen}
+                onCancel={() => setDeletionModalOpen(false)}
+                onConfirm={confirmDelete}
+                header={"Confirm Deletion"}
+                hideCloseButton={false}
+            >
+                <p>Are you sure you want to delete this order?</p>
             </Modals>
         </>
     );

@@ -73,15 +73,25 @@ export default function OrderComponent() {
     const [isCanceled, setIsCanceled] = useState("false");
     const [isLoading, setIsLoading] = useState(true);
     const [orderItemList, setOrderItemList] = useState<number[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [displayOrders, setDisplayOrders] = useState<OrderDto[]>([]);
     const [orderPerPage, setOrderPerPage] = useState<Map<number, OrderDto[]>>(new Map());
+    const [isDeletionModalOpen, setDeletionModalOpen] = useState(false);
+    const [currentIdForDeletion, setCurrentIdForDeletion] = useState<number | null>(null);
     const itemsPerPage = 5;
     
     const handleDelete = (id: number) => {
+        setCurrentIdForDeletion(id);
+        setDeletionModalOpen(true);
+    }
+
+    const confirmDelete = () => {
         (async () => {
-            const serverRes = await deleteOrder(id);
+            if(!currentIdForDeletion){
+                throw new Error("The current id for deletion is null");
+            }
+            const serverRes = await deleteOrder(currentIdForDeletion);
 
             if (!serverRes) {
                 throw new Error("Failed to retrieve place-order.");
@@ -105,11 +115,11 @@ export default function OrderComponent() {
             if (!retrieveRes.isSuccess) {
                 throw new Error(`Fail - ${retrieveRes.error}`);
             }
-            
+
             const newMap = new Map(orderPerPage);
             newMap.set(currentPage, retrieveRes.value.resultDto);
             setOrderPerPage(newMap);
-            
+
             setOrder(retrieveRes);
 
             setEditObj(serverRes.value.resultDto[0]);
@@ -120,9 +130,12 @@ export default function OrderComponent() {
             } else {
                 showToast("Service crashed");
             }
+        }).finally(() => {
+            setDeletionModalOpen(false);
+            setCurrentIdForDeletion(null);
         });
     }
-
+    
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     }
@@ -315,10 +328,10 @@ export default function OrderComponent() {
     useEffect(() => {
         setTotalPages(Math.ceil(order.value.amount / itemsPerPage));
         const items = orderPerPage.get(currentPage);
-        console.log(items);
         if (items){
             setDisplayOrders(items);
         }
+        
     }, [order]);
 
     useEffect(() => {
@@ -487,8 +500,10 @@ export default function OrderComponent() {
                         <Pagination
                             showControls={true}
                             showShadow={true}
+                            isCompact={true}
                             total={totalPages}
-                            initialPage={currentPage}
+                            initialPage={1}
+                            page={currentPage}
                             onChange={handlePageChange}
                         />
                     </div>}
@@ -522,7 +537,16 @@ export default function OrderComponent() {
                     renderContent()
                 }
             </Modals>
-
+            <Modals
+                isOpen={isDeletionModalOpen}
+                onOpenChange={setDeletionModalOpen}
+                onCancel={() => setDeletionModalOpen(false)}
+                onConfirm={confirmDelete}
+                header={"Confirm Deletion"}
+                hideCloseButton={false}
+            >
+                <p>Are you sure you want to delete this order?</p>
+            </Modals>
         </>
     );
 }

@@ -51,6 +51,8 @@ export default function MenuItemComponent() {
     const [editModal, setEditModal] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
     const [newName, setNewName] = useState("");
+    const [isDeletionModalOpen, setDeletionModalOpen] = useState(false);
+    const [currentIdForDeletion, setCurrentIdForDeletion] = useState<number | null>(null);
     const {
         isOpen,
         onOpen,
@@ -178,8 +180,38 @@ export default function MenuItemComponent() {
     }
 
     const handleDelete = (id: number) => {
+        setCurrentIdForDeletion(id);
+        setDeletionModalOpen(true);
+    }
+
+    const handleCreate = () => {
+        setEditModal(false);
+        onOpen();
+    }
+
+    const insertName = (name: string) => {
+        const {id} = editObj;
+        setEditObj({
+            id  : id,
+            name: name
+        });
+    }
+
+    const createName = (name: string) => {
+        setNewName(name);
+    }
+
+    const cancelEdition = () => {
+        onClose();
+    }
+
+    const confirmDelete = () => {
         (async () => {
-            const server_res = await deleteMenuItem(id);
+            if (!currentIdForDeletion) {
+                throw new Error("The current id for deletion is null");
+            }
+
+            const server_res = await deleteMenuItem(currentIdForDeletion);
             if (!server_res) {
                 throw new Error("Failed to delete menu item.");
             }
@@ -206,30 +238,12 @@ export default function MenuItemComponent() {
             } else {
                 showToast("Service crashed")
             }
+        }).finally(() => {
+            setDeletionModalOpen(false);
+            setCurrentIdForDeletion(null);
         });
     }
-
-    const handleCreate = () => {
-        setEditModal(false);
-        onOpen();
-    }
-
-    const insertName = (name: string) => {
-        const {id} = editObj;
-        setEditObj({
-            id  : id,
-            name: name
-        });
-    }
-
-    const createName = (name: string) => {
-        setNewName(name);
-    }
-
-    const cancelEdition = () => {
-        onClose();
-    }
-
+    
     const confirmEdition = () => {
         const {id, name} = editObj;
 
@@ -446,6 +460,26 @@ export default function MenuItemComponent() {
                 {
                     renderContent()
                 }
+            </Modals>
+            <Modals
+                isOpen={isDeletionModalOpen}
+                onOpenChange={setDeletionModalOpen}
+                onCancel={() => setDeletionModalOpen(false)}
+                onConfirm={confirmDelete}
+                header={"Confirm Deletion"}
+                hideCloseButton={false}
+            >
+                <p>Are you sure you want to delete this order?</p>
+            </Modals>
+            <Modals
+                isOpen={isDeletionModalOpen}
+                onOpenChange={setDeletionModalOpen}
+                onCancel={() => setDeletionModalOpen(false)}
+                onConfirm={confirmDelete}
+                header={"Confirm Deletion"}
+                hideCloseButton={false}
+            >
+                <p>Are you sure you want to delete this order?</p>
             </Modals>
         </>
     );
