@@ -248,6 +248,9 @@ export default function MenuItemFoodItemComponent() {
     }
 
     const updateFoodItem = (fi: number) => {
+       if (!fi){
+          fi = 0;
+       }
         const {
             menuItem_Id,
             consumption,
@@ -467,6 +470,11 @@ export default function MenuItemFoodItemComponent() {
             }
 
             setMenuItemFoodItem(retrieveUpdatedItems_res);
+            setMifiQueryDto({
+                menuItem_Id: null,
+                foodItem_Id: null,
+                consumption: null
+            });
             onClose();
         })().catch(error => {
             if (error instanceof Error) {
@@ -559,26 +567,26 @@ export default function MenuItemFoodItemComponent() {
         if (editModal) {
             return (
                 <>
-                    <Select
-                        label={"Food Item"}
-                        selectionMode={"single"}
-                        selectedKeys={editObj.foodItem_Id === 0
-                                      ? ""
-                                      : editObj.foodItem_Id.toString()}
-                        onSelectionChange={(selection) => updateFoodItem(Array.from(selection)[0] as number)}
-                    >
-                        {
-                            foodItem.value.resultDto.map(value =>
-                                <SelectItem
-                                    key={value.id}
-                                    value={value.id}
-                                    textValue={value.name}
-                                >
-                                    {value.name}
-                                </SelectItem>
-                            )
-                        }
-                    </Select>
+                    {/*<Select*/}
+                    {/*    label={"Food Item"}*/}
+                    {/*    selectionMode={"single"}*/}
+                    {/*    selectedKeys={editObj.foodItem_Id === 0*/}
+                    {/*                  ? ""*/}
+                    {/*                  : editObj.foodItem_Id.toString()}*/}
+                    {/*    onSelectionChange={(selection) => updateFoodItem(Array.from(selection)[0] as number)}*/}
+                    {/*>*/}
+                    {/*    {*/}
+                    {/*        foodItem.value.resultDto.map(value =>*/}
+                    {/*            <SelectItem*/}
+                    {/*                key={value.id}*/}
+                    {/*                value={value.id}*/}
+                    {/*                textValue={value.name}*/}
+                    {/*            >*/}
+                    {/*                {value.name}*/}
+                    {/*            </SelectItem>*/}
+                    {/*        )*/}
+                    {/*    }*/}
+                    {/*</Select>*/}
                     <Input
                         label={"Consumption"}
                         type={"number"}
