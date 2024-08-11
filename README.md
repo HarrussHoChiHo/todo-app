@@ -17,6 +17,19 @@
 >
 > Those default data can be found in file RestaurantFoodPlanningSystem/EntityFrameworkCore/SeedData.cs
 
+# Updates after 9th Aug
+1. Fix bug of updating course name
+2. Update date validation
+3. Add pagination to Order page
+4. Add validation on menu date
+5. Modified Order API for pagination
+6. Add function to ask confirmation when user click deletion button
+7. Correct the validation on date of menu
+8. Update warning of deletion
+9. Fix bug of updating consumption
+10. Add validation on the name of menu item
+
+
 # Steps for setting up the project (Frontend - React)
 Assuming the current directory is /RestaurantFoodPlanningSystem
 1. Nevigate to /rfps-web
